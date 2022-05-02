@@ -1,0 +1,57 @@
+{
+    "title": "Solid State 1",
+    "artist": "tdm",
+    "medium": "obsidian glass",
+    "dimensions": "D 100 x 20 x 50 mm",
+    "year": 2022,
+    "price": 20,
+    "name": "Solid State 1",
+    "symbol": "SS1",
+    "supply": 100000,
+    "images": [
+        {
+            "filePath": "/home/studio/Development/SolidState/artwork/solid_state_1/images/image_0.png",
+            "description": "A peice of coal.",
+            "mime": "image/png"
+        },
+        {
+            "filePath": "/home/studio/Development/SolidState/artwork/solid_state_1/images/image_1.png",
+            "description": "With a hand for size comparisn.",
+            "mime": "image/png"
+        }
+    ],
+    "videos": [
+        {
+            "filePath": "/home/studio/Development/SolidState/artwork/solid_state_1/video/video_0_1.mp4",
+            "description": "This is not coal it is paladium.",
+            "mime": "video/ogv"
+        }
+    ],
+    "files": [
+        {
+            "filePath": "/home/studio/Development/SolidState/artwork/solid_state_1/files/file_0.pdf",
+            "description": "An example of a Pdf Attachment.",
+            "mime": "document/pdf"
+        }
+    ],
+    "provinace": {
+        "images": [
+            {
+                "filePath": "/loacation/of/file",
+                "description": "Description of file"
+            }
+        ],
+        "videos": [
+            {
+                "filePath": "/loacation/of/file",
+                "description": "Description of file"
+            }
+        ],
+        "files": [
+            {
+                "filePath": "/loacation/of/file",
+                "description": "Description of file"
+            }
+        ]
+    }
+}

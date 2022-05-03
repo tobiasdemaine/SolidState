@@ -1,17 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useContractFunction, useCall, useEthers, useNotifications } from "@usedapp/core"
-import networkMapping from "../chain-info/deployments/map.json"
+import { useEffect } from "react";
+import { useContractFunction, useCall, useEthers } from "@usedapp/core"
 import { constants, utils } from "ethers"
 import { Contract } from "@ethersproject/contracts"
-import { EtherscanProvider } from "@ethersproject/providers"
-import SolidStateGallery from "../chain-info/contracts/SolidStateGallery.json"
 import SolidStateArtwork from "../chain-info/contracts/SolidStateToken.json"
-import { formatUnits } from "@ethersproject/units"
 import { BigNumber } from "@ethersproject/bignumber"
 
 export const ArtworkShareTradeBuyOffer = (artworkAddress: any) => {
-    const { chainId, account } = useEthers()
-    const { notifications } = useNotifications()
     const { abi } = SolidStateArtwork
     const SolidStateArtworkInterface = new utils.Interface(abi)
     const SolidStateArtworkContract = new Contract(artworkAddress, SolidStateArtworkInterface)
@@ -39,8 +33,6 @@ export const ArtworkShareTradeBuyOffer = (artworkAddress: any) => {
 }
 
 export const ArtworkShareTradeSellOffer = (artworkAddress: any) => {
-    const { chainId, account } = useEthers()
-
     const { abi } = SolidStateArtwork
     const SolidStateArtworkInterface = new utils.Interface(abi)
     const SolidStateArtworkContract = new Contract(artworkAddress, SolidStateArtworkInterface)
@@ -64,10 +56,8 @@ export const ArtworkShareTradeSellOffer = (artworkAddress: any) => {
 }
 
 export const ArtworkShareTradeSellOfferApprove = (artworkAddress: any, shareQty: any, shareETH: any) => {
-    const { chainId, account } = useEthers()
     const { abi } = SolidStateArtwork
 
-    //const SolidStateGalleryAddress = chainId ? networkMapping[chainId.toString()]["SolidStateGallery"][0] : constants.AddressZero
 
     const SolidStateArtWorkAddress = artworkAddress || constants.AddressZero
     const SolidStateArtWorkInterface = new utils.Interface(abi)
@@ -115,13 +105,11 @@ export const ArtworkShareTradeSellOfferApprove = (artworkAddress: any, shareQty:
 }
 
 export const ArtworkShareAllBuyOffers = (artworkAddress: any) => {
-    const { chainId, account } = useEthers()
 
     const { abi } = SolidStateArtwork
     const SolidStateArtworkInterface = new utils.Interface(abi)
     const SolidStateArtworkContract = new Contract(artworkAddress, SolidStateArtworkInterface)
 
-    //getSellOrdersByAddress(address _artworkAddress, address _address)
     const { value, error } = useCall(artworkAddress && {
         contract: SolidStateArtworkContract,
         method: 'getAllBuyOrders',
@@ -136,13 +124,11 @@ export const ArtworkShareAllBuyOffers = (artworkAddress: any) => {
 }
 
 export const ArtworkShareAllSellOffers = (artworkAddress: any) => {
-    const { chainId, account } = useEthers()
 
     const { abi } = SolidStateArtwork
     const SolidStateArtworkInterface = new utils.Interface(abi)
     const SolidStateArtworkContract = new Contract(artworkAddress, SolidStateArtworkInterface)
 
-    //getSellOrdersByAddress(address _artworkAddress, address _address)
     const { value, error } = useCall(artworkAddress && {
         contract: SolidStateArtworkContract,
         method: 'getAllSellOrders',
@@ -157,13 +143,12 @@ export const ArtworkShareAllSellOffers = (artworkAddress: any) => {
 }
 
 export const ArtworkShareAllBuyOffersOwner = (artworkAddress: any) => {
-    const { chainId, account } = useEthers()
+    const { account } = useEthers()
 
     const { abi } = SolidStateArtwork
     const SolidStateArtworkInterface = new utils.Interface(abi)
     const SolidStateArtworkContract = new Contract(artworkAddress, SolidStateArtworkInterface)
 
-    //getSellOrdersByAddress(address _artworkAddress, address _address)
     const { value, error } = useCall(artworkAddress && {
         contract: SolidStateArtworkContract,
         method: 'getBuyOrdersByAddress',
@@ -178,7 +163,7 @@ export const ArtworkShareAllBuyOffersOwner = (artworkAddress: any) => {
 }
 
 export const ArtworkShareAllSellOffersOwner = (artworkAddress: any) => {
-    const { chainId, account } = useEthers()
+    const { account } = useEthers()
 
     const { abi } = SolidStateArtwork
     const SolidStateArtworkInterface = new utils.Interface(abi)
@@ -198,10 +183,8 @@ export const ArtworkShareAllSellOffersOwner = (artworkAddress: any) => {
 
 
 export const ArtworkShareAllEvents = (artworkAddress: any) => {
-    const { chainId, account } = useEthers()
     const { abi } = SolidStateArtwork
     const SolidStateArtworkInterface = new utils.Interface(abi)
-    const provider = new EtherscanProvider(chainId);
     const SolidStateArtworkContract = new Contract(artworkAddress, SolidStateArtworkInterface)
 
     const { value, error } = useCall(artworkAddress && {
@@ -215,14 +198,6 @@ export const ArtworkShareAllEvents = (artworkAddress: any) => {
     }
     return value
 
-    /* console.log(provider)
-     async function getEvents() {
-         let eventFilter = SolidStateArtworkContract.filters.orderTransaction(artworkAddress)
-         console.log(eventFilter)
-         let events = await SolidStateArtworkContract.queryFilter(eventFilter)
-         return events
-     }
-     return getEvents()*/
 }
 
 export const ArtworkShareOwn = (address: any, tokenOwnerAddress: any) => {
@@ -244,7 +219,6 @@ export const ArtworkShareOwn = (address: any, tokenOwnerAddress: any) => {
 }
 
 export const ArtworkSharesInOffers = (address: any) => {
-    const { chainId, account } = useEthers()
     const { abi } = SolidStateArtwork
     const SolidStateArtWorkAddress = address || constants.AddressZero
     const SolidStateArtWorkInterface = new utils.Interface(abi)
@@ -268,7 +242,6 @@ export const ArtworkShareOwnInOffers = (artworkAddress: any) => {
 }
 
 export const ArtworkShareCancelBuyOffer = (artworkAddress: any) => {
-    const { chainId, account } = useEthers()
     const { abi } = SolidStateArtwork
 
     const SolidStateArtworkInterface = new utils.Interface(abi)
@@ -282,13 +255,11 @@ export const ArtworkShareCancelBuyOffer = (artworkAddress: any) => {
 }
 
 export const ArtworkShareCancelSellOffer = (artworkAddress: any) => {
-    const { chainId, account } = useEthers()
     const { abi: abiGallery } = SolidStateArtwork
 
     const SolidStateArtworkInterface = new utils.Interface(abiGallery)
     const SolidStateArtworkContract = new Contract(artworkAddress, SolidStateArtworkInterface)
 
-    //cancelSellOrder(uint256 id)
     const { state: cancelSellOrderState, send: cancelSellOrder } = useContractFunction(
         SolidStateArtworkContract,
         'cancelSellOrder',

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useContractFunction, useCall, useEthers } from "@usedapp/core"
+import { useEffect } from "react";
+import { useContractFunction, useEthers } from "@usedapp/core"
 import networkMapping from "../chain-info/deployments/map.json"
 import { constants, utils } from "ethers"
 import { Contract } from "@ethersproject/contracts"
@@ -8,7 +8,7 @@ import SolidStateGallery from "../chain-info/contracts/SolidStateGallery.json"
 export const ArtworkGalleryVisibility = () => {
 
     // test if logged in as owner    
-    const { chainId, account } = useEthers()
+    const { chainId } = useEthers()
 
     const { abi } = SolidStateGallery
     const SolidStateGalleryAddress = chainId ? networkMapping[chainId.toString()]["SolidStateGallery"][0] : constants.AddressZero

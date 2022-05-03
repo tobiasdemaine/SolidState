@@ -5,8 +5,6 @@ pragma abicoder v2;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-//import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
-
 contract SolidStateToken is ERC20 {
     struct artworkMeta {
         string title;
@@ -82,7 +80,6 @@ contract SolidStateToken is ERC20 {
         offerState = OfferState.NOT_FOR_SALE;
         owners.push(msg.sender);
         _mint(address(this), _initialSupply);
-        //contractReleaseTokens(msg.sender, initialSupply);
     }
 
     modifier onlyOwner() {

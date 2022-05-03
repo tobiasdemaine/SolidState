@@ -44,6 +44,7 @@ export const ArtworkShareTradeBuy = ({ artworkAddress }: Props) => {
 
     useEffect(() => {
         setBuyShareETH(artWorkSharePrice / 1e18)
+        setBuyShareETHTotal(artWorkSharePrice / 1e18)
     }, [])
     // snack bars
     const handleCloseSnack = () => {
@@ -179,6 +180,7 @@ export const ArtworkShareTradeSell = ({ artworkAddress }: Props) => {
 
     useEffect(() => {
         setSellShareETH(artWorkSharePrice / 1e18)
+        setSellShareETHTotal(artWorkSharePrice / 1e18)
     }, [])
     // snack bars
     const handleCloseSnack = () => {

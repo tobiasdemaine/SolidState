@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 
 import {
     ArtWorkViewById,
     ArtWorkViewPriceById,
-    ArtWorkViewForSaleById,
-    ArtWorkViewTokenBalanceById,
-    ArtWorkPriceETHById,
-    ArtWorkViewOwnersById,
     ArtworkTokenSymbol,
     ArtworkTokenName,
     ArtworkTokenTotalSupply
@@ -15,12 +11,9 @@ import {
 
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles';
 import useSolidStateContexts from "../hooks/useSolidStateContext"
-import { CollectionsOverviewArtwork } from './CollectionOverviewArtwork'
-import { useEthers, useNotifications } from "@usedapp/core"
-import { GalleryArtworkListMetaLoad } from './GalleryArtworkListMetaLoad';
+import { useEthers } from "@usedapp/core"
 import ArtworkTokenOwnerBalance from "../hooks/ArtWorkToken";
 
 export interface Props {
@@ -37,12 +30,9 @@ export const MySharesList = ({ ipfs, id, data, setProps }: Props) => {
     const address = id
     const artWorkMeta = ArtWorkViewById(address) || { artist: "", title: "", medium: "", year: { _hex: '' }, mediaDataPackURI: null }
     const artWorkPrice = ArtWorkViewPriceById(address) || {}
-    const artWorkForSale = ArtWorkViewForSaleById(address)
-    const artWorkTokenBalance = ArtWorkViewTokenBalanceById(address)
     const artWorkTokenSymbol = ArtworkTokenSymbol(address)
     const artWorkTokenName = ArtworkTokenName(address)
     const artWorkTotalSupply = ArtworkTokenTotalSupply(address)
-    const artWorkOwner = ArtWorkViewOwnersById(address) || []
     const artWorkTokenOwnerBalance = ArtworkTokenOwnerBalance(address, account) || { _hex: '' }
     const { state: APPSTATE, setMainSection, setArtWorkAddress } = useSolidStateContexts()
     useEffect(() => {

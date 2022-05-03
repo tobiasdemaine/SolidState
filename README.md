@@ -33,8 +33,6 @@ trading a share
 
 -- if order can only be part filled, modify order.
 
-fill order if less and return money to buyer
-
 ==================
 
 

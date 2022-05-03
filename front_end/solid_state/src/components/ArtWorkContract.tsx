@@ -1,25 +1,17 @@
 
 import React, { useState, useEffect } from "react";
-import useSolidStateContexts from "../hooks/useSolidStateContext"
 import { Button, Input, Switch, CircularProgress, Snackbar, Backdrop, Paper, Alert, Grid, Typography, TextField } from "@mui/material"
 
 import {
-    ArtWorkViewById,
     ArtWorkViewPriceById,
     ArtWorkViewForSaleById,
-    ArtWorkViewTokenBalanceById,
     ArtWorkViewOwnersById,
-    ArtWorkProvinace,
-    ArtWorkPriceETHById
 } from "../hooks/ArtworkViewByAddress"
 import { ArtWorkMakeOffer } from "../hooks/ArtWorkMakeOfferByAddress"
 import {
     ArtWorkOwnerSetForSale,
     ArtWorkOwnerSetNotForSale,
-    ArtworkOwnerSetPrice,
     ArtworkReleaseTokens,
-    ArtWorkGetDecreaseLimit,
-    ArtworkSetDecreaseLimit
 } from "../hooks/ArtWorkOwnerByAddress"
 
 
@@ -34,35 +26,23 @@ export const ArtWorkContract = ({ address }: ArtWorkContractProps) => {
     const { account } = useEthers()
     const { notifications } = useNotifications()
 
-    const isConnected = account !== undefined
-
-    const { state: APPSTATE } = useSolidStateContexts()
 
 
     const { SetArtworkForSale, artworkSetForSaleState } = ArtWorkOwnerSetForSale(address)
     const { SetArtworkNotForSale, artworkSetNotForSaleState } = ArtWorkOwnerSetNotForSale(address)
-    const { SetArtworkPrice, artworkSetPriceState } = ArtworkOwnerSetPrice(address)
     const { artworkReleaseTokens, artworkReleaseTokensState } = ArtworkReleaseTokens(address)
-    //const { artworkSetDecreaseLimit, artworkSetDecreaseLimitState } = ArtworkSetDecreaseLimit(address)
 
-    const artWorkMeta = ArtWorkViewById(address) || { artist: "", title: "", medium: "", year: { _hex: '' }, mediaDataPackURI: '' }
     const artWorkPrice = ArtWorkViewPriceById(address) || {}
     const artWorkForSale = ArtWorkViewForSaleById(address)
-    const artWorkTokenBalance = ArtWorkViewTokenBalanceById(address)
     const artWorkOwners = ArtWorkViewOwnersById(address) || []
-    //const artWorkProvinance = ArtWorkProvinace(address) || []
     const artWorkPriceETH = artWorkPrice //ArtWorkPriceETHById(address) * (10 ** 10) / (10 ** 18)
-    //const MakeArtWorkOffer = ArtWorkMakeOffer()
     const { artworkMakeOffer, artworkMakeOfferState } = ArtWorkMakeOffer(address)
 
 
-    //const ArtWorkDecreaseLimit = ArtWorkGetDecreaseLimit(address) || 0
 
-    const [artWorkOfferPriceInETH, setArtWorkOfferPriceInETH] = useState(artWorkPriceETH);
-    const [artWorkPRICE, setArtWorkPRICE] = useState(Number(artWorkPrice._hex) || 0);
+    const [, setArtWorkOfferPriceInETH] = useState(artWorkPriceETH);
     const [artWorkReleaseTokensQty, setArtWorkReleaseTokenQty] = useState(0)
     const [artWorkReleaseTokensAddress, setArtWorkReleaseTokenAddress] = useState(account?.toString() || "")
-    //const [artWorkDecreaseLimit, setArtWorkDecreaseLimit] = useState(ArtWorkDecreaseLimit)
 
     const [artWorkFORSALE, setArtWorkFORSALE] = useState(artWorkForSale)
 
@@ -179,15 +159,6 @@ export const ArtWorkContract = ({ address }: ArtWorkContractProps) => {
     }
 
 
-    // PROVINANCE
-    /*  const _artWorkProvinance = []
-      for (var j in artWorkProvinance) {
-          //
-          var k = artWorkProvinance[j] || []
-  
-          _artWorkProvinance.push(<li>{k[0]}<> </>{k[1]}</li>)
-      }
-  */
     return (
         <>
 

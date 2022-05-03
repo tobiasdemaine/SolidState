@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { DAppProvider, ChainId } from '@usedapp/core';
 import { Header } from "./components/Header"
@@ -15,12 +15,9 @@ const darkTheme = createTheme({
 });
 function App() {
 
-  let { ipfs, isIpfsReady } = useIpfsConnect()
+  let { ipfs } = useIpfsConnect()
   useEffect(() => {
-    if (!ipfs) return;
-
-    console.log(ipfs)
-    //setIpfs(ipfs)
+    if (!ipfs) return
 
   }, [ipfs])
 

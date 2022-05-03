@@ -13,7 +13,6 @@ export interface ArtWorkMetaDataProps {
 
 export const ArtWorkIpfsMetaData = ({ IpfsHash, description, mime }: ArtWorkMetaDataProps) => {
     const { state: APPSTATE, setMainSection, setArtWorkAddress } = useSolidStateContexts()
-    //console.log(APPSTATE.ipfs, IpfsHash)
     let { _data, _blob, isIpfsFileReady } = useIpfsRetrieve(APPSTATE.ipfs, IpfsHash)
     var blobString: string = String(_blob)
 
@@ -73,10 +72,7 @@ export const ArtWorkIpfsMetaDataVideo = ({ IpfsHash, description, mime }: ArtWor
     let tmp: any = {}
     const [mediaSource] = useState(new MediaSource())
     const _videoRef = useRef(null)
-    console.log(IpfsHash)
-    console.log(document.getElementById(IpfsHash))
     const videoRef = useRef(document.getElementById(IpfsHash) as HTMLVideoElement)
-    console.log(videoRef)
     let { _data, _blob, isIpfsFileReady, startRetrieve } = useIpfsRetrieveAsChunks(APPSTATE.ipfs, IpfsHash)
 
     useEffect(() => {

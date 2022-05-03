@@ -1,8 +1,6 @@
 import {
     GalleryOwners, CollectionView, CollectionViewAll
 } from "../hooks/GalleryView"
-import { GalleryArtWorkItem } from "./GallerytArtWorkItem"
-import { useEthers } from "@usedapp/core"
 import { GalleryArtworkList } from "./GalleryArtworkList"
 import Grid from '@mui/material/Grid';
 
@@ -12,13 +10,7 @@ export interface GalleryCollectionProps {
 }
 export const GalleryCollections = ({ collection, ipfs }: GalleryCollectionProps) => {
 
-    // test if logged in as owner    
-    const { account } = useEthers()
 
-
-    const isConnected = account !== undefined
-
-    const artWorkAddresses = CollectionView(collection) || []
     const owners = GalleryOwners() || []
 
     const artWorks = CollectionViewAll(collection) || []
@@ -40,15 +32,5 @@ export const GalleryCollections = ({ collection, ipfs }: GalleryCollectionProps)
 
         </>
     )
-    /* return (
-         <>
-             {_artwork.map((data: any, index: any) => (
- 
-                 <GalleryArtWorkItem address={data.address} visibility={data.visibility} galleryOwner={owners[owners.length - 1]} />
-             ))
-             }
- 
- 
-         </>
-     )*/
+
 }

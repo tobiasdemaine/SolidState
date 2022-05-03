@@ -8,10 +8,8 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import { ImageList } from "@mui/material"
 import { useIpfsRetrieve } from "../hooks/ipfs"
 import useSolidStateContexts from "../hooks/useSolidStateContext"
-import { ArtWorkIpfsMetaData, ArtWorkIpfsMetaDataVideo } from "./ArtworkIpfsMetaData"
 import { ArtWorkIpfsMediaBox } from "./ArtworkIpfsMediaBox"
 
 export interface ArtWorkMetaDataProps {
@@ -141,12 +139,3 @@ export const ArtworkMediaCarousel = ({ IpfsHash, description }: ArtWorkMetaDataP
         </>
     );
 }
-
-/*
-<SwipeableViews enableMouseEvents>
-                <div style={Object.assign({}, styles.slide, styles.slide1)}>slide n°1</div>
-                <div style={Object.assign({}, styles.slide, styles.slide2)}>slide n°2</div>
-                <div style={Object.assign({}, styles.slide, styles.slide3)}>slide n°3</div>
-            </SwipeableViews >
-            
-*/

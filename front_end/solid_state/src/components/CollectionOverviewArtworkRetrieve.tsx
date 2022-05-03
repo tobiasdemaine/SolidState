@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import useSolidStateContexts from "../hooks/useSolidStateContext"
 
 import { ArtWorkViewById } from "../hooks/ArtworkViewByAddress"

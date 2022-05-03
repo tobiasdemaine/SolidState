@@ -6,15 +6,12 @@ import { useEthers } from "@usedapp/core"
 import { MyArtworksList } from "./MyArtworksList"
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography'
-import useSolidStateContexts from "../hooks/useSolidStateContext"
 export interface Props {
 
     ipfs: any
 }
 export const MyArtworks = ({ ipfs }: Props) => {
-    const { state: APPSTATE, setMainSection, setArtWorkAddress } = useSolidStateContexts()
     const artWorks = GalleryViewAll() || []
-    console.log(artWorks)
     const _artwork = []
     for (var i in artWorks[0]) {
         _artwork.push({ address: artWorks[0][i], visibility: artWorks[1][i] })

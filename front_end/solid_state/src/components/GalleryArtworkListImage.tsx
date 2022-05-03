@@ -9,8 +9,8 @@ export interface CollectionProps {
     ipfsHash: any,
 }
 export const GalleryArtworkListImage = ({ ipfs, ipfsHash }: CollectionProps) => {
-    let { _data, _blob, isIpfsFileReady } = useIpfsRetrieve(ipfs, ipfsHash)
-    var blobString: string = String(_blob)
+    //let { _data, _blob, isIpfsFileReady } = useIpfsRetrieve(ipfs, ipfsHash)
+    var blobString: string = "//ipfs.tobiasdemaine.com/ipfs/" + ipfsHash//String(_blob)
 
     return (
         <>{

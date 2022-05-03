@@ -1,15 +1,11 @@
 import { useContractFunction, useCall, useEthers } from "@usedapp/core"
-import networkMapping from "../chain-info/deployments/map.json"
 import { constants, utils } from "ethers"
 import { Contract } from "@ethersproject/contracts"
 import SolidStateArtwork from "../chain-info/contracts/SolidStateToken.json"
-import useSolidStateContexts from "../hooks/useSolidStateContext"
 import { useEffect, useState } from "react"
 
 export const ArtWorkMakeOffer = (address: any) => {
-    const { state: APPSTATE, setMainSection, setArtWorkAddress } = useSolidStateContexts()
     // test if logged in as owner    
-    const { chainId, account } = useEthers()
 
     const { abi } = SolidStateArtwork
     const SolidStateArtWorkAddress = address || constants.AddressZero
@@ -21,12 +17,7 @@ export const ArtWorkMakeOffer = (address: any) => {
         'makeOfferToBuyContract',
         { transactionName: 'Purchase Offer' })
 
-    const MakeArtworkOffer = (amount: string) => {
-        //setAmountToStake(Number(amount))
-        return artworkMakeOffer({
-            value: amount,
-        })
-    }
+
 
 
     useEffect(() => {

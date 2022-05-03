@@ -15,9 +15,7 @@ import {
 
 } from "../hooks/ArtworkViewByAddress"
 import {
-    Button,
-    Input,
-    Switch,
+    Link,
     CircularProgress,
     Snackbar,
     ToggleButton,
@@ -121,7 +119,7 @@ export const GalleryArtWorkItem = ({ address, visibility, galleryOwner }: ArtWor
         setShowTransactionFail(false)
     }
 
-
+    const ethscanAddress = "https://kovan.etherscan.io/address/" + address
     return (
 
         <>
@@ -166,7 +164,11 @@ export const GalleryArtWorkItem = ({ address, visibility, galleryOwner }: ArtWor
                                         <Grid xs={3}><small>Symbol</small></Grid><Grid xs={9}><small><strong>{artWorkTokenSymbol}</strong></small></Grid>
                                         <Grid xs={3}><small>Price</small></Grid><Grid xs={9}><small><strong>{Number(artWorkSharePrice) / 1e18}</strong></small></Grid>
                                         <Grid xs={3}><small>Shares</small></Grid><Grid xs={9}><small><strong>{Number(artWorkTotalSupply)}</strong></small></Grid>
-                                        <Grid xs={12} sx={{ mt: 1 }} > <small>{address}</small></Grid>
+                                        <Grid xs={12} sx={{ mt: 1 }} >
+                                            <small>
+                                                <Link target="_blank" href={ethscanAddress}>{address}</Link>
+                                            </small>
+                                        </Grid>
                                     </Grid>
                                 </>) : (<>Loading</>)}
                             </Paper>

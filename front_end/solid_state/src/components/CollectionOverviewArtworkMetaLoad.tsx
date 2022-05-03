@@ -1,4 +1,3 @@
-import { ImageList } from "@mui/material"
 import { useIpfsRetrieve } from "../hooks/ipfs"
 import useSolidStateContexts from "../hooks/useSolidStateContext"
 import { CollectionsOverviewImage } from "./CollectionOverviewImage"

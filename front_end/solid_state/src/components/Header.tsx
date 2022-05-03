@@ -6,9 +6,6 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import GridOnIcon from '@mui/icons-material/GridOn';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { LinearProgress } from "@mui/material"
@@ -17,7 +14,6 @@ import useSolidStateContexts from "../hooks/useSolidStateContext"
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { borderRight, positions } from '@mui/system';
 export interface HeaderProps {
     ipfs: any,
 

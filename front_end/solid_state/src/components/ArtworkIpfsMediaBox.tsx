@@ -1,7 +1,7 @@
-import { LinearProgress, Box, ImageListItem, ImageListItemBar } from "@mui/material"
-import { useIpfsRetrieve, useIpfsRetrieveAsChunks, useIpfsRetrieveBinary } from "../hooks/ipfs"
+import { LinearProgress, Box, } from "@mui/material"
+import { useIpfsRetrieveAsChunks, } from "../hooks/ipfs"
 import useSolidStateContexts from "../hooks/useSolidStateContext"
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 
 
@@ -12,10 +12,8 @@ export interface ArtWorkMetaDataProps {
 }
 
 export const ArtWorkIpfsMediaBox = ({ IpfsHash, description, mime }: ArtWorkMetaDataProps) => {
-    const { state: APPSTATE, setMainSection, setArtWorkAddress } = useSolidStateContexts()
-    //console.log(APPSTATE.ipfs, IpfsHash)
-    let { _data, _blob, isIpfsFileReady } = useIpfsRetrieve(APPSTATE.ipfs, IpfsHash)
-    var blobString: string = String(_blob)
+    //let { _data, _blob, isIpfsFileReady } = useIpfsRetrieve(APPSTATE.ipfs, IpfsHash)
+    var blobString: string = "//ipfs.tobiasdemaine.com/ipfs/" + IpfsHash //String(_blob)
 
     return (
         <>

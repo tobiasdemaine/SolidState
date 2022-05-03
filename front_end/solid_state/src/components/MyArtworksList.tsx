@@ -35,7 +35,6 @@ export const MyArtworksList = ({ ipfs, id, data, setProps }: Props) => {
     const address = id
     const artWorkMeta = ArtWorkViewById(address) || { artist: "", title: "", medium: "", year: { _hex: '' }, mediaDataPackURI: null }
     const artWorkPrice = ArtWorkViewPriceById(address) || {}
-    const artWorkForSale = ArtWorkViewForSaleById(address)
     const artWorkTokenBalance = ArtWorkViewTokenBalanceById(address)
     const artWorkTokenSymbol = ArtworkTokenSymbol(address)
     const artWorkTokenName = ArtworkTokenName(address)

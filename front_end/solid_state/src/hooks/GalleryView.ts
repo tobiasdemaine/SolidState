@@ -1,15 +1,14 @@
-import { useContractFunction, useCall, useEthers } from "@usedapp/core"
+import { useCall, useEthers } from "@usedapp/core"
 import networkMapping from "../chain-info/deployments/map.json"
 import { constants, utils } from "ethers"
 import { Contract } from "@ethersproject/contracts"
 import SolidStateGallery from "../chain-info/contracts/SolidStateGallery.json"
-import { ChargingStationRounded } from "@mui/icons-material"
+
 
 
 export const GalleryView = () => {
 
-    // test if logged in as owner    
-    const { chainId, account } = useEthers()
+    const { chainId } = useEthers()
 
     const { abi } = SolidStateGallery
     const SolidStateGalleryAddress = chainId ? networkMapping[chainId.toString()]["SolidStateGallery"][0] : constants.AddressZero
@@ -17,7 +16,6 @@ export const GalleryView = () => {
     const SolidStateGalleryContract = new Contract(SolidStateGalleryAddress, SolidStateGalleryInterface)
 
 
-    //getArtWorks() public view returns (address[] memory)
     const { value, error } = useCall(SolidStateGalleryAddress && {
         contract: SolidStateGalleryContract,
         method: 'getArtWorks',
@@ -32,7 +30,7 @@ export const GalleryView = () => {
 }
 
 export const GalleryOwners = () => {
-    const { chainId, account } = useEthers()
+    const { chainId } = useEthers()
 
     const { abi } = SolidStateGallery
     const SolidStateGalleryAddress = chainId ? networkMapping[chainId.toString()]["SolidStateGallery"][0] : constants.AddressZero
@@ -54,17 +52,13 @@ export const GalleryOwners = () => {
 }
 
 export const GalleryViewAll = () => {
-
-    // test if logged in as owner    
-    const { chainId, account } = useEthers()
+    const { chainId } = useEthers()
 
     const { abi } = SolidStateGallery
     const SolidStateGalleryAddress = chainId ? networkMapping[chainId.toString()]["SolidStateGallery"][0] : constants.AddressZero
     const SolidStateGalleryInterface = new utils.Interface(abi)
     const SolidStateGalleryContract = new Contract(SolidStateGalleryAddress, SolidStateGalleryInterface)
 
-
-    //getAllArtworks() public view onlyOwner returns (address[] memory, bool[] memory)
     const { value, error } = useCall(SolidStateGalleryAddress && {
         contract: SolidStateGalleryContract,
         method: 'getAllArtWorks',
@@ -78,7 +72,7 @@ export const GalleryViewAll = () => {
 }
 
 export const GalleryCollections = () => {
-    const { chainId, account } = useEthers()
+    const { chainId } = useEthers()
 
     const { abi } = SolidStateGallery
     const SolidStateGalleryAddress = chainId ? networkMapping[chainId.toString()]["SolidStateGallery"][0] : constants.AddressZero
@@ -101,9 +95,7 @@ export const GalleryCollections = () => {
 }
 
 export const CollectionView = (id: any) => {
-
-    // test if logged in as owner    
-    const { chainId, account } = useEthers()
+    const { chainId } = useEthers()
 
     const { abi } = SolidStateGallery
     const SolidStateGalleryAddress = chainId ? networkMapping[chainId.toString()]["SolidStateGallery"][0] : constants.AddressZero
@@ -111,7 +103,6 @@ export const CollectionView = (id: any) => {
     const SolidStateGalleryContract = new Contract(SolidStateGalleryAddress, SolidStateGalleryInterface)
 
 
-    //getArtWorks() public view returns (address[] memory)
     const { value, error } = useCall(SolidStateGalleryAddress && {
         contract: SolidStateGalleryContract,
         method: 'getArtWorksByCollectionId',
@@ -127,15 +118,13 @@ export const CollectionView = (id: any) => {
 
 export const CollectionViewAll = (id: any) => {
 
-    // test if logged in as owner    
-    const { chainId, account } = useEthers()
+    const { chainId } = useEthers()
     const { abi } = SolidStateGallery
     const SolidStateGalleryAddress = chainId ? networkMapping[chainId.toString()]["SolidStateGallery"][0] : constants.AddressZero
     const SolidStateGalleryInterface = new utils.Interface(abi)
     const SolidStateGalleryContract = new Contract(SolidStateGalleryAddress, SolidStateGalleryInterface)
 
 
-    //getAllArtworks() public view onlyOwner returns (address[] memory, bool[] memory)
     const { value, error } = useCall(SolidStateGalleryAddress && {
         contract: SolidStateGalleryContract,
         method: 'getAllArtWorksByCollectionId',

@@ -2,19 +2,16 @@ import React, { useState, useEffect } from "react";
 import {
     GalleryViewAll
 } from "../hooks/GalleryView"
-import { useEthers } from "@usedapp/core"
 import { MySharesList } from "./MySharesList";
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles';
-import useSolidStateContexts from "../hooks/useSolidStateContext"
 export interface Props {
 
     ipfs: any
 }
 export const MyShares = ({ ipfs }: Props) => {
-    const { state: APPSTATE, setMainSection, setArtWorkAddress } = useSolidStateContexts()
     const artWorks = GalleryViewAll() || []
     const _artwork = []
     for (var i in artWorks[0]) {
@@ -22,7 +19,6 @@ export const MyShares = ({ ipfs }: Props) => {
     }
 
     const myData = new Array()
-    //  console.log(APPSTATE)
     const [artworkData, setArtworkData] = useState(myData)
 
     const setProps = (data: any) => {

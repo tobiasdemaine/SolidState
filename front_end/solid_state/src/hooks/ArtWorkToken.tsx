@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useContractFunction, useCall, useEthers } from "@usedapp/core"
-import networkMapping from "../chain-info/deployments/map.json"
+import { useCall } from "@usedapp/core"
 import { constants, utils } from "ethers"
 import { Contract } from "@ethersproject/contracts"
 import SolidStateArtwork from "../chain-info/contracts/SolidStateToken.json"

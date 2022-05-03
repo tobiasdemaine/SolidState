@@ -1,13 +1,8 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { CardActionArea } from '@mui/material';
-import useSolidStateContexts from "../hooks/useSolidStateContext"
 import { CollectionsOverviewArtworkRetrieve } from './CollectionOverviewArtworkRetrieve';
 import {
-    GalleryOwners, CollectionView, CollectionViewAll
+    CollectionViewAll
 } from "../hooks/GalleryView"
 
 export interface CollectionProps {
@@ -16,7 +11,6 @@ export interface CollectionProps {
     title: any
 }
 export const CollectionsOverviewArtwork = ({ ipfs, id, title }: CollectionProps) => {
-    const { state: APPSTATE, setMainSection } = useSolidStateContexts()
     const artWorks = CollectionViewAll(id) || [[]]
     var workCount = 0
     for (var i = 0; i < artWorks.length; i++) {
@@ -24,7 +18,6 @@ export const CollectionsOverviewArtwork = ({ ipfs, id, title }: CollectionProps)
             workCount++
         }
     }
-    //const workCount = artWorks.length
     return (
         <>
             {

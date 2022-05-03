@@ -1,7 +1,7 @@
 import { ImageList } from "@mui/material"
 import { useIpfsRetrieve } from "../hooks/ipfs"
 import useSolidStateContexts from "../hooks/useSolidStateContext"
-import { ArtWorkIpfsMetaData, ArtWorkIpfsMetaDataVideo } from "./ArtworkIpfsMetaData"
+import { ArtWorkIpfsMetaData } from "./ArtworkIpfsMetaData"
 
 export interface ArtWorkMetaDataProps {
     IpfsHash: any,
@@ -37,17 +37,3 @@ export const GalleryArtworkMetaData = ({ IpfsHash, description }: ArtWorkMetaDat
 
 }
 
-/*
->> VIDE0 return(
-
-    {
-                metaDataPack.videos.map((data: any, index: any) => (
-
-                    <>
-                        < ArtWorkIpfsMetaDataVideo IpfsHash={data.IpfsHash} description={data.description} mime="video" />
-                    </>
-                ))
-            }
-)
-
-*/

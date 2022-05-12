@@ -31,6 +31,7 @@ export const ArtWorkIpfsMediaBox = ({ IpfsHash, description, mime }: ArtWorkMeta
 
                                     overflow: 'hidden',
                                     width: '100%',
+                                    maxheight: '600'
                                 }}
                                 src={blobString}
                                 alt={description}

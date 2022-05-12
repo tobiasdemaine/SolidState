@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { DAppProvider, ChainId } from '@usedapp/core';
+import { DAppProvider, Kovan } from '@usedapp/core';
 import { Header } from "./components/Header"
 import Container from "@mui/material/Container"
 import { Main } from "./Main"
@@ -23,7 +23,7 @@ function App() {
 
   return (
     <DAppProvider config={{
-      supportedChains: [ChainId.Localhost, ChainId.Kovan],
+      networks: [Kovan],
       notifications: {
         expirationPeriod: 1000,
         checkInterval: 1000

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: NPOSL-3.0
 // Gallery of solid state contracts
 
 pragma solidity ^0.8.0;

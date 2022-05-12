@@ -25,14 +25,15 @@ import { GalleryArtworkListMetaLoad } from './GalleryArtworkListMetaLoad';
 export interface Props {
     ipfs: any,
     id: any,
+    count: any,
     visibility: any,
     galleryOwner: any,
 }
-export const GalleryArtworkList = ({ ipfs, id, visibility, galleryOwner }: Props) => {
+export const GalleryArtworkList = ({ ipfs, id, count, visibility, galleryOwner }: Props) => {
 
     const { account } = useEthers()
     const address = id
-    const artWorkMeta = ArtWorkViewById(address) || { artist: "", title: "", medium: "", year: { _hex: '' }, mediaDataPackURI: null }
+    const artWorkMeta = ArtWorkViewById(address) || { artist: "", title: "", medium: "", year: "", mediaDataPackURI: null }
     const artWorkPrice = ArtWorkViewPriceById(address) || {}
     const artWorkForSale = ArtWorkViewForSaleById(address)
     const artWorkTokenBalance = ArtWorkViewTokenBalanceById(address)
@@ -44,11 +45,12 @@ export const GalleryArtworkList = ({ ipfs, id, visibility, galleryOwner }: Props
     const artWorkSharePrice = ArtWorkGetSharePrice(address)
     const artWorkContractPrice = ArtWorkGetContractPrice(address)
     const { state: APPSTATE, setMainSection } = useSolidStateContexts()
+    const cardId = "artwork_" + count
     return (
         <>
             {(visibility || account === galleryOwner || account === artWorkOwner[artWorkOwner.length - 1]) &&
                 <Grid item xs={12} sm={6} md={4}>
-                    <Card sx={{ maxWidth: 390, mt: 2 }} onClick={() => {
+                    <Card id={cardId} sx={{ maxWidth: 390, mt: 2 }} onClick={() => {
                         setMainSection({ section: "artwork", value: id, title: artWorkMeta.title })
                     }}>
                         <CardActionArea>
@@ -63,7 +65,7 @@ export const GalleryArtworkList = ({ ipfs, id, visibility, galleryOwner }: Props
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
                                         <div><small>{artWorkMeta.artist}</small></div>
-                                        <div><small>{artWorkMeta.medium}, {Number(artWorkMeta.year)}</small></div>
+                                        <div><small>{artWorkMeta.medium}, {artWorkMeta.year}</small></div>
                                         <div><small>Share Name : {artWorkTokenName}</small></div>
                                         <div><small>Symbol : {artWorkTokenSymbol}</small></div>
                                         <div><small>{Number(artWorkTokenBalance)} of {Number(artWorkTotalSupply)} Shares Available</small></div>

@@ -56,7 +56,7 @@ export const GalleryArtWorkItem = ({ address, visibility, galleryOwner }: ArtWor
 
     const { state: APPSTATE, setMainSection, setArtWorkAddress } = useSolidStateContexts()
     // GET HOOKS
-    const artWorkMeta = ArtWorkViewById(address) || { artist: "", title: "", medium: "", year: { _hex: '' }, mediaDataPackURI: null }
+    const artWorkMeta = ArtWorkViewById(address) || { artist: "", title: "", medium: "", year: "", mediaDataPackURI: null }
     const artWorkPrice = ArtWorkViewPriceById(address) || {}
     const artWorkForSale = ArtWorkViewForSaleById(address)
     const artWorkTokenBalance = ArtWorkViewTokenBalanceById(address)
@@ -138,10 +138,10 @@ export const GalleryArtWorkItem = ({ address, visibility, galleryOwner }: ArtWor
 
                             <Paper elevation={1} sx={{ p: 2, mb: .5 }}>
                                 {artWorkMeta.title != "" ? (<>
-                                    <div><strong>{artWorkMeta.title}</strong></div>
+                                    <Grid xs={12} sx={{ mb: 1 }}><big><strong>{artWorkMeta.title}</strong></big></Grid>
 
                                     <div><small>{artWorkMeta.artist}</small></div>
-                                    <div><small>{artWorkMeta.medium}, {Number(artWorkMeta.year)}</small></div>
+                                    <div><small>{artWorkMeta.medium}, {artWorkMeta.year}</small></div>
 
 
                                     <div><small>{Number(artWorkPrice) / 1e18} ETH</small></div>

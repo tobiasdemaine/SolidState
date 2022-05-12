@@ -8,11 +8,12 @@ export interface CollectionProps {
 }
 export const CollectionsOverview = ({ ipfs, id, title }: CollectionProps) => {
     const { state: APPSTATE, setMainSection } = useSolidStateContexts()
+    const cardId = "Collection_" + id
     return (
         <>
 
             <Grid item xs={12} sm={6} md={4}>
-                <Card sx={{ maxWidth: 390, mt: 2 }} onClick={() => {
+                <Card sx={{ maxWidth: 390, mt: 2 }} id={cardId} onClick={() => {
                     setMainSection({ section: "collection", value: id, title: title })
                 }}>
                     <CardActionArea>

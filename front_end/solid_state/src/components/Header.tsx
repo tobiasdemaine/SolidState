@@ -33,6 +33,7 @@ export const Header = ({ ipfs }: HeaderProps) => {
     const dashHandleClose = () => {
         setDashAnchorEl(null);
     };
+
     return (
         <>
             <Box sx={{ flexGrow: 1 }}>
@@ -44,7 +45,12 @@ export const Header = ({ ipfs }: HeaderProps) => {
                     }
                     <Toolbar>
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                            {APPSTATE.mainsection.title}
+                            {APPSTATE.mainsection.section == "artwork" ? (
+                                <>Artwork</>
+                            ) : (
+                                <> {APPSTATE.mainsection.title}</>
+                            )}
+
                         </Typography>
 
                         {isConnected ? (
@@ -91,7 +97,7 @@ export const Header = ({ ipfs }: HeaderProps) => {
                         ) : (
                             <>
 
-                                <Button color="inherit"
+                                <Button id="connectButton" color="inherit"
                                     onClick={() => activateBrowserWallet()}>
                                     Connect Wallet
                                 </Button>
@@ -123,7 +129,7 @@ export const Header = ({ ipfs }: HeaderProps) => {
                                     IPFS
                                 </Typography>
 
-                                <CheckCircleIcon color="success" fontSize="small" sx={{ mr: 2 }} />
+                                <CheckCircleIcon color="success" id="ipfsON" fontSize="small" sx={{ mr: 2 }} />
                             </>
                         )
                     }

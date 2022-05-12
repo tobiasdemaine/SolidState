@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: NPOSL-3.0
 
 pragma solidity ^0.8.0;
 pragma abicoder v2;
@@ -10,7 +10,7 @@ contract SolidStateToken is ERC20 {
         string title;
         string artist;
         string medium;
-        uint256 year;
+        string year;
         string dimensions;
         string mediaDataPackURI;
     }
@@ -96,7 +96,7 @@ contract SolidStateToken is ERC20 {
         string memory _artist,
         string memory _medium,
         string memory _dimensions,
-        uint256 _year,
+        string memory _year,
         string memory _mediaDataPackURI
     ) public onlyOwner {
         if (bytes(_title).length != 0) {
@@ -111,7 +111,7 @@ contract SolidStateToken is ERC20 {
         if (bytes(_dimensions).length != 0) {
             artworkmeta.dimensions = _dimensions;
         }
-        if (_year != 0) {
+        if (bytes(_year).length != 0) {
             artworkmeta.year = _year;
         }
         if (bytes(_mediaDataPackURI).length != 0) {

@@ -13,7 +13,7 @@ export interface CollectionProps {
 export const CollectionsOverviewArtwork = ({ ipfs, id, title }: CollectionProps) => {
     const artWorks = CollectionViewAll(id) || [[]]
     var workCount = 0
-    for (var i = 0; i < artWorks.length; i++) {
+    for (var i = 0; i < artWorks[0].length; i++) {
         if (artWorks[0].length >= 1) {
             workCount++
         }

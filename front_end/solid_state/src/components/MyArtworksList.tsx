@@ -80,7 +80,7 @@ export const MyArtworksList = ({ ipfs, id, data, setProps }: Props) => {
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
                                         <div><small>{artWorkMeta.artist}</small></div>
-                                        <div><small>{artWorkMeta.medium}, {Number(artWorkMeta.year)}</small></div>
+                                        <div><small>{artWorkMeta.medium}, {artWorkMeta.year}</small></div>
                                         <div><small>Share Name : {artWorkTokenName}</small></div>
                                         <div><small>Symbol : {artWorkTokenSymbol}</small></div>
                                         <div><small>{Number(artWorkTokenBalance)} of {Number(artWorkTotalSupply)} Shares Available</small></div>

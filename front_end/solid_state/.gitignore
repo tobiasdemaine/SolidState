@@ -5,6 +5,8 @@
 /.pnp
 .pnp.js
 
+/chain-info
+
 # testing
 /coverage
 /tests/e2e/screenshots

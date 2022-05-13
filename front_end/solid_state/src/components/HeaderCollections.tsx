@@ -53,7 +53,7 @@ export const HeaderCollections = ({ ipfs }: HeaderCollectionProps) => {
                 }}
             >
                 {galleryCollections.map((data: any, index: any) => (
-                    <MenuItem onClick={() => {
+                    <MenuItem key={index} onClick={() => {
                         collectionHandleClose()
                         setMainSection({ section: "collection", value: index, title: data })
                     }}>{data} </MenuItem>

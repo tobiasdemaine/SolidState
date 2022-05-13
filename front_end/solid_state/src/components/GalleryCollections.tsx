@@ -23,9 +23,8 @@ export const GalleryCollections = ({ collection, ipfs }: GalleryCollectionProps)
         <>
             <Grid container spacing={1} alignItems="stretch">
                 {_artwork.map((data: any, index: any) => (
-                    <>
-                        <GalleryArtworkList ipfs={ipfs} id={data.address} count={index} visibility={data.visibility} galleryOwner={owners[owners.length - 1]} />
-                    </>
+                    <GalleryArtworkList key={index} ipfs={ipfs} id={data.address} count={index} visibility={data.visibility} galleryOwner={owners[owners.length - 1]} />
+
                 ))}
             </Grid>
 

@@ -78,16 +78,16 @@ export const MyArtworksList = ({ ipfs, id, data, setProps }: Props) => {
                                     <Typography gutterBottom variant="h5" component="div">
                                         {artWorkMeta.title}
                                     </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        <div><small>{artWorkMeta.artist}</small></div>
-                                        <div><small>{artWorkMeta.medium}, {artWorkMeta.year}</small></div>
-                                        <div><small>Share Name : {artWorkTokenName}</small></div>
-                                        <div><small>Symbol : {artWorkTokenSymbol}</small></div>
-                                        <div><small>{Number(artWorkTokenBalance)} of {Number(artWorkTotalSupply)} Shares Available</small></div>
-                                        <div><small>{address}</small></div>
-                                        <div><small>Artwork Price : {Number(artWorkPrice) / 1e18} ETH</small></div>
-                                        <div><small>Share Price : {(Number(artWorkPrice) / Number(artWorkTotalSupply) / 1e18)}  ETH</small></div>
-                                    </Typography>
+
+                                    <div> <Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">{artWorkMeta.artist}</Typography></div>
+                                    <div> <Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">{artWorkMeta.medium}, {artWorkMeta.year}</Typography></div>
+                                    <div> <Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">Share Name : {artWorkTokenName}</Typography></div>
+                                    <div> <Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">Symbol : {artWorkTokenSymbol}</Typography></div>
+                                    <div> <Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">{Number(artWorkTokenBalance)} of {Number(artWorkTotalSupply)} Shares Available</Typography></div>
+                                    <div> <Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">{address}</Typography></div>
+                                    <div> <Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">Artwork Price : {Number(artWorkPrice) / 1e18} ETH</Typography></div>
+                                    <div> <Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">Share Price : {(Number(artWorkPrice) / Number(artWorkTotalSupply) / 1e18)}  ETH</Typography></div>
+
                                 </>) : (
                                     <Typography gutterBottom variant="h5" component="div">
                                         Loading

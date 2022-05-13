@@ -17,7 +17,6 @@ export const MyArtworks = ({ ipfs }: Props) => {
         _artwork.push({ address: artWorks[0][i], visibility: artWorks[1][i] })
     }
     const myData = new Array()
-    //  console.log(APPSTATE)
     const [artworkData, setArtworkData] = useState(myData)
     const [Price, setPrice] = useState(0)
     const setProps = (data: any) => {
@@ -25,7 +24,6 @@ export const MyArtworks = ({ ipfs }: Props) => {
         setArtworkData(myData)
     }
     useEffect(() => {
-        console.log(artworkData)
         var p = 0
         for (i in artworkData) {
             p += Number(artworkData[i].value.price._hex)
@@ -40,9 +38,9 @@ export const MyArtworks = ({ ipfs }: Props) => {
             </Typography>
             <Grid container spacing={1} alignItems="stretch">
                 {_artwork.map((data: any, index: any) => (
-                    <>
+                    <React.Fragment key={index}>
                         <MyArtworksList ipfs={ipfs} id={data.address} data={artworkData} setProps={setProps} />
-                    </>
+                    </React.Fragment>
                 ))}
             </Grid>
 

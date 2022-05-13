@@ -138,7 +138,7 @@ export const GalleryArtWorkItem = ({ address, visibility, galleryOwner }: ArtWor
 
                             <Paper elevation={1} sx={{ p: 2, mb: .5 }}>
                                 {artWorkMeta.title != "" ? (<>
-                                    <Grid xs={12} sx={{ mb: 1 }}><big><strong>{artWorkMeta.title}</strong></big></Grid>
+                                    <Grid item xs={12} sx={{ mb: 1 }}><big><strong>{artWorkMeta.title}</strong></big></Grid>
 
                                     <div><small>{artWorkMeta.artist}</small></div>
                                     <div><small>{artWorkMeta.medium}, {artWorkMeta.year}</small></div>
@@ -159,12 +159,12 @@ export const GalleryArtWorkItem = ({ address, visibility, galleryOwner }: ArtWor
                             <Paper sx={{ p: 2, mb: 2 }} >
                                 {artWorkMeta.title != "" ? (<>
                                     <Grid container spacing={2} sx={{ p: 2 }} alignItems="stretch">
-                                        <Grid xs={12} sx={{ mb: 1 }}><strong>Token/Share</strong></Grid>
-                                        <Grid xs={3}><small>Name</small></Grid><Grid xs={9}><small><strong>{artWorkTokenName}</strong></small></Grid>
-                                        <Grid xs={3}><small>Symbol</small></Grid><Grid xs={9}><small><strong>{artWorkTokenSymbol}</strong></small></Grid>
-                                        <Grid xs={3}><small>Price</small></Grid><Grid xs={9}><small><strong>{Number(artWorkSharePrice) / 1e18}</strong></small></Grid>
-                                        <Grid xs={3}><small>Shares</small></Grid><Grid xs={9}><small><strong>{Number(artWorkTotalSupply)}</strong></small></Grid>
-                                        <Grid xs={12} sx={{ mt: 1 }} >
+                                        <Grid item xs={12} sx={{ mb: 1 }}><strong>Token/Share</strong></Grid>
+                                        <Grid item xs={3}><small>Name</small></Grid><Grid item xs={9}><small><strong>{artWorkTokenName}</strong></small></Grid>
+                                        <Grid item xs={3}><small>Symbol</small></Grid><Grid item xs={9}><small><strong>{artWorkTokenSymbol}</strong></small></Grid>
+                                        <Grid item xs={3}><small>Price</small></Grid><Grid item xs={9}><small><strong>{Number(artWorkSharePrice) / 1e18}</strong></small></Grid>
+                                        <Grid item xs={3}><small>Shares</small></Grid><Grid item xs={9}><small><strong>{Number(artWorkTotalSupply)}</strong></small></Grid>
+                                        <Grid item xs={12} sx={{ mt: 1 }} >
                                             <small>
                                                 <Link target="_blank" href={ethscanAddress}>{address}</Link>
                                             </small>

@@ -92,7 +92,6 @@ export const ArtworkShareTradeBuy = ({ artworkAddress }: Props) => {
                         fullWidth={true}
 
                         variant="filled"
-                        defaultValue="0"
                         value={buyShareQty}
                         onChange={event => {
                             setBuyShareQty(Number(event?.target.value))
@@ -121,7 +120,6 @@ export const ArtworkShareTradeBuy = ({ artworkAddress }: Props) => {
                             readOnly: true,
                         }}
                         variant="filled"
-                        defaultValue="0"
                         value={buyShareETHTotal}
                     />
                 </Grid>
@@ -250,7 +248,6 @@ export const ArtworkShareTradeSell = ({ artworkAddress }: Props) => {
                                 type="number"
                                 fullWidth={true}
                                 variant="filled"
-                                defaultValue="0"
                                 value={sellShareQty}
                                 onChange={event => {
                                     setSellShareQty(Number(event?.target.value))
@@ -277,7 +274,6 @@ export const ArtworkShareTradeSell = ({ artworkAddress }: Props) => {
                                 InputProps={{
                                     readOnly: true,
                                 }}
-                                defaultValue="0"
                                 value={sellShareETHTotal}
                                 variant="filled"
                             />
@@ -392,41 +388,38 @@ export const ArtworkShareBuyOrders = ({ artworkAddress }: Props) => {
                         </Item>
                     </Grid>
                     {
-                        buyOrders[0].map((data: any, index: any) => (
-                            <>
+                        buyOrders[0].map((data: any, index: any) => {
+                            buyOrders[4][index] == 0 &&
+                                <React.Fragment key={index}>  <Grid item xs={1}>
+                                    <Item>
+                                        {Number(buyOrders[5][index])}
+                                    </Item>
+                                </Grid>
+                                    <Grid item xs={4}>
+                                        <Item>
+                                            {Number(buyOrders[2][index]) / (10 ** 18)}
+                                        </Item>
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        <Item>
+                                            {Number(buyOrders[1][index])}
+                                        </Item>
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <Item>
+                                            <Button style={{ fontSize: '10px', padding: 0.5 }} variant="contained" size="small" onClick={() => {
+                                                setBackDropOpen(true)
+                                                cancelBuyOrder(Number(buyOrders[5][index]))
 
-                                {buyOrders[4][index] == 0 &&
-                                    <>
+                                            }}>
+                                                Cancel
+                                            </Button>
+                                        </Item>
+                                    </Grid>
+                                </React.Fragment>
+                        }
 
-                                        <Grid item xs={1}>
-                                            <Item>
-                                                {Number(buyOrders[5][index])}
-                                            </Item>
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                            <Item>
-                                                {Number(buyOrders[2][index]) / (10 ** 18)}
-                                            </Item>
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                            <Item>
-                                                {Number(buyOrders[1][index])}
-                                            </Item>
-                                        </Grid>
-                                        <Grid item xs={3}>
-                                            <Item>
-                                                <Button style={{ fontSize: '10px', padding: 0.5 }} variant="contained" size="small" onClick={() => {
-                                                    setBackDropOpen(true)
-                                                    cancelBuyOrder(Number(buyOrders[5][index]))
-
-                                                }}>
-                                                    Cancel
-                                                </Button>
-                                            </Item>
-                                        </Grid>
-                                    </>}
-                            </>
-                        ))
+                        )
                     }
                 </Grid>
                     <Backdrop
@@ -524,41 +517,37 @@ export const ArtworkShareSellOrders = ({ artworkAddress }: Props) => {
                         </Item>
                     </Grid>
                     {
-                        sellOrders[0].map((data: any, index: any) => (
-                            <>
+                        sellOrders[0].map((data: any, index: any) => {
+                            sellOrders[4][index] == 0 &&
+                                <React.Fragment key={index}>
+                                    <Grid item xs={1}>
+                                        <Item>
+                                            {Number(sellOrders[5][index])}
+                                        </Item>
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        <Item>
+                                            {Number(sellOrders[2][index]) / (10 ** 18)}
+                                        </Item>
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        <Item>
+                                            {Number(sellOrders[3][index])}
+                                        </Item>
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <Item>
+                                            <Button style={{ fontSize: '10px', padding: 0.5 }} variant="contained" size="small" onClick={() => {
+                                                setBackDropOpen(true)
+                                                cancelSellOrder(Number(sellOrders[5][index]))
 
-                                {sellOrders[4][index] == 0 &&
-                                    <>
-
-                                        <Grid item xs={1}>
-                                            <Item>
-                                                {Number(sellOrders[5][index])}
-                                            </Item>
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                            <Item>
-                                                {Number(sellOrders[2][index]) / (10 ** 18)}
-                                            </Item>
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                            <Item>
-                                                {Number(sellOrders[3][index])}
-                                            </Item>
-                                        </Grid>
-                                        <Grid item xs={3}>
-                                            <Item>
-                                                <Button style={{ fontSize: '10px', padding: 0.5 }} variant="contained" size="small" onClick={() => {
-                                                    setBackDropOpen(true)
-                                                    cancelSellOrder(Number(sellOrders[5][index]))
-
-                                                }}>
-                                                    Cancel
-                                                </Button>
-                                            </Item>
-                                        </Grid>
-                                    </>}
-                            </>
-                        ))
+                                            }}>
+                                                Cancel
+                                            </Button>
+                                        </Item>
+                                    </Grid>
+                                </React.Fragment>
+                        })
                     }
                 </Grid>
                     <Backdrop
@@ -656,9 +645,7 @@ export const ArtworkShareAllSellOrders = ({ artworkAddress }: Props) => {
 
                     {
                         sellOrders[0].map((data: any, index: any) => (
-                            <>
-
-
+                            <React.Fragment key={index}>
                                 <Grid item xs={3}>
                                     <Item>
                                         {Number(sellOrders[1][index]) / 10 ** 18}
@@ -718,7 +705,7 @@ export const ArtworkShareAllSellOrders = ({ artworkAddress }: Props) => {
                                     <CircularProgress color="inherit" />
                                 </Backdrop>
 
-                            </>
+                            </React.Fragment>
                         ))
                     }
                 </Grid>
@@ -816,10 +803,8 @@ export const ArtworkShareAllBuyOrders = ({ artworkAddress }: Props) => {
 
                     {
                         buyOrders[0].map((data: any, index: any) => (
-                            <>
-
-
-                                <Grid item xs={3}>
+                            <React.Fragment key={index}>
+                                < Grid item xs={3} >
                                     <Item>
                                         {Number(buyOrders[1][index]) / 10 ** 18}
                                     </Item>
@@ -871,7 +856,7 @@ export const ArtworkShareAllBuyOrders = ({ artworkAddress }: Props) => {
                                 >
                                     <CircularProgress color="inherit" />
                                 </Backdrop>
-                            </>
+                            </React.Fragment>
                         ))
                     }
                 </Grid>
@@ -948,61 +933,60 @@ export const ArtworkShareTradeHistory = ({ artworkAddress }: Props) => {
                         </Item>
                     </Grid>
                     {
-                        events[0].map((data: any, index: any) => (
-                            <>
-                                {events[3][index] == account &&
-                                    <>
-                                        <Grid item xs={3}>
-                                            <Item>
-                                                <small>{(moment(events[2][index])).format('DD-MM-YYYY')}</small>
-                                            </Item>
-                                        </Grid>
-                                        <Grid item xs={3}>
-                                            <Item>
-                                                <small>{Number(events[0][index]) / 1e18}</small>
-                                            </Item>
-                                        </Grid>
-                                        <Grid item xs={3}>
-                                            <Item>
-                                                <small>{Number(events[1][index])}</small>
-                                            </Item>
-                                        </Grid>
-                                        <Grid item xs={3}>
-                                            <Item>
-                                                <small>Sell</small>
-                                            </Item>
-                                        </Grid>
-                                    </>
+                        events[0].map((data: any, index: any) => {
+                            events[3][index] == account &&
+                                <React.Fragment key={index}>
+                                    <Grid item xs={3}>
+                                        <Item>
+                                            <small>{(moment(events[2][index])).format('DD-MM-YYYY')}</small>
+                                        </Item>
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <Item>
+                                            <small>{Number(events[0][index]) / 1e18}</small>
+                                        </Item>
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <Item>
+                                            <small>{Number(events[1][index])}</small>
+                                        </Item>
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <Item>
+                                            <small>Sell</small>
+                                        </Item>
+                                    </Grid>
+                                </React.Fragment>
 
-                                }
-                                {events[4][index] == account &&
-                                    <>
-                                        <Grid item xs={3}>
-                                            <Item>
-                                                <small>{(moment(events[2][index])).format('DD-MM-YYYY')}</small>
-                                            </Item>
-                                        </Grid>
-                                        <Grid item xs={3}>
-                                            <Item>
-                                                <small>{Number(events[0][index]) / (1e18)}</small>
-                                            </Item>
-                                        </Grid>
-                                        <Grid item xs={3}>
-                                            <Item>
-                                                <small>{Number(events[1][index])}</small>
-                                            </Item>
-                                        </Grid>
-                                        <Grid item xs={3}>
-                                            <Item>
-                                                <small>Buy</small>
-                                            </Item>
-                                        </Grid>
-                                    </>
 
-                                }
+                            events[4][index] == account &&
+                                <React.Fragment key={index}>
+                                    <Grid item xs={3}>
+                                        <Item>
+                                            <small>{(moment(events[2][index])).format('DD-MM-YYYY')}</small>
+                                        </Item>
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <Item>
+                                            <small>{Number(events[0][index]) / (1e18)}</small>
+                                        </Item>
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <Item>
+                                            <small>{Number(events[1][index])}</small>
+                                        </Item>
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <Item>
+                                            <small>Buy</small>
+                                        </Item>
+                                    </Grid>
+                                </React.Fragment>
 
-                            </>
-                        ))
+                        }
+
+
+                        )
                     }
                 </Grid>
             ) : (

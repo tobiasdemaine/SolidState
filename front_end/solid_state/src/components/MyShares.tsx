@@ -70,9 +70,9 @@ export const MyShares = ({ ipfs }: Props) => {
                 </Grid>
 
                 {_artwork.map((data: any, index: any) => (
-                    <>
+                    <React.Fragment key={index}>
                         <MySharesList ipfs={ipfs} id={data.address} data={artworkData} setProps={setProps} />
-                    </>
+                    </React.Fragment>
                 ))}
             </Grid>
 

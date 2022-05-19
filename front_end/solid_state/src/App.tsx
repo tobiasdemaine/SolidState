@@ -6,7 +6,7 @@ import Container from "@mui/material/Container"
 import { Main } from "./Main"
 import { AppStateProvider } from "./contexts/SolidStateContext"
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { useIpfsConnect } from "./hooks/ipfs"
+import { useIpfsConnect, useIpfsWebConnect } from "./hooks/ipfs"
 
 const darkTheme = createTheme({
   palette: {
@@ -15,7 +15,7 @@ const darkTheme = createTheme({
 });
 function App() {
 
-  let { ipfs } = useIpfsConnect()
+  let { ipfs } = useIpfsWebConnect() //useIpfsConnect()
   useEffect(() => {
     if (!ipfs) return
 

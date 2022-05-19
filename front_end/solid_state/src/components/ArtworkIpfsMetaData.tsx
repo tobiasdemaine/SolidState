@@ -1,5 +1,5 @@
 import { LinearProgress, ImageListItem, ImageListItemBar } from "@mui/material"
-import { useIpfsRetrieve, useIpfsRetrieveAsChunks, useIpfsRetrieveBinary } from "../hooks/ipfs"
+import { useIpfsRetrieve, useIpfsWebRetrieve, useIpfsRetrieveAsChunks, useIpfsRetrieveBinary } from "../hooks/ipfs"
 import useSolidStateContexts from "../hooks/useSolidStateContext"
 import React, { useState, useEffect, useRef } from "react";
 
@@ -14,6 +14,7 @@ export interface ArtWorkMetaDataProps {
 export const ArtWorkIpfsMetaData = ({ IpfsHash, description, mime }: ArtWorkMetaDataProps) => {
     const { state: APPSTATE, setMainSection, setArtWorkAddress } = useSolidStateContexts()
     let { _data, _blob, isIpfsFileReady } = useIpfsRetrieve(APPSTATE.ipfs, IpfsHash)
+
     var blobString: string = String(_blob)
 
     return (

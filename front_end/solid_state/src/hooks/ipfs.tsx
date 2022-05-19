@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { create } from 'ipfs'
 import { useEffect, useState } from 'react'
 
@@ -32,6 +33,42 @@ export const useIpfsConnect = () => {
     return { ipfs, isIpfsReady }
 }
 
+export const useIpfsWebConnect = () => {
+
+    const ipfs = "//ipfs.tobiasdemaine.com/ipfs/"
+    const [isIpfsReady, setIpfsReady] = useState(true)
+    return { ipfs, isIpfsReady }
+}
+
+export const useIpfsWebRetrieve = (ifps: any, id: any) => {
+    const [isIpfsFileReady, setIpfsFileReady] = useState(false)
+    const [_data, set_data] = useState('')
+    let data = ''
+    const content: any = []
+    useEffect(() => {
+        let localData = localStorage.getItem(id)
+        if (localData == null) {
+            getDataFromIpfs()
+        } else {
+            set_data(localData)
+            setIpfsFileReady(true)
+        }
+    }, [])
+
+    async function getDataFromIpfs() {
+        try {
+            const file = await axios(ipfs + id)
+            set_data(file.data)
+            setIpfsFileReady(true)
+        } catch (error) {
+            console.log(error)
+            return '';
+        }
+    }
+
+    return { _data, isIpfsFileReady }
+}
+
 export const useIpfsRetrieve = (ifps: any, id: any) => {
     const [isIpfsFileReady, setIpfsFileReady] = useState(false)
     const [_data, set_data] = useState('')
@@ -55,7 +92,6 @@ export const useIpfsRetrieve = (ifps: any, id: any) => {
             const stream = ifps.cat(id)
             for await (const chunk of stream) {
                 data += chunk.toString()
-
                 content.push(chunk);
 
             }
@@ -63,10 +99,10 @@ export const useIpfsRetrieve = (ifps: any, id: any) => {
             let _content = concat(content) || []
             set_data(data)
             localStorage.setItem(id, data)
-            // var bytes = new Uint8Array(_content)
-            // var blobString = 'data:image/png;base64,' + encode(bytes)
+            var bytes = new Uint8Array(_content)
+            var blobString = 'data:image/png;base64,' + encode(bytes)
 
-            // set_blob(blobString)
+            set_blob(blobString)
 
         } catch (error) {
             console.log(error)
@@ -199,7 +235,7 @@ function concat(arrays: any) {
     return result;
 }
 
-export default { useIpfsConnect, useIpfsRetrieve, useIpfsRetrieveBinary }
+export default { useIpfsConnect, useIpfsRetrieve, useIpfsRetrieveBinary, useIpfsWebRetrieve }
 
 
 function encode(input: any) {

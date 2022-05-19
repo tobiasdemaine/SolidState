@@ -1,5 +1,5 @@
 import { ImageList } from "@mui/material"
-import { useIpfsRetrieve } from "../hooks/ipfs"
+import { useIpfsRetrieve, useIpfsWebRetrieve } from "../hooks/ipfs"
 import useSolidStateContexts from "../hooks/useSolidStateContext"
 import { ArtWorkIpfsMetaData } from "./ArtworkIpfsMetaData"
 
@@ -10,7 +10,8 @@ export interface ArtWorkMetaDataProps {
 
 export const GalleryArtworkMetaData = ({ IpfsHash, description }: ArtWorkMetaDataProps) => {
     const { state: APPSTATE, setMainSection, setArtWorkAddress } = useSolidStateContexts()
-    let { _data, _blob, isIpfsFileReady } = useIpfsRetrieve(APPSTATE.ipfs, IpfsHash)
+    //let { _data, _blob, isIpfsFileReady } = useIpfsRetrieve(APPSTATE.ipfs, IpfsHash)
+    let { _data, isIpfsFileReady } = useIpfsWebRetrieve(APPSTATE.ipfs, IpfsHash)
 
     var metaDataPack = { "images": [], "videos": [] }
     if (isIpfsFileReady && _data != '') {

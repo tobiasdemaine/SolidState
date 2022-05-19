@@ -44,13 +44,14 @@ import {
 
 
 export interface ArtWorkAddressProps {
+    ipfs: any,
     address: any,
     visibility: any,
     galleryOwner: any
 }
 
 
-export const GalleryArtWorkItem = ({ address, visibility, galleryOwner }: ArtWorkAddressProps) => {
+export const GalleryArtWorkItem = ({ ipfs, address, visibility, galleryOwner }: ArtWorkAddressProps) => {
     const { account } = useEthers()
     const { notifications } = useNotifications()
 
@@ -129,7 +130,7 @@ export const GalleryArtWorkItem = ({ address, visibility, galleryOwner }: ArtWor
                         <Grid item xs={12} md={6} lg={4}>
                             {artWorkMeta.mediaDataPackURI !== null &&
                                 <>
-                                    <ArtworkMediaCarousel IpfsHash={artWorkMeta.mediaDataPackURI} description="JSON FILE" />
+                                    <ArtworkMediaCarousel ipfs={ipfs} ipfsHash={artWorkMeta.mediaDataPackURI} description="JSON FILE" />
 
                                 </>
                             }

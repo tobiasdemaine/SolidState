@@ -6,15 +6,15 @@ import { useState, useEffect, useRef } from "react";
 
 
 export interface ArtWorkMetaDataProps {
-    IpfsHash: any,
+    ipfs: any,
+    ipfsHash: any,
     description: any,
     mime: any
 }
 
-export const ArtWorkIpfsMediaBox = ({ IpfsHash, description, mime }: ArtWorkMetaDataProps) => {
+export const ArtWorkIpfsMediaBox = ({ ipfs, ipfsHash, description, mime }: ArtWorkMetaDataProps) => {
     //let { _data, _blob, isIpfsFileReady } = useIpfsRetrieve(APPSTATE.ipfs, IpfsHash)
-    var blobString: string = "//ipfs.tobiasdemaine.com/ipfs/" + IpfsHash //String(_blob)
-
+    var blobString: string = ipfs + ipfsHash//String(_blob)
     return (
         <>
             {blobString != "" ? (
@@ -72,7 +72,7 @@ export const ArtWorkIpfsMediaBox = ({ IpfsHash, description, mime }: ArtWorkMeta
 
 }
 
-export const ArtWorkIpfsMetaDataVideo = ({ IpfsHash, description, mime }: ArtWorkMetaDataProps) => {
+export const ArtWorkIpfsMetaDataVideo = ({ ipfsHash, description, mime }: ArtWorkMetaDataProps) => {
 
 
     const { state: APPSTATE, setMainSection, setArtWorkAddress } = useSolidStateContexts()
@@ -80,11 +80,9 @@ export const ArtWorkIpfsMetaDataVideo = ({ IpfsHash, description, mime }: ArtWor
     let tmp: any = {}
     const [mediaSource] = useState(new MediaSource())
     const _videoRef = useRef(null)
-    console.log(IpfsHash)
-    console.log(document.getElementById(IpfsHash))
-    const videoRef = useRef(document.getElementById(IpfsHash) as HTMLVideoElement)
+    const videoRef = useRef(document.getElementById(ipfsHash) as HTMLVideoElement)
     console.log(videoRef)
-    let { _data, _blob, isIpfsFileReady, startRetrieve } = useIpfsRetrieveAsChunks(APPSTATE.ipfs, IpfsHash)
+    let { _data, _blob, isIpfsFileReady, startRetrieve } = useIpfsRetrieveAsChunks(APPSTATE.ipfs, ipfsHash)
 
     useEffect(() => {
 
@@ -133,7 +131,7 @@ export const ArtWorkIpfsMetaDataVideo = ({ IpfsHash, description, mime }: ArtWor
 
     return (
         <>
-            <video ref={_videoRef} id={IpfsHash} controls></video>
+            <video ref={_videoRef} id={ipfsHash} controls></video>
         </>
     )
 

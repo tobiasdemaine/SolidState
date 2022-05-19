@@ -18,7 +18,6 @@ export const Gallery = ({ ipfs, address }: Props) => {
 
     const artWorks = GalleryViewAll() || []
 
-
     var data = { address: null, visibility: false }
     for (var i in artWorks[0]) {
         if (artWorks[0][i] == address) {
@@ -28,7 +27,7 @@ export const Gallery = ({ ipfs, address }: Props) => {
 
     return (<>
         {data.address != null &&
-            <GalleryArtWorkItem address={data.address} visibility={data.visibility} galleryOwner={owners[owners.length - 1]} />
+            <GalleryArtWorkItem ipfs={ipfs} address={data.address} visibility={data.visibility} galleryOwner={owners[owners.length - 1]} />
         }
     </>)
 

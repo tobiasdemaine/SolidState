@@ -24,7 +24,9 @@ export const Main = ({ ipfs }: MainProps) => {
 
 
         if (Boolean(ipfs)) {
+
             setIpfs(ipfs)
+
         }
     }, [ipfs])
     useEffect(() => {

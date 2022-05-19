@@ -8,12 +8,13 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import { useIpfsRetrieve } from "../hooks/ipfs"
+import { useIpfsRetrieve, useIpfsWebRetrieve } from "../hooks/ipfs"
 import useSolidStateContexts from "../hooks/useSolidStateContext"
 import { ArtWorkIpfsMediaBox } from "./ArtworkIpfsMediaBox"
 
 export interface ArtWorkMetaDataProps {
-    IpfsHash: any,
+    ipfs: any,
+    ipfsHash: any,
     description: any
 }
 
@@ -38,9 +39,10 @@ type Media = {
     [key: string]: string;
 };
 
-export const ArtworkMediaCarousel = ({ IpfsHash, description }: ArtWorkMetaDataProps) => {
+export const ArtworkMediaCarousel = ({ ipfs, ipfsHash, description }: ArtWorkMetaDataProps) => {
     const { state: APPSTATE, setMainSection, setArtWorkAddress } = useSolidStateContexts()
-    let { _data, _blob, isIpfsFileReady } = useIpfsRetrieve(APPSTATE.ipfs, IpfsHash)
+    //let { _data, _blob, isIpfsFileReady } = useIpfsRetrieve(APPSTATE.ipfs, IpfsHash)
+    let { _data, isIpfsFileReady } = useIpfsWebRetrieve(APPSTATE.ipfs, ipfsHash)
 
     const theme = useTheme();
     const [activeStep, setActiveStep] = React.useState(0);
@@ -85,7 +87,7 @@ export const ArtworkMediaCarousel = ({ IpfsHash, description }: ArtWorkMetaDataP
                             {Math.abs(activeStep - index) <= 2 ? (
                                 <>
 
-                                    <ArtWorkIpfsMediaBox IpfsHash={step.IpfsHash} description={step.description} mime="image" />
+                                    <ArtWorkIpfsMediaBox ipfs={ipfs} ipfsHash={step.IpfsHash} description={step.description} mime="image" />
                                 </>
                             ) : null}
                         </div>

@@ -47,7 +47,7 @@ export const Main = ({ ipfs }: MainProps) => {
                 }
                 if (section.length == 4) {
                     if (section[1] == "collection") {
-                        setMainSection({ section: "collection", value: Number(section[2]), title: toCamelCase(section[3]) })
+                        setMainSection({ section: "collection", value: Number(section[2]), title: toFirstCapital(section[3]) })
                     }
                 }
                 if (section.length == 3) {
@@ -139,15 +139,8 @@ export const Main = ({ ipfs }: MainProps) => {
     )
 }
 
-export const toCamelCase = (text: string): string => {
+export const toFirstCapital = (text: string): string => {
 
-    return text
-
-        .replace(/(?:^\w|[A-Z]|\b\w)/g, (leftTrim: string, index: number) =>
-
-            index === 0 ? leftTrim.toLowerCase() : leftTrim.toUpperCase(),
-
-        )
-        .replace(/\s+/g, "")
+    return text.charAt(0).toUpperCase() + text.slice(1)
 
 }

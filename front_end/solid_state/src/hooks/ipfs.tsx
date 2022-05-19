@@ -40,7 +40,13 @@ export const useIpfsRetrieve = (ifps: any, id: any) => {
     let data = ''
     const content: any = []
     useEffect(() => {
-        getDataFromIpfs()
+        let localData = localStorage.getItem(id)
+        if (localData == null) {
+            getDataFromIpfs()
+        } else {
+            set_data(localData)
+            setIpfsFileReady(true)
+        }
     }, [])
 
     async function getDataFromIpfs() {
@@ -56,17 +62,18 @@ export const useIpfsRetrieve = (ifps: any, id: any) => {
             setIpfsFileReady(true)
             let _content = concat(content) || []
             set_data(data)
+            localStorage.setItem(id, data)
+            // var bytes = new Uint8Array(_content)
+            // var blobString = 'data:image/png;base64,' + encode(bytes)
 
-            var bytes = new Uint8Array(_content)
-            var blobString = 'data:image/png;base64,' + encode(bytes)
-
-            set_blob(blobString)
+            // set_blob(blobString)
 
         } catch (error) {
             console.log(error)
             return '';
         }
     }
+
     return { _data, _blob, isIpfsFileReady }
 }
 

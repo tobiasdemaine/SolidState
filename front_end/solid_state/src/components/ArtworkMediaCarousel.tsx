@@ -42,7 +42,7 @@ type Media = {
 export const ArtworkMediaCarousel = ({ ipfs, ipfsHash, description }: ArtWorkMetaDataProps) => {
     const { state: APPSTATE, setMainSection, setArtWorkAddress } = useSolidStateContexts()
     //let { _data, _blob, isIpfsFileReady } = useIpfsRetrieve(APPSTATE.ipfs, IpfsHash)
-    let { _data, isIpfsFileReady } = useIpfsWebRetrieve(APPSTATE.ipfs, ipfsHash)
+    let { _data, isIpfsFileReady } = useIpfsWebRetrieve(ipfs, ipfsHash)
 
     const theme = useTheme();
     const [activeStep, setActiveStep] = React.useState(0);
@@ -63,14 +63,17 @@ export const ArtworkMediaCarousel = ({ ipfs, ipfsHash, description }: ArtWorkMet
     var metaDataPack = { "images": [], "videos": [] }
     var titles = []
     if (isIpfsFileReady && _data != '') {
-        metaDataPack = JSON.parse(_data)
+        if (typeof _data === 'string') {
+            metaDataPack = JSON.parse(_data)
+        } else {
+            metaDataPack = _data
+        }
         maxSteps = metaDataPack.images.length;
         for (var i in metaDataPack.images) {
             const m: Media = metaDataPack.images[i]
             titles.push(m.description)
         }
     }
-
 
     return (
         <>

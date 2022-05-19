@@ -35,14 +35,14 @@ export const useIpfsConnect = () => {
 
 export const useIpfsWebConnect = () => {
 
-    const ipfs = "//ipfs.tobiasdemaine.com/ipfs/"
+    const ipfs = "https://ipfs.tobiasdemaine.com/ipfs/"
     const [isIpfsReady, setIpfsReady] = useState(true)
     return { ipfs, isIpfsReady }
 }
 
-export const useIpfsWebRetrieve = (ifps: any, id: any) => {
+export const useIpfsWebRetrieve = (ipfs: any, id: any) => {
     const [isIpfsFileReady, setIpfsFileReady] = useState(false)
-    const [_data, set_data] = useState('')
+    const [_data, set_data] = useState<any>()
     let data = ''
     const content: any = []
     useEffect(() => {

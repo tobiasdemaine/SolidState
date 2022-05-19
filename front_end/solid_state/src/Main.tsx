@@ -10,6 +10,7 @@ import { MyShares } from './components/MyShares';
 
 
 import { Welcome } from "./components/Welcome"
+
 export interface MainProps {
     ipfs: any,
 
@@ -25,15 +26,62 @@ export const Main = ({ ipfs }: MainProps) => {
         if (Boolean(ipfs)) {
             setIpfs(ipfs)
         }
-    }, [ipfs]);
+    }, [ipfs])
+    useEffect(() => {
+
+        var currentSection = "";
+        setInterval(function () {
+            if (currentSection != window.location.pathname) {
+                currentSection = window.location.pathname
+                const section = window.location.pathname.toLowerCase().split('/')
+                if (section.length == 2) {
+                    if (section[1] == "collections") {
+                        setMainSection({ section: "enter", value: 0, title: "Solid State" })
+                    }
+                    if (section[1] == "myartworks") {
+                        setMainSection({ section: "myArtworks", value: 0, title: "My Artworks" })
+                    }
+                    if (section[1] == "myshares") {
+                        setMainSection({ section: "myShares", value: 0, title: "My Shares" })
+                    }
+                }
+                if (section.length == 4) {
+                    if (section[1] == "collection") {
+                        setMainSection({ section: "collection", value: Number(section[2]), title: toCamelCase(section[3]) })
+                    }
+                }
+                if (section.length == 3) {
+                    if (section[1] == "artwork") {
+                        setMainSection({ section: "artwork", value: Number(section[2]), title: "" })
+                    }
+                }
+            }
+        }, 500);
+    }, [])
+    useEffect(() => {
+        if (APPSTATE.mainsection.section == "enter") {
+            window.history.pushState("", "", '/collections');
+        }
+        if (APPSTATE.mainsection.section == "myArtworks") {
+            window.history.pushState("", "", '/myartworks');
+        }
+        if (APPSTATE.mainsection.section == "myShares") {
+            window.history.pushState("", "", '/myshares');
+        }
+        if (APPSTATE.mainsection.section == "collection") {
+            window.history.pushState("", "", '/collection/' + APPSTATE.mainsection.value + '/' + APPSTATE.mainsection.title);
+        }
+        if (APPSTATE.mainsection.section == "artwork") {
+            window.history.pushState("", "", '/artwork/' + APPSTATE.mainsection.value);
+        }
+
+    }, [APPSTATE.mainsection.section])
     return (
         <>
             {
                 !isConnected &&
                 <>
                     <Welcome />
-
-
                 </>
 
             }
@@ -89,4 +137,17 @@ export const Main = ({ ipfs }: MainProps) => {
             <Grid sx={{ mt: 6 }} />
         </>
     )
+}
+
+export const toCamelCase = (text: string): string => {
+
+    return text
+
+        .replace(/(?:^\w|[A-Z]|\b\w)/g, (leftTrim: string, index: number) =>
+
+            index === 0 ? leftTrim.toLowerCase() : leftTrim.toUpperCase(),
+
+        )
+        .replace(/\s+/g, "")
+
 }

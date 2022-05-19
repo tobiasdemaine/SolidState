@@ -158,7 +158,7 @@ export const GalleryArtWorkItem = ({ address, visibility, galleryOwner }: ArtWor
 
                             <Paper sx={{ p: 2, mb: 2 }} >
                                 {artWorkMeta.title != "" ? (<>
-                                    <Grid container spacing={2} sx={{ p: 2 }} alignItems="stretch">
+                                    <Grid container spacing={0.5} alignItems="stretch">
                                         <Grid item xs={12} sx={{ mb: 1 }}><strong>Token/Share</strong></Grid>
                                         <Grid item xs={3}><small>Name</small></Grid><Grid item xs={9}><small><strong>{artWorkTokenName}</strong></small></Grid>
                                         <Grid item xs={3}><small>Symbol</small></Grid><Grid item xs={9}><small><strong>{artWorkTokenSymbol}</strong></small></Grid>

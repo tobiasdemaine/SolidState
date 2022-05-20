@@ -40,13 +40,13 @@ export const ArtworkShareTradeBuy = ({ artworkAddress }: Props) => {
     const [showForTransactionFail, setShowTransactionFail] = useState(false)
     const [snackbarErrorText, setSnackbarErrorText] = useState("Transaction Failed")
     const [backDropOpen, setBackDropOpen] = React.useState(false);
-    const artWorkSharePrice = ArtWorkGetSharePrice(artworkAddress)
+    const artWorkSharePrice = ArtWorkGetSharePrice(artworkAddress) || 0
 
     useEffect(() => {
         setBuyShareETH(artWorkSharePrice / 1e18)
         setBuyShareETHTotal(artWorkSharePrice / 1e18)
     }, [artWorkSharePrice])
-    // snack bars
+
     const handleCloseSnack = () => {
         setShowTransactionSuccess(false)
         setShowTransactionFail(false)
@@ -174,13 +174,16 @@ export const ArtworkShareTradeSell = ({ artworkAddress }: Props) => {
     const [showForTransactionFail, setShowTransactionFail] = useState(false)
     const [snackbarErrorText, setSnackbarErrorText] = useState("Transaction Failed")
     const [backDropOpen, setBackDropOpen] = React.useState(false);
-    const artWorkSharePrice = ArtWorkGetSharePrice(artworkAddress)
+    const artWorkSharePrice = ArtWorkGetSharePrice(artworkAddress) || 0
+
+
+
 
     useEffect(() => {
         setSellShareETH(artWorkSharePrice / 1e18)
         setSellShareETHTotal(artWorkSharePrice / 1e18)
     }, [artWorkSharePrice])
-    // snack bars
+
     const handleCloseSnack = () => {
         setShowTransactionSuccess(false)
         setShowTransactionFail(false)

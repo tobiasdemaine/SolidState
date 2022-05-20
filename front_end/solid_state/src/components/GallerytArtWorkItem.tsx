@@ -23,8 +23,10 @@ import {
     Paper,
     Alert,
     Grid,
+    Typography
 
 } from "@mui/material"
+
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { ArtworkGalleryVisibility } from "../hooks/ArtWorkGallery"
 import { useEthers, useNotifications } from "@usedapp/core";
@@ -51,10 +53,11 @@ export interface ArtWorkAddressProps {
 }
 
 
+
+
 export const GalleryArtWorkItem = ({ ipfs, address, visibility, galleryOwner }: ArtWorkAddressProps) => {
     const { account } = useEthers()
     const { notifications } = useNotifications()
-    const { state: APPSTATE, setMainSection, setArtWorkAddress } = useSolidStateContexts()
     // GET HOOKS
     const artWorkMeta = ArtWorkViewById(address) || { artist: "", title: "", medium: "", year: "", mediaDataPackURI: null }
     const artWorkPrice = ArtWorkViewPriceById(address) || {}
@@ -108,16 +111,13 @@ export const GalleryArtWorkItem = ({ ipfs, address, visibility, galleryOwner }: 
     // ITERACTION EVENTS
 
     const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-        /*const div = event.currentTarget;
-        const artWorkContractAddress = div.getAttribute('data-contractaddress');
-        setMainSection("artwork")
-        setArtWorkAddress(artWorkContractAddress || "")
-        window.history.replaceState(null, "Solid State", "/" + artWorkContractAddress)*/
+
     }
     const handleCloseSnack = () => {
         setShowTransactionSuccess(false)
         setShowTransactionFail(false)
     }
+
 
     const ethscanAddress = "https://kovan.etherscan.io/address/" + address
     return (
@@ -125,7 +125,7 @@ export const GalleryArtWorkItem = ({ ipfs, address, visibility, galleryOwner }: 
         <>
             {(visibility || account === galleryOwner || account === artWorkOwner[artWorkOwner.length - 1]) &&
                 <div data-contractaddress={address} onClick={handleClick}>
-                    <Grid container spacing={2} sx={{ mb: 4, mt: 1 }} alignItems="stretch">
+                    <Grid container spacing={2} sx={{ mb: 6, mt: 1 }} alignItems="stretch">
                         <Grid item xs={12} md={6} lg={4}>
                             {artWorkMeta.mediaDataPackURI !== null &&
                                 <>
@@ -133,48 +133,76 @@ export const GalleryArtWorkItem = ({ ipfs, address, visibility, galleryOwner }: 
 
                                 </>
                             }
+                        </Grid>
+                        <Grid item xs={12} md={6} lg={8}>
+
+                            <Grid sx={{ p: 2, pt: 0, mb: 2 }} >
+                                {artWorkMeta.title != "" ? (
+                                    <>
+                                        <Grid item xs={12} sx={{ mb: 2 }}>
+                                            <Typography variant="h1" color="text.primary">{artWorkMeta.title}</Typography>
+                                        </Grid>
+
+                                        <Grid item xs={12} sx={{ mb: 1 }}><Typography variant="body1" color="text.secondary">{artWorkMeta.artist}</Typography></Grid>
+                                        <Grid item xs={12} sx={{ mb: 1 }}><Typography variant="body1" color="text.secondary">{artWorkMeta.medium}, {artWorkMeta.year}</Typography></Grid>
+
+
+                                        <Grid item xs={12} sx={{ mb: 1 }}><Typography variant="body1" color="text.secondary">{Number(artWorkPrice) / 1e18} ETH</Typography></Grid>
+
+
+                                        <Grid item xs={12} sx={{ mb: 1 }}><Typography variant="body1" color="text.secondary">{artWorkForSale ? (<> FOR SALE</>) : (<>NOT FOR SALE</>)}</Typography></Grid>
+                                        {artWorkOwner[artWorkOwner.length - 1] === account &&
+
+                                            <Grid item xs={12} sx={{ mb: 1 }}><Typography variant="body1" color="text.secondary">You own This Artwork</Typography></Grid>
+                                        }
+                                    </>) : (<>Loading</>)}
+                            </Grid>
 
 
 
-                            <Paper elevation={1} sx={{ p: 2, mb: .5 }}>
-                                {artWorkMeta.title != "" ? (<>
-                                    <Grid item xs={12} sx={{ mb: 1 }}><big><strong>{artWorkMeta.title}</strong></big></Grid>
-
-                                    <div><small>{artWorkMeta.artist}</small></div>
-                                    <div><small>{artWorkMeta.medium}, {artWorkMeta.year}</small></div>
-
-
-                                    <div><small>{Number(artWorkPrice) / 1e18} ETH</small></div>
-
-
-                                    <div><small>{artWorkForSale ? (<>FOR SALE</>) : (<>NOT FOR SALE</>)}</small></div>
-                                    {artWorkOwner[artWorkOwner.length - 1] === account &&
-                                        <div><small>You own This Artwork</small></div>
-                                    }
-                                </>) : (<>Loading</>)}
-                            </Paper>
-
-
-
-                            <Paper sx={{ p: 2, mb: 2 }} >
+                            <Grid sx={{ p: 2, mb: 2 }}>
                                 {artWorkMeta.title != "" ? (<>
                                     <Grid container spacing={0.5} alignItems="stretch">
-                                        <Grid item xs={12} sx={{ mb: 1 }}><strong>Token/Share</strong></Grid>
-                                        <Grid item xs={3}><small>Name</small></Grid><Grid item xs={9}><small><strong>{artWorkTokenName}</strong></small></Grid>
-                                        <Grid item xs={3}><small>Symbol</small></Grid><Grid item xs={9}><small><strong>{artWorkTokenSymbol}</strong></small></Grid>
-                                        <Grid item xs={3}><small>Price</small></Grid><Grid item xs={9}><small><strong>{Number(artWorkSharePrice) / 1e18}</strong></small></Grid>
-                                        <Grid item xs={3}><small>Shares</small></Grid><Grid item xs={9}><small><strong>{Number(artWorkTotalSupply)}</strong></small></Grid>
+                                        <Grid item xs={12} sx={{ mb: 1 }}>
+                                            <Typography variant="h3" color="text.primary">Token/Share</Typography>
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                            <Typography variant="body2" color="text.secondary">Name</Typography>
+                                        </Grid>
+                                        <Grid item xs={9}>
+                                            <Typography variant="body1" color="text.secondary">
+                                                {artWorkTokenName}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                            <Typography variant="body2" color="text.secondary">Symbol</Typography>
+                                        </Grid>
+                                        <Grid item xs={9}>
+                                            <Typography variant="body1" color="text.secondary">{artWorkTokenSymbol}</Typography>
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                            <Typography variant="body2" color="text.secondary">Price</Typography>
+                                        </Grid>
+                                        <Grid item xs={9}>
+                                            <Typography variant="body1" color="text.secondary">{Number(artWorkSharePrice) / 1e18}</Typography>
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                            <Typography variant="body2" color="text.secondary">Shares</Typography>
+                                        </Grid>
+                                        <Grid item xs={9}>
+                                            <Typography variant="body1" color="text.secondary">{Number(artWorkTotalSupply)}</Typography>
+                                        </Grid>
                                         <Grid item xs={12} sx={{ mt: 1 }} >
-                                            <small>
+                                            <Typography variant="body2" color="text.secondary">
                                                 <Link target="_blank" href={ethscanAddress}>{address}</Link>
-                                            </small>
+                                            </Typography>
                                         </Grid>
                                     </Grid>
                                 </>) : (<>Loading</>)}
-                            </Paper>
-
+                            </Grid>
 
                             <ArtWorkContract address={address}></ArtWorkContract>
+
 
                         </Grid>
 
@@ -199,16 +227,20 @@ export const GalleryArtWorkItem = ({ ipfs, address, visibility, galleryOwner }: 
                             <Paper sx={{ p: 2, mb: .5 }} >
                                 < ArtworkShareAllSellOrders artworkAddress={address}></ArtworkShareAllSellOrders>
                             </Paper>
+                        </Grid>
+                        <Grid item xs={12} md={6} lg={4}>
                             <Paper sx={{ p: 2, mb: 2 }} >
                                 <ArtworkShareTradeHistory artworkAddress={address}></ ArtworkShareTradeHistory>
                             </Paper>
                         </Grid>
+                        <Grid item xs={12} md={6} lg={4}>
 
+                        </Grid>
 
                         {account === galleryOwner &&
                             <>
-                                <Grid item xs={12} >
-                                    <Paper elevation={1} sx={{ p: 1, }}>
+                                <Grid item xs={4} >
+                                    <Paper elevation={0} sx={{ p: 1, }}>
                                         <ToggleButton
                                             value="check"
                                             selected={visibility}

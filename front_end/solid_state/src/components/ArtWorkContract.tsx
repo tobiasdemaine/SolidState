@@ -35,7 +35,7 @@ export const ArtWorkContract = ({ address }: ArtWorkContractProps) => {
     const artWorkPrice = ArtWorkViewPriceById(address) || {}
     const artWorkForSale = ArtWorkViewForSaleById(address)
     const artWorkOwners = ArtWorkViewOwnersById(address) || []
-    const artWorkPriceETH = artWorkPrice //ArtWorkPriceETHById(address) * (10 ** 10) / (10 ** 18)
+    const artWorkPriceETH = artWorkPrice / 1e18
     const { artworkMakeOffer, artworkMakeOfferState } = ArtWorkMakeOffer(address)
 
 
@@ -165,54 +165,44 @@ export const ArtWorkContract = ({ address }: ArtWorkContractProps) => {
 
 
             {!isOwner && artWorkForSale ? (
-                <Paper sx={{ p: 2, }} >
+                <Grid item sx={{ p: 2 }} >
                     <div>
-                        MAKE OFFER IN ETH
-                        <Input type="number" value={artWorkPriceETH} onChange={event => {
-                            setArtWorkOfferPriceInETH(Number(event?.target.value))
-                        }} />
+
                         <Button variant="contained" color="primary"
                             onClick={() => {
-                                console.log("Make Offer :" + artWorkPriceETH)
-                                var t = artWorkPriceETH * 10 ** 18
                                 setBackDropOpen(true);
-                                artworkMakeOffer({ value: t })
-
+                                artworkMakeOffer({ value: artWorkPrice })
                             }} >
-                            Make offer
+                            Purchase Artwork
                         </Button>
                     </div>
-                </Paper>
+                </Grid>
             ) : (<></>)}
 
             {isOwner ? (
                 <>
-                    <Paper sx={{ p: 2, }} >
+                    <Grid sx={{ p: 2, }} >
                         <Grid item xs={12} >
-                            <Typography component="div">
-                                Owner Functions
+                            <Typography variant="body1" color="text.secondary">Set For Sale
+                                <Switch
+                                    checked={artWorkForSale}
+                                    onChange={event => {
+                                        setBackDropOpen(true);
+                                        setArtWorkFORSALE(event?.target.checked)
+                                        if (event?.target.checked == true) {
+                                            SetArtworkForSale()
+                                        } else {
+                                            SetArtworkNotForSale()
+                                        }
+                                    }}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                />
                             </Typography>
-
-                        </Grid>
-                        <Grid item xs={12} sx={{ mt: 1 }}>
-                            Set For Sale
-                            <Switch
-                                checked={artWorkForSale}
-                                onChange={event => {
-                                    setBackDropOpen(true);
-                                    setArtWorkFORSALE(event?.target.checked)
-                                    if (event?.target.checked == true) {
-                                        SetArtworkForSale()
-                                    } else {
-                                        SetArtworkNotForSale()
-                                    }
-                                }}
-                                inputProps={{ 'aria-label': 'controlled' }}
-                            />
                         </Grid>
 
                         <Grid item xs={12} sx={{ mt: 2 }}>
-                            Release Tokens<div>
+                            <Typography variant="body1" color="text.secondary">Release Tokens</Typography>
+                            <div>
                                 <TextField
                                     sx={{ mt: .5 }}
                                     label="Qty"
@@ -234,7 +224,7 @@ export const ArtWorkContract = ({ address }: ArtWorkContractProps) => {
                                 artworkReleaseTokens(artWorkReleaseTokensAddress, artWorkReleaseTokensQty)
                             }}>Release Tokens</Button>
                         </Grid>
-                    </Paper>
+                    </Grid>
                     <Snackbar
                         open={showTransactionSuccess}
                         autoHideDuration={5000}

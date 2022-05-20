@@ -66,7 +66,7 @@ export const MyArtworksList = ({ ipfs, id, data, setProps }: Props) => {
             {(account === artWorkOwner[artWorkOwner.length - 1]) &&
                 <Grid item xs={12} sm={6} md={4} >
                     <Card sx={{ maxWidth: 390, mt: 2 }} onClick={() => {
-                        setMainSection({ section: "artwork", value: id, title: artWorkMeta.title })
+                        setMainSection({ section: "artwork", value: id, title: id })
                     }}>
                         <CardActionArea>
                             {artWorkMeta.mediaDataPackURI != null &&
@@ -79,14 +79,14 @@ export const MyArtworksList = ({ ipfs, id, data, setProps }: Props) => {
                                         {artWorkMeta.title}
                                     </Typography>
 
-                                    <div> <Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">{artWorkMeta.artist}</Typography></div>
-                                    <div> <Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">{artWorkMeta.medium}, {artWorkMeta.year}</Typography></div>
-                                    <div> <Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">Share Name : {artWorkTokenName}</Typography></div>
-                                    <div> <Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">Symbol : {artWorkTokenSymbol}</Typography></div>
-                                    <div> <Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">{Number(artWorkTokenBalance)} of {Number(artWorkTotalSupply)} Shares Available</Typography></div>
-                                    <div> <Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">{address}</Typography></div>
-                                    <div> <Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">Artwork Price : {Number(artWorkPrice) / 1e18} ETH</Typography></div>
-                                    <div> <Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">Share Price : {(Number(artWorkPrice) / Number(artWorkTotalSupply) / 1e18)}  ETH</Typography></div>
+                                    <Grid sx={{ mb: 0.4 }}><Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">{artWorkMeta.artist}</Typography></Grid>
+                                    <Grid sx={{ mb: 0.4 }}><Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">{artWorkMeta.medium}, {artWorkMeta.year}</Typography></Grid>
+                                    <Grid sx={{ mb: 0.4 }}><Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">Share Name : {artWorkTokenName}</Typography></Grid>
+                                    <Grid sx={{ mb: 0.4 }}><Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">Symbol : {artWorkTokenSymbol}</Typography></Grid>
+                                    <Grid sx={{ mb: 0.4 }}><Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">{Number(artWorkTokenBalance)} of {Number(artWorkTotalSupply)} Shares Available</Typography></Grid>
+                                    <Grid sx={{ mb: 0.4 }}><Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">{address}</Typography></Grid>
+                                    <Grid sx={{ mb: 0.4 }}><Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">Artwork Price : {Number(artWorkPrice) / 1e18} ETH</Typography></Grid>
+                                    <Grid sx={{ mb: 0.4 }}><Typography variant="subtitle2" sx={{ fontWeight: 100 }} color="text.secondary">Share Price : {(Number(artWorkPrice) / Number(artWorkTotalSupply) / 1e18)}  ETH</Typography></Grid>
 
                                 </>) : (
                                     <Typography gutterBottom variant="h5" component="div">

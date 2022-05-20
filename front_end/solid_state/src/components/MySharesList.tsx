@@ -67,7 +67,7 @@ export const MySharesList = ({ ipfs, id, data, setProps }: Props) => {
                 <>
                     <Grid item xs={4} >
                         <Item style={{ "cursor": "pointer" }} onClick={() => {
-                            setMainSection({ section: "artwork", value: id, title: artWorkMeta.title })
+                            setMainSection({ section: "artwork", value: id, title: id })
                         }}>{artWorkTokenName}</Item>
                     </Grid>
                     <Grid item xs={2}>

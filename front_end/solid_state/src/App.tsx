@@ -13,6 +13,60 @@ const darkTheme = createTheme({
     mode: 'dark',
   },
 });
+
+darkTheme.typography.h1 = {
+  fontSize: '1.3rem',
+  fontWeight: '200',
+  '@media (min-width:530px)': {
+    fontSize: '2rem',
+  },
+  [darkTheme.breakpoints.up('md')]: {
+    fontSize: '2.6rem',
+
+  },
+}
+
+darkTheme.typography.h3 = {
+  fontSize: '1rem',
+  fontWeight: '200',
+  '@media (min-width:530px)': {
+    fontSize: '1.2em',
+  },
+  [darkTheme.breakpoints.up('md')]: {
+    fontSize: '1.7rem',
+
+  },
+}
+
+darkTheme.typography.body1 = {
+  fontSize: '0.8rem',
+  fontWeight: '200',
+  '@media (min-width:530px)': {
+    fontSize: '1.1rem',
+  },
+  [darkTheme.breakpoints.up('md')]: {
+    fontSize: '1.2rem',
+
+  },
+}
+darkTheme.typography.body2 = {
+  fontSize: '0.8rem',
+  fontWeight: '100',
+  '@media (min-width:530px)': {
+    fontSize: '0.9rem',
+  },
+  [darkTheme.breakpoints.up('md')]: {
+    fontSize: '0.9rem',
+
+  },
+}
+darkTheme.typography.subtitle2 = {
+  fontWeight: '100',
+  fontSize: '0.8rem',
+
+}
+
+
 function App() {
 
   let { ipfs } = useIpfsWebConnect() //useIpfsConnect()

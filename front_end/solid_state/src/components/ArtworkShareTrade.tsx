@@ -364,7 +364,7 @@ export const ArtworkShareBuyOrders = ({ artworkAddress }: Props) => {
         <>
             {buyOrders[0][0] !== undefined ? (
                 <><Grid container spacing={.3} alignItems="stretch">
-                    <Grid item xs={12} >
+                    <Grid item xs={12} sx={{ mb: 1 }}>
                         <Typography component="div">
                             My Buy Orders
                         </Typography>
@@ -493,7 +493,7 @@ export const ArtworkShareSellOrders = ({ artworkAddress }: Props) => {
         <>
             {sellOrders[0][0] !== undefined ? (
                 <><Grid container spacing={.3} alignItems="stretch">
-                    <Grid item xs={12} >
+                    <Grid item xs={12} sx={{ mb: 1 }}>
                         <Typography component="div">
                             My Sell Orders
                         </Typography>
@@ -619,7 +619,7 @@ export const ArtworkShareAllSellOrders = ({ artworkAddress }: Props) => {
         <>
             {sellOrders[0][0] !== undefined ? (
                 <><Grid container spacing={.3} alignItems="stretch">
-                    <Grid item xs={12} >
+                    <Grid item xs={12} sx={{ mb: 1 }}>
                         <Typography component="div">
                             Open Sell Orders
                         </Typography>
@@ -777,7 +777,7 @@ export const ArtworkShareAllBuyOrders = ({ artworkAddress }: Props) => {
         <>
             {buyOrders[0][0] !== undefined ? (
                 <><Grid container spacing={.3} alignItems="stretch">
-                    <Grid item xs={12} >
+                    <Grid item xs={12} sx={{ mb: 1 }}>
                         <Typography component="div">
                             Open Buy Orders
                         </Typography>
@@ -910,7 +910,7 @@ export const ArtworkShareTradeHistory = ({ artworkAddress }: Props) => {
         <>
             {events[0][0] !== undefined ? (
                 <Grid container spacing={.3} alignItems="stretch">
-                    <Grid item xs={12} >
+                    <Grid item xs={12} sx={{ mb: 1 }}>
                         <Typography component="div">
                             Your Transactions
                         </Typography>

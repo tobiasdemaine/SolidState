@@ -64,14 +64,14 @@ export const GalleryArtworkList = ({ ipfs, id, count, visibility, galleryOwner }
                                         {artWorkMeta.title}
                                     </Typography>
 
-                                    <div><Typography variant="subtitle2" color="text.secondary">{artWorkMeta.artist}</Typography></div>
-                                    <div><Typography variant="subtitle2" color="text.secondary">{artWorkMeta.medium}, {artWorkMeta.year}</Typography></div>
-                                    <div><Typography variant="subtitle2" color="text.secondary">Share Name : {artWorkTokenName}</Typography></div>
-                                    <div><Typography variant="subtitle2" color="text.secondary">Symbol : {artWorkTokenSymbol}</Typography></div>
-                                    <div><Typography variant="subtitle2" color="text.secondary">{Number(artWorkTokenBalance)} of {Number(artWorkTotalSupply)} Shares Available</Typography></div>
-                                    <div><Typography variant="subtitle2" color="text.secondary">{address}</Typography></div>
-                                    <div><Typography variant="subtitle2" color="text.secondary">Artwork Price : {Number(artWorkContractPrice) / 1e18}  ETH</Typography></div>
-                                    <div><Typography variant="subtitle2" color="text.secondary">Share Price : {Number(artWorkSharePrice) / 1e18} ETH</Typography></div>
+                                    <Grid sx={{ mb: 0.4 }}><Typography variant="subtitle2" color="text.secondary">{artWorkMeta.artist}</Typography></Grid>
+                                    <Grid sx={{ mb: 0.4 }}><Typography variant="subtitle2" color="text.secondary">{artWorkMeta.medium}, {artWorkMeta.year}</Typography></Grid>
+                                    <Grid sx={{ mb: 0.4 }}><Typography variant="subtitle2" color="text.secondary">Share Name : {artWorkTokenName}</Typography></Grid>
+                                    <Grid sx={{ mb: 0.4 }}><Typography variant="subtitle2" color="text.secondary">Symbol : {artWorkTokenSymbol}</Typography></Grid>
+                                    <Grid sx={{ mb: 0.4 }}><Typography variant="subtitle2" color="text.secondary">{Number(artWorkTokenBalance)} of {Number(artWorkTotalSupply)} Shares Available</Typography></Grid>
+                                    <Grid sx={{ mb: 0.4 }}><Typography variant="subtitle2" color="text.secondary">{address}</Typography></Grid>
+                                    <Grid sx={{ mb: 0.4 }}><Typography variant="subtitle2" color="text.secondary">Artwork Price : {Number(artWorkContractPrice) / 1e18}  ETH</Typography></Grid>
+                                    <Grid sx={{ mb: 0.4 }}><Typography variant="subtitle2" color="text.secondary">Share Price : {Number(artWorkSharePrice) / 1e18} ETH</Typography></Grid>
 
                                 </>) : (
                                     <Typography gutterBottom variant="h5" component="div">

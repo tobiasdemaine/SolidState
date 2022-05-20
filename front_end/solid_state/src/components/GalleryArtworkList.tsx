@@ -51,7 +51,7 @@ export const GalleryArtworkList = ({ ipfs, id, count, visibility, galleryOwner }
             {(visibility || account === galleryOwner || account === artWorkOwner[artWorkOwner.length - 1]) &&
                 <Grid item xs={12} sm={6} md={4}>
                     <Card id={cardId} sx={{ maxWidth: 390, mt: 2 }} onClick={() => {
-                        setMainSection({ section: "artwork", value: id, title: artWorkMeta.title })
+                        setMainSection({ section: "artwork", value: id, title: id })
                     }}>
                         <CardActionArea>
                             {artWorkMeta.mediaDataPackURI != null &&

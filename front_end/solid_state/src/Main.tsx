@@ -21,44 +21,43 @@ export const Main = ({ ipfs }: MainProps) => {
     const { account } = useEthers()
     const isConnected = account !== undefined
     useEffect(() => {
-
-
         if (Boolean(ipfs)) {
-
             setIpfs(ipfs)
-
         }
     }, [ipfs])
-    useEffect(() => {
 
-        var currentSection = "";
-        setInterval(function () {
-            if (currentSection != window.location.pathname) {
-                currentSection = window.location.pathname
-                const section = window.location.pathname.toLowerCase().split('/')
-                if (section.length == 2) {
-                    if (section[1] == "collections") {
-                        setMainSection({ section: "enter", value: 0, title: "Solid State" })
-                    }
-                    if (section[1] == "myartworks") {
-                        setMainSection({ section: "myArtworks", value: 0, title: "My Artworks" })
-                    }
-                    if (section[1] == "myshares") {
-                        setMainSection({ section: "myShares", value: 0, title: "My Shares" })
-                    }
+    var currentSection = "";
+    const checkPath = () => {
+        if (currentSection != window.location.pathname) {
+            currentSection = window.location.pathname
+            const section = window.location.pathname.toLowerCase().split('/')
+            if (section.length == 2) {
+                if (section[1] == "collections") {
+                    setMainSection({ section: "enter", value: 0, title: "Solid State" })
                 }
-                if (section.length == 4) {
-                    if (section[1] == "collection") {
-                        setMainSection({ section: "collection", value: Number(section[2]), title: toFirstCapital(section[3]) })
-                    }
+                if (section[1] == "myartworks") {
+                    setMainSection({ section: "myArtworks", value: 0, title: "My Artworks" })
                 }
-                if (section.length == 3) {
-                    if (section[1] == "artwork") {
-                        setMainSection({ section: "artwork", value: Number(section[2]), title: "" })
-                    }
+                if (section[1] == "myshares") {
+                    setMainSection({ section: "myShares", value: 0, title: "My Shares" })
                 }
             }
-        }, 500);
+            if (section.length == 4) {
+                if (section[1] == "collection") {
+                    setMainSection({ section: "collection", value: section[2], title: toFirstCapital(section[3]) })
+                }
+            }
+            if (section.length == 3) {
+                if (section[1] == "artwork") {
+                    setMainSection({ section: "artwork", value: Number(section[2]), title: section[2] })
+                }
+            }
+        }
+    }
+    useEffect(() => {
+
+        checkPath()
+        setInterval(checkPath, 500);
     }, [])
     useEffect(() => {
         if (APPSTATE.mainsection.section == "enter") {
@@ -74,9 +73,8 @@ export const Main = ({ ipfs }: MainProps) => {
             window.history.pushState("", "", '/collection/' + APPSTATE.mainsection.value + '/' + APPSTATE.mainsection.title);
         }
         if (APPSTATE.mainsection.section == "artwork") {
-            window.history.pushState("", "", '/artwork/' + APPSTATE.mainsection.value);
+            window.history.pushState("", "", '/artwork/' + APPSTATE.mainsection.title.toString());
         }
-
     }, [APPSTATE.mainsection.section])
     return (
         <>

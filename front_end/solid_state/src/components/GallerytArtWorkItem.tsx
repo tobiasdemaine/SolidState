@@ -54,7 +54,6 @@ export interface ArtWorkAddressProps {
 export const GalleryArtWorkItem = ({ ipfs, address, visibility, galleryOwner }: ArtWorkAddressProps) => {
     const { account } = useEthers()
     const { notifications } = useNotifications()
-
     const { state: APPSTATE, setMainSection, setArtWorkAddress } = useSolidStateContexts()
     // GET HOOKS
     const artWorkMeta = ArtWorkViewById(address) || { artist: "", title: "", medium: "", year: "", mediaDataPackURI: null }

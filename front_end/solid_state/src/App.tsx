@@ -78,6 +78,10 @@ function App() {
   return (
     <DAppProvider config={{
       networks: [Kovan],
+      readOnlyChainId: 42,
+      readOnlyUrls: {
+        [42]: 'https://kovan.infura.io/v3/ede495de652e448c9706cf5b05ebd1d1',
+      },
       notifications: {
         expirationPeriod: 1000,
         checkInterval: 1000

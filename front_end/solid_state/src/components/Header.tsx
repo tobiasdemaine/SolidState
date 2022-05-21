@@ -96,7 +96,7 @@ export const Header = ({ ipfs }: HeaderProps) => {
                             </>
                         ) : (
                             <>
-
+                                <HeaderCollections ipfs={ipfs} />
                                 <Button id="connectButton" color="inherit"
                                     onClick={() => activateBrowserWallet()}>
                                     Connect Wallet

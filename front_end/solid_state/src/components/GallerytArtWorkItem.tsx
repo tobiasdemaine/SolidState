@@ -26,7 +26,6 @@ import {
     Typography
 
 } from "@mui/material"
-
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { ArtworkGalleryVisibility } from "../hooks/ArtWorkGallery"
 import { useEthers, useNotifications } from "@usedapp/core";
@@ -57,6 +56,7 @@ export interface ArtWorkAddressProps {
 
 export const GalleryArtWorkItem = ({ ipfs, address, visibility, galleryOwner }: ArtWorkAddressProps) => {
     const { account } = useEthers()
+    const isConnected = account !== undefined
     const { notifications } = useNotifications()
     // GET HOOKS
     const artWorkMeta = ArtWorkViewById(address) || { artist: "", title: "", medium: "", year: "", mediaDataPackURI: null }
@@ -69,7 +69,6 @@ export const GalleryArtWorkItem = ({ ipfs, address, visibility, galleryOwner }: 
     const artWorkOwner = ArtWorkViewOwnersById(address) || []
     const artWorkSharePrice = ArtWorkGetSharePrice(address)
     const artWorkContractPrice = ArtWorkGetContractPrice(address)
-
     // SET HOOKS
     const { artworkVisibility, artworkVisibilityState } = ArtworkGalleryVisibility()
 
@@ -200,43 +199,49 @@ export const GalleryArtWorkItem = ({ ipfs, address, visibility, galleryOwner }: 
                                     </Grid>
                                 </>) : (<>Loading</>)}
                             </Grid>
+                            {isConnected &&
+                                <><ArtWorkContract address={address}></ArtWorkContract></>
 
-                            <ArtWorkContract address={address}></ArtWorkContract>
-
-
-                        </Grid>
-
-                        <Grid item xs={12} md={6} lg={4}>
-                            <Paper sx={{ p: 2, mb: .5 }} >
-                                < ArtworkShareTradeBuy artworkAddress={address}></ArtworkShareTradeBuy>
-                            </Paper>
-                            <Paper sx={{ p: 2, mb: .5 }} >
-                                < ArtworkShareBuyOrders artworkAddress={address}></ArtworkShareBuyOrders>
-                            </Paper>
-                            <Paper sx={{ p: 2, }} >
-                                < ArtworkShareAllBuyOrders artworkAddress={address}></ArtworkShareAllBuyOrders>
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={12} md={6} lg={4}>
-                            <Paper sx={{ p: 2, mb: .5 }} >
-                                < ArtworkShareTradeSell artworkAddress={address}></ArtworkShareTradeSell>
-                            </Paper>
-                            <Paper sx={{ p: 2, mb: .5 }} >
-                                < ArtworkShareSellOrders artworkAddress={address}></ArtworkShareSellOrders>
-                            </Paper>
-                            <Paper sx={{ p: 2, mb: .5 }} >
-                                < ArtworkShareAllSellOrders artworkAddress={address}></ArtworkShareAllSellOrders>
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={12} md={6} lg={4}>
-                            <Paper sx={{ p: 2, mb: 2 }} >
-                                <ArtworkShareTradeHistory artworkAddress={address}></ ArtworkShareTradeHistory>
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={12} md={6} lg={4}>
+                            }
 
                         </Grid>
+                        {isConnected &&
+                            <>
+                                <Grid item xs={12} md={6} lg={4}>
 
+                                    <Paper sx={{ p: 2, mb: .5 }} >
+                                        < ArtworkShareTradeBuy artworkAddress={address}></ArtworkShareTradeBuy>
+                                    </Paper>
+                                    <Paper sx={{ p: 2, mb: .5 }} >
+                                        < ArtworkShareBuyOrders artworkAddress={address}></ArtworkShareBuyOrders>
+                                    </Paper>
+
+                                    <Paper sx={{ p: 2, }} >
+                                        < ArtworkShareAllBuyOrders artworkAddress={address}></ArtworkShareAllBuyOrders>
+                                    </Paper>
+                                </Grid>
+                                <Grid item xs={12} md={6} lg={4}>
+                                    <Paper sx={{ p: 2, mb: .5 }} >
+                                        < ArtworkShareTradeSell artworkAddress={address}></ArtworkShareTradeSell>
+                                    </Paper>
+                                    <Paper sx={{ p: 2, mb: .5 }} >
+                                        < ArtworkShareSellOrders artworkAddress={address}></ArtworkShareSellOrders>
+                                    </Paper>
+
+                                    <Paper sx={{ p: 2, mb: .5 }} >
+                                        < ArtworkShareAllSellOrders artworkAddress={address}></ArtworkShareAllSellOrders>
+                                    </Paper>
+                                </Grid>
+                                <Grid item xs={12} md={6} lg={4}>
+                                    <Paper sx={{ p: 2, mb: 2 }} >
+                                        <ArtworkShareTradeHistory artworkAddress={address}></ ArtworkShareTradeHistory>
+                                    </Paper>
+                                </Grid>
+                                <Grid item xs={12} md={6} lg={4}>
+
+                                </Grid>
+                            </>
+                        }
                         {account === galleryOwner &&
                             <>
                                 <Grid item xs={4} >

@@ -47,7 +47,7 @@ export const useIpfsWebRetrieve = (ipfs: any, id: any) => {
     const content: any = []
     useEffect(() => {
         let localData = localStorage.getItem(id)
-        if (localData == null) {
+        if (localData == null || localData == '') {
             getDataFromIpfs()
         } else {
             set_data(localData)
@@ -59,6 +59,7 @@ export const useIpfsWebRetrieve = (ipfs: any, id: any) => {
         try {
             const file = await axios(ipfs + id)
             set_data(file.data)
+            localStorage.setItem(id, JSON.stringify(file.data))
             setIpfsFileReady(true)
         } catch (error) {
             console.log(error)

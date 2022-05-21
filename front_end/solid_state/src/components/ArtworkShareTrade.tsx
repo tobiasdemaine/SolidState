@@ -187,7 +187,6 @@ export const ArtworkShareTradeSell = ({ artworkAddress }: Props) => {
 
 
     useEffect(() => {
-        console.log(canUpdate)
         if (canUpdate === true) {
             setSellShareETH(artWorkSharePrice / 1e18)
             setSellShareETHTotal(artWorkSharePrice / 1e18)

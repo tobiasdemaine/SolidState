@@ -15,7 +15,7 @@ export const Collections = ({ ipfs }: HeaderCollectionProps) => {
         <Grid container spacing={1} alignItems="stretch">
             {galleryCollections.map((data: any, index: any) => (
                 <Grid item xs={12} sm={6} md={4} key={index} >
-                    {index}   <CollectionsOverview ipfs={ipfs} id={index} title={data} />
+                    <CollectionsOverview ipfs={ipfs} id={index} title={data} />
                 </Grid>
             ))}
         </Grid>

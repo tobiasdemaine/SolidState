@@ -9,9 +9,31 @@ Each Artwork Contract is it own trading platform, managing its own buy and sell 
 
 The Gallery contract is a group of lists (collections) of Artworks with a visiblity switch.
 
+React Front End
+--------------- 
+```text
+front_end/solid_state/
+```
 
+Node Rest Api and App Server
+--------------- 
+```text
+rest_api/
+```
+
+----------------------
+
+* to do
+    * Front end for deploying new artwork contract
+    * Testing
+        * python contract integration tests
+            * bot trading to test large data calls to UI
+        * javascript UI E2E tests
+    * Video stream from IPFS
+    * Move IPFS from pinata to ipfs.tobiasdemaine.com
 
 VIDEO PREPARATION
+-----------------
 ```text
 prepare videos :
 

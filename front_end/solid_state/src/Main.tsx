@@ -75,7 +75,7 @@ export const Main = ({ ipfs }: MainProps) => {
         if (APPSTATE.mainsection.section == "artwork") {
             window.history.pushState("", "", '/artwork/' + APPSTATE.mainsection.title.toString());
         }
-    }, [APPSTATE.mainsection.section])
+    }, [APPSTATE])
     return (
         <>
             {

@@ -1,11 +1,16 @@
-* Create a token object tied to a solid state artwork.
-    * an artwork is broken into a set of tradeable units 
-* Purchase of the physical art work moves ownership of exchange to the purchaser
-* prices of the artworks are driven by :
-    * buy / sell
-* owning more of the artworks allows for greater manipulation market
+SOLID STATE
+===========
 
+is a decentralised market for trading shares in Artworks. The premise is the owner of the artwork/s maintains storage and security of the artwork, while allowing for the artwork to realise it investment value by allowing others to invest in it as parts/shares.  These parts/shares are ec20 tokens. [Test Server](http://solidstate.tobiasdemaine.com)
 
+The platform is broken into 2 contracts. The Artwork contract and The Gallery contract.
+
+Each Artwork Contract is it own trading platform, managing its own buy and sell orders.  This creates indepence of the contract from exisiting only specific a trading platforms.  The price of the Artwork's shares adjusts the artworks price. 
+
+The Gallery contract is a list of Artworks with a visiblity switch.
+
+VIDEO PREPARATION
+```text
 prepare videos :
 
 ffmpeg -i video_0.mp4 -vcodec libx264 -acodec aac -pix_fmt yuv420p -movflags empty_moov+default_base_moof+frag_keyframe -profile:v baseline video_0_1.mp4
@@ -19,25 +24,10 @@ MP4Box -inter 500 video_0_1.mp4
 video mimeCodec:
 
 avc1.42C01F,mp4a.40.2
+```
 
 
-==================
-
-trading a share
-
--- place order with eth backing to buy a solid state artwork share
-
--- place order with token to sell for eth
-
--- match buy and sell order.
-
--- if order can only be part filled, modify order.
-
-==================
 
 
---- SOLID STATE TOKEN price is set from the art works as more art works are add the value of the token increases.
-
-Gallery Tokens would replace eth version 2
 
 

@@ -7,7 +7,9 @@ The platform is broken into 2 contracts. The Artwork contract and The Gallery co
 
 Each Artwork Contract is it own trading platform, managing its own buy and sell orders.  This creates indepence of the contract from exisiting only specific a trading platforms.  The price of the Artwork's shares adjusts the artworks price. 
 
-The Gallery contract is a list of Artworks with a visiblity switch.
+The Gallery contract is a group of lists (collections) of Artworks with a visiblity switch.
+
+
 
 VIDEO PREPARATION
 ```text

@@ -4,15 +4,19 @@ import requests
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-from scripts.helpers import get_account, get_contract, update_front_end
+from scripts.helpers import get_account, LOCAL_BLOCKCHAIN_ENVIRONMENTS
 from brownie import SolidStateToken, SolidStateGallery, network, config
 
 load_dotenv()
 
 
 # upload to an ipfs provider
+IFPS_API_URL_PRODUCTION = "https://ifpsapi.tobiasdemaine.com/"
+IFPS_API_URL_LOCAL = "http://127.0.0.1:3030/"
+IFPS_API_URL = IFPS_API_URL_PRODUCTION
 
 PINATA_BASE_URL = "https://api.pinata.cloud/"
+
 endpoint = "pinning/pinFileToIPFS"
 headers = {
     "pinata_api_key": os.getenv("PINATA_API_KEY"),
@@ -20,17 +24,37 @@ headers = {
 }
 
 
-def upload_to_ipfs(file_path):
+def upload_to_ipfs_pinata(file_path):
     file_name = file_path.split("/")[-1:][0]
     with Path(file_path).open("rb") as fp:
         image_binary = fp.read()
         response = requests.post(
             PINATA_BASE_URL + endpoint,
             files={"file": (file_name, image_binary)},
-            headers=headers,
+            data={headers},
         )
         data = response.json()
         return data["IpfsHash"]
+
+
+def upload_to_ipfs(file_path):
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        IFPS_API_URL = IFPS_API_URL_LOCAL
+
+    file_name = file_path.split("/")[-1:][0]
+    with Path(file_path).open("rb") as fp:
+        image_binary = fp.read()
+        response = requests.get(
+            IFPS_API_URL + "f",
+        )
+        data = response.json()
+        response = requests.post(
+            IFPS_API_URL + "f",
+            files={"file": (file_name, image_binary)},
+            data={"key": data["key"]},
+        )
+        data = response.json()
+        return data["ipfsHash"]
 
 
 def upload_json_to_ipfs(json_data):

@@ -5,7 +5,7 @@ is a decentralised market for trading shares in Artworks. The premise is the own
 
 The platform is broken into 2 contracts. The Artwork contract and The Gallery contract.
 
-Each Artwork Contract is it own trading platform, managing its own buy and sell orders.  This creates indepence of the contract from exisiting only specific a trading platforms.  The price of the Artwork's shares adjusts the artworks price. 
+Each Artwork Contract is it own trading platform, managing its own buy and sell orders.  This creates independence of the contract from exisiting only specific a trading platforms.  The price of the Artwork's shares adjusts the artworks price. Ultmately "the market" definesthe priceof the artwork.
 
 The Gallery contract is a group of lists (collections) of Artworks with a visiblity switch.
 
@@ -29,8 +29,10 @@ rest_api/
         * python contract integration tests
             * bot trading to test large data calls to UI
         * javascript UI E2E tests
+    * Artwork Contract Only UI > gallery react component /front_end/solid_state/src/components/GalleryArtWorkItem.tsx
     * Video stream from IPFS
-    * Move IPFS from pinata to ipfs.tobiasdemaine.com
+    * Complete Deploy and Update scripts
+
 
 VIDEO PREPARATION
 -----------------

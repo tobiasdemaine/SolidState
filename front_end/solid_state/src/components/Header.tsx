@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useEthers } from "@usedapp/core";
-
+import { GalleryOwners, } from "../hooks/GalleryView"
 import Button from "@mui/material/Button"
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -22,8 +22,7 @@ export const Header = ({ ipfs }: HeaderProps) => {
     const { state: APPSTATE, setMainSection, setArtWorkAddress } = useSolidStateContexts()
     const { account, activateBrowserWallet, deactivate, error } = useEthers()
     const isConnected = account !== undefined
-    var gallery: boolean
-
+    const owners = GalleryOwners() || []
 
     const [dashAnchorEl, setDashAnchorEl] = useState<null | HTMLElement>(null);
     const dashOpen = Boolean(dashAnchorEl);
@@ -82,6 +81,14 @@ export const Header = ({ ipfs }: HeaderProps) => {
                                         horizontal: 'left',
                                     }}
                                 >
+                                    {
+                                        owners[owners.length - 1] === account &&
+                                        <MenuItem onClick={() => {
+                                            setMainSection({ section: "addArtwork", value: 0, title: "Add" })
+                                            dashHandleClose()
+                                        }}>Add Artwork</MenuItem>
+
+                                    }
                                     <MenuItem onClick={() => {
                                         setMainSection({ section: "myArtworks", value: 0, title: "My ArtWorks" })
                                         dashHandleClose()

@@ -6,6 +6,7 @@ import { GalleryCollections } from "./components/GalleryCollections"
 import { useEthers } from "@usedapp/core";
 import { Typography, Grid, Paper } from "@mui/material"
 import { MyArtworks } from './components/MyArtworks';
+import { AddArtWork } from './components/AddArtwork';
 import { MyShares } from './components/MyShares';
 
 
@@ -41,6 +42,9 @@ export const Main = ({ ipfs }: MainProps) => {
                 if (section[1] == "myshares") {
                     setMainSection({ section: "myShares", value: 0, title: "My Shares" })
                 }
+                if (section[1] == "add") {
+                    setMainSection({ section: "addArtwork", value: 0, title: "Add" })
+                }
             }
             if (section.length == 4) {
                 if (section[1] == "collection") {
@@ -68,6 +72,9 @@ export const Main = ({ ipfs }: MainProps) => {
         }
         if (APPSTATE.mainsection.section == "myShares") {
             window.history.pushState("", "", '/myshares');
+        }
+        if (APPSTATE.mainsection.section == "addArtwork") {
+            window.history.pushState("", "", '/add');
         }
         if (APPSTATE.mainsection.section == "collection") {
             window.history.pushState("", "", '/collection/' + APPSTATE.mainsection.value + '/' + APPSTATE.mainsection.title);
@@ -125,6 +132,12 @@ export const Main = ({ ipfs }: MainProps) => {
                             APPSTATE.mainsection.section == "myShares" &&
                             <>
                                 <MyShares ipfs={ipfs} />
+                            </>
+                        }
+                        {
+                            APPSTATE.mainsection.section == "addArtwork" &&
+                            <>
+                                <AddArtWork ipfs={ipfs} />
                             </>
                         }
 

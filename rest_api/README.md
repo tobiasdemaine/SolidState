@@ -16,16 +16,17 @@ docker run -d --restart always --expose=8080 -e VIRTUAL_PORT=8080 -e VIRTUAL_HOS
 Setup Ipfs API
 ---------------
 ```text
-docker build -t solidstate/ipfsapi
+docker build -t solidstate/ipfsapi .
 ```
 
 ```text
 docker run -d --restart always --expose=3030 -e VIRTUAL_PORT=3030 -e VIRTUAL_HOST=ipfsapi.tobiasdemaine.com --name ipfs_api -v /var/run/docker.sock:/var/run/docker.sock -p 127.0.0.1:3030:3030 solidstate/ipfsapi:latest
 ```
 
+
 Setup nGinx reverse proxy
 -------------------------
-make sure your SSL certificates are in the SLL volume directory with the same name as the vitual host. 
+make sure your SSL certificates are in the ssl volume directory with the same name as the vitual host. 
 
 eg : ipfsapi.tobiasdemaine.com.crt, ipfsapi.tobiasdemaine.com.key
 
@@ -41,9 +42,12 @@ docker run -d -p 80:80 -p 443:443 -v /path_to_ssl/ssl:/etc/nginx/certs -v /root/
 
 Upload a file
 -------------
-(jpg|jpeg|png|gif|mp4|pdf)
+Supported Types (jpg|jpeg|png|gif|mp4|pdf)
 
-1. request a key. /k
+Step 1. Request a key. 
+
+Endpoint /k
+
 returns :
 ```text
     {
@@ -51,7 +55,11 @@ returns :
     }
 ```
 
-2. upload a file 
+
+Step 2. Upload a file 
+
+Endpoint : /f
+
 Post Params :
 ```text
     {

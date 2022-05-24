@@ -159,7 +159,7 @@ def update_front_end():
 
 
 def copy_folders_to_front_end(src, dest):
-    print("compy folders to front end")
+    print("Copied folders to front end")
     if os.path.exists(dest):
         shutil.rmtree(dest)
     shutil.copytree(src, dest)

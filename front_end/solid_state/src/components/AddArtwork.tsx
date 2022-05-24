@@ -35,8 +35,11 @@ interface Provider {
 }
 export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
     const owners = GalleryOwners() || []
-    const { account } = useEthers()
-
+    const { account } = useEthers() || ""
+    var auth = false
+    if (account !== undefined) {
+        var auth = account === owners[owners.length - 1]
+    }
     const [Images, setImages] = useState<Provider[]>([]);
     const onDrop = useCallback((acceptedFiles: any) => {
         acceptedFiles.forEach((file: any) => {
@@ -56,9 +59,8 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
     }, [])
     const { getRootProps, getInputProps } = useDropzone({ onDrop })
 
-
     return (
-        owners[owners.length - 1] === account ? (
+        auth ? (
             <>
                 <Grid container spacing={1} alignItems="stretch">
                     <Grid item xs={12} md={6} lg={4}>

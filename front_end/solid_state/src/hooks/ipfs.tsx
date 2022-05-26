@@ -34,8 +34,7 @@ export const useIpfsConnect = () => {
 }
 
 export const useIpfsWebConnect = () => {
-
-    const ipfs = "https://ipfs.tobiasdemaine.com/ipfs/"
+    const ipfs = process.env.REACT_APP_API_ENDPOINT
     const [isIpfsReady, setIpfsReady] = useState(true)
     return { ipfs, isIpfsReady }
 }

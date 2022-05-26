@@ -11,19 +11,19 @@ import { fileFilter, } from './utils';
 
 // setup
 const IPFS_PATH = 'ipfs_host:/export'
-const UPLOAD_PATH = 'uploads';
+const UPLOAD_PATH = 'uploads'
 const upload = multer({ dest: `${UPLOAD_PATH}/`, fileFilter: fileFilter });
 var UUIDS = {}
 
 shell.exec("mkdir uploads", { silent: true })
 // app
-const app = express();
-app.use(cors());
+const app = express()
+app.use(cors())
 
 app.get('/k', async (req, res) => {
-    // default route
+    // this will get confirmation from the gallery contract
     const uuid = randomUUID()
-    UUIDS[uuid] = { timestamp: Date.now() }
+    UUIDS[uuid] = { timestamp: Date.now(), files: [] }
     res.send({ key: uuid })
 })
 
@@ -31,7 +31,7 @@ app.post('/f', upload.single('file'), async (req, res) => {
     try {
         if (req.body["key"] !== undefined) {
             if (UUIDS.hasOwnProperty(req.body["key"])) {
-                if (Date.now() - 600000 < UUIDS[req.body["key"]].timestamp) {
+                if (Date.now() - 12000000 < UUIDS[req.body["key"]].timestamp) { // 20 minutes to perform the transaction
 
                     // move file to docker
                     const dockerFileCopyCommand = "docker cp '" + req.file.path + "' '" + "ipfs_host:/export/" + req.file.originalname + "'";
@@ -42,10 +42,15 @@ app.post('/f', upload.single('file'), async (req, res) => {
                     var ipfsOutput = shell.exec(dockerIPFSAddFileCommand, { silent: true }).stdout
 
                     const ipfsHash = ipfsOutput.split(" ")[1]
-                    delete UUIDS[req.body["key"]]
-                    fs.unlinkSync(req.file.path)
 
-                    res.send({ ipfsHash: ipfsHash })
+                    UUIDS[req.body["key"]].files.push(ipfsHash)
+                    fs.unlinkSync(req.file.path)
+                    if (req.body["publish"] == "true") {
+                        console.log("Publish")
+                        res.send({ contractHash: "Mining" })
+                    } else {
+                        res.send({ ipfsHash: ipfsHash })
+                    }
                 } else {
                     delete UUIDS[req.body["key"]]
                     fs.unlinkSync(req.file.path)
@@ -63,11 +68,15 @@ app.post('/f', upload.single('file'), async (req, res) => {
 
     } catch (err) {
         console.log(err)
-        res.send({ error: err });
+        res.send({ error: "err" });
     }
 })
 
+app.post('/p', async (req, res) => { // publish the contract from
+    console.log(req.query, req.params, req.body)
+})
 
+app.use('/', express.static('public'))
 
 app.listen(3030, function () {
     console.log('listening on port 3030!');

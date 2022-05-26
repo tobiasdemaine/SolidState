@@ -16,11 +16,11 @@ docker run -d --restart always --expose=8080 -e VIRTUAL_PORT=8080 -e VIRTUAL_HOS
 Setup Ipfs API
 ---------------
 ```text
-docker build -t solidstate/ipfsapi .
+docker build -t solidstateapi .
 ```
 
 ```text
-docker run -d --restart always --expose=3030 -e VIRTUAL_PORT=3030 -e VIRTUAL_HOST=ipfsapi.tobiasdemaine.com --name ipfs_api -v /var/run/docker.sock:/var/run/docker.sock -p 127.0.0.1:3030:3030 solidstate/ipfsapi:latest
+docker run -d --restart always --expose=3030 -e VIRTUAL_PORT=3030 -e VIRTUAL_HOST=solidstate.tobiasdemaine.com --name solidstate -v /var/run/docker.sock:/var/run/docker.sock -p 127.0.0.1:3030:3030 solidstateapi:latest
 ```
 
 
@@ -44,7 +44,7 @@ Upload a file
 -------------
 Supported Types (jpg|jpeg|png|gif|mp4|pdf)
 
-Step 1. Request a key. 
+Step 1. Request a Session key. 
 
 Endpoint /k
 
@@ -63,8 +63,9 @@ Endpoint : /f
 Post Params :
 ```text
     {
-        file : file_upload
-        key : uuid
+        file : file_upload,
+        key : uuid,
+        publish: false,
     }
 ```
 
@@ -72,5 +73,25 @@ returns :
 ```text
     {
         ipfsHash : hash
+    }
+```
+
+Step 3. Upload uuid.json and publish 
+
+Endpoint : /f
+
+Post Params :
+```text
+    {
+        data : JSON.stringify,
+        key : uuid,
+        publish: true,
+    }
+```
+
+returns :
+```text
+    {
+        contractHash : hash
     }
 ```

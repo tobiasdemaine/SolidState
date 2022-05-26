@@ -16,25 +16,30 @@ dotenv.config()
 const myArgs = process.argv.slice(2);
 var CHAIN_ID: any
 var WEB3_PROVIDER: any
+var PRIVATE_KEY: any
 switch (myArgs[0]) {
     case 'local':
         console.log("Local")
         WEB3_PROVIDER = process.env.HTTP_PROVIDER_LOCAL
+        PRIVATE_KEY = process.env.PRIVATE_KEY_LOCALHOST
         CHAIN_ID = 1337
         break
     case 'kovan':
         console.log("Kovan")
         WEB3_PROVIDER = process.env.HTTP_PROVIDER_KOVAN
+        PRIVATE_KEY = process.env.PRIVATE_KEY_KOVAN
         CHAIN_ID = 42
         break
     case 'mainnet':
         console.log("Mainnet")
         WEB3_PROVIDER = process.env.HTTP_PROVIDER_MAINNET
+        PRIVATE_KEY = process.env.PRIVATE_KEY_MAINNET
         CHAIN_ID = 1
         break
     default:
         console.log("Defaulting to Kovan")
         WEB3_PROVIDER = process.env.HTTP_PROVIDER_KOVAN
+        PRIVATE_KEY = process.env.PRIVATE_KEY_KOVAN
         CHAIN_ID = 42
 }
 console.log(WEB3_PROVIDER)
@@ -43,7 +48,7 @@ const IPFS_PATH = 'ipfs_host:/export'
 const UPLOAD_PATH = 'uploads'
 const CONTRACT_SOURCE = 'chain-info/contracts/SolidStateToken.json'
 const GALLERY_CONTRACT_SOURCE = './chain-info/contracts/SolidStateGallery.json'
-const PRIVATE_KEY = '' // load from ini
+
 const upload = multer({ dest: `${UPLOAD_PATH}/`, fileFilter: fileFilter })
 var UUIDS = {}
 

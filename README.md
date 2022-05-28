@@ -5,9 +5,15 @@ is a decentralised market for trading shares in Artworks. The premise is the own
 
 The platform is broken into 2 contracts. The Artwork contract and The Gallery contract.
 
-Each Artwork Contract is it own trading platform, managing its own buy and sell orders.  This creates independence of the contract from exisiting only specific a trading platforms.  The price of the Artwork's shares adjusts the artworks price. Ultmately "the market" definesthe priceof the artwork.
+Each Artwork Contract is it own trading platform, managing its own buy and sell orders.  This creates independence of the contract from exisiting only on a specific a trading platforms.  The price of the Artwork's shares adjusts the artworks price. Ultmately "the market" defines the priceof the artwork.
 
 The Gallery contract is a group of lists (collections) of Artworks with a visiblity switch.
+
+Smart Contracts / Brownie
+--------------- 
+```text
+contracts/
+```
 
 React Front End
 --------------- 
@@ -21,16 +27,60 @@ Node Rest Api and App Server
 rest_api/
 ```
 
+Tools
+--------------- 
+```text
+tools/
+```
+
+
+LOCAL CHAIN TESTING
+-------------------
+Start Local BlockChain Ganache
+'''text
+cd tools
+npm start localchain
+'''
+
+Deploy the gallery Contract
+'''text
+cd tools
+npm start localchain
+'''
+
+KOVAN CHAIN TESTING
+-------------------
+Start Local BlockChain Ganache
+'''text
+cd tools
+npm start kovan
+'''
+
+IPFS STARTUP
+-------------------
+Start Local IPFS
+'''text
+cd tools
+npm start ipfs local
+'''
+
+Start Production IPFS
+'''text
+cd tools
+npm start ipfs production
+'''
+
 ----------------------
 
 * to do
     * Front end for deploying new artwork contract
+    * Front end add new collection
     * Testing
         * python contract integration tests
             * bot trading to test large data calls to UI
         * javascript UI E2E tests
-    * Artwork Contract Only UI > gallery react component /front_end/solid_state/src/components/GalleryArtWorkItem.tsx
     * Video stream from IPFS
+    * move off infura to self hosted node
     * Complete Deploy and Update scripts
 
 

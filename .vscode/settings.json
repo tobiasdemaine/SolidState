@@ -1,1 +1,5 @@
-{}
+{
+    "[.env]": {
+        "editor.formatOnSave": false
+    }
+}

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { DAppProvider, Kovan } from '@usedapp/core';
+import { DAppProvider, Kovan, Localhost, Mainnet } from '@usedapp/core';
 import { Header } from "./components/Header"
 import Container from "@mui/material/Container"
 import { Main } from "./Main"
@@ -68,7 +68,7 @@ darkTheme.typography.subtitle2 = {
 
 
 function App() {
-
+  const multicallAddress = process.env.REACT_APP_MULTICALL_LOCAL || "0xdaD1D7faDfEa239EC826bC52Da6D42Ac15a9D06b"
   let { ipfs } = useIpfsWebConnect() //useIpfsConnect()
   useEffect(() => {
     if (!ipfs) return
@@ -77,10 +77,14 @@ function App() {
 
   return (
     <DAppProvider config={{
-      networks: [Kovan],
-      readOnlyChainId: 42,
+      networks: [Kovan, Localhost, Mainnet],
       readOnlyUrls: {
-        [42]: 'https://kovan.infura.io/v3/ede495de652e448c9706cf5b05ebd1d1',
+        //[Mainnet.chainId]: 'https://mainnet.infura.io/v3/ede495de652e448c9706cf5b05ebd1d1',
+        // [Kovan.chainId]: 'https://kovan.infura.io/v3/ede495de652e448c9706cf5b05ebd1d1',
+        [Localhost.chainId]: 'http://127.0.0.1:8545',
+      }, multicallAddresses: {
+        1337: multicallAddress,
+
       },
       notifications: {
         expirationPeriod: 1000,

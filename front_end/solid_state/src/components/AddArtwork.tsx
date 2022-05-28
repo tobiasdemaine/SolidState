@@ -17,7 +17,10 @@ import {
     ImageList,
     ImageListItem,
     IconButton,
-    ImageListItemBar
+    ImageListItemBar,
+    Select,
+    MenuItem,
+    AlertTitle
 } from "@mui/material"
 import AddIcon from "@mui/icons-material/Add"
 import DeleteIcon from "@mui/icons-material/Delete"
@@ -29,6 +32,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import API from "../hooks/Api"
+import { GalleryCollections } from "../hooks/GalleryView"
 export interface ArtWorkAddProps {
     ipfs: any,
 }
@@ -83,6 +87,8 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
         year: Yup.string().required('is required'),
         price: Yup.number().required('Number is required'),
         supply: Yup.number().required('Number is required'),
+        symbol: Yup.string().required('is required'),
+        collection: Yup.string().required('is required'),
     });
     const {
         register,
@@ -144,6 +150,7 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
                     "name": Data["title"],
                     "symbol": Data["symbol"],
                     "supply": Data["supply"],
+                    "collection": Data["collection"],
                     "images": images,
                     "videos": [],
                     "files": [],
@@ -167,6 +174,9 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
             console.log("Success", artWorkContractHash)
         }
     }, [artWorkContractHash])
+
+    const [collection, setCollection] = useState<any>('')
+    const galleryCollections = GalleryCollections() || []
     return (
         auth ? (
             <>
@@ -176,60 +186,95 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
                             <Grid item xs={12} sx={{ mb: 1 }}>
                                 <Typography variant="h3" color="text.primary">Add Artwork Details</Typography>
                             </Grid>
-                            <Grid item xs={12} >
-                                <FormControl>
+                            <Grid item xs={12} sx={{ mb: 1 }} >
+                                <FormControl fullWidth>
                                     <InputLabel htmlFor="title">Artwork Title</InputLabel>
                                     <Input id="title" aria-describedby="title-helper-text" {...register('title')}
                                         error={errors.title ? true : false} />
                                     <FormHelperText id="title-helper-text">Artwork Title and Share Title.</FormHelperText>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12}>
-                                <FormControl>
+                            <Grid item xs={12} sx={{ mb: 1 }}>
+                                <FormControl fullWidth>
                                     <InputLabel htmlFor="artist">Artist</InputLabel>
                                     <Input id="artist" aria-describedby="artist-helper-text" {...register('artist')}
                                         error={errors.artist ? true : false} />
                                     <FormHelperText id="artist-helper-text">Artists Name.</FormHelperText>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12}>
-                                <FormControl>
+                            <Grid item xs={12} sx={{ mb: 1 }}>
+                                <FormControl fullWidth>
                                     <InputLabel htmlFor="medium">Medium</InputLabel>
                                     <Input id="medium" aria-describedby="medium-helper-text" {...register('medium')}
                                         error={errors.medium ? true : false} />
                                     <FormHelperText id="medium-helper-text">What the Artwork is made of.</FormHelperText>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12}>
-                                <FormControl>
+                            <Grid item xs={12} sx={{ mb: 1 }}>
+                                <FormControl fullWidth>
                                     <InputLabel htmlFor="dimensions">Dimensions</InputLabel>
                                     <Input id="dimensions" aria-describedby="dimensions-helper-text" {...register('dimensions')}
                                         error={errors.dimensions ? true : false} />
                                     <FormHelperText id="dimensions-helper-text">Eg. 800 x 900 x 50mm.</FormHelperText>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12}>
-                                <FormControl>
+                            <Grid item xs={12} sx={{ mb: 1 }}>
+                                <FormControl fullWidth>
                                     <InputLabel htmlFor="year">Year</InputLabel>
                                     <Input id="year" aria-describedby="year-helper-text" {...register('year')}
                                         error={errors.year ? true : false} />
                                     <FormHelperText id="year-helper-text">Year the Artwork was made.</FormHelperText>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12}>
-                                <FormControl>
+                            <Grid item xs={12} sx={{ mb: 1 }}>
+                                <FormControl fullWidth>
                                     <InputLabel htmlFor="price">Price</InputLabel>
                                     <Input id="price" aria-describedby="price-helper-text" {...register('price')}
                                         error={errors.price ? true : false} />
                                     <FormHelperText id="price-helper-text">Artwork price in ETH.</FormHelperText>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12}>
-                                <FormControl>
+                            <Grid item xs={12} sx={{ mb: 1 }}>
+                                <FormControl fullWidth>
                                     <InputLabel htmlFor="supply">Share Quantity</InputLabel>
                                     <Input id="supply" aria-describedby="supply-helper-text" {...register('supply')}
                                         error={errors.supply ? true : false} />
                                     <FormHelperText id="supply-helper-text">The total amount of Shares.</FormHelperText>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sx={{ mb: 1 }}>
+                                <FormControl fullWidth >
+                                    <InputLabel htmlFor="symbol">Symbol</InputLabel>
+                                    <Input id="symbol" aria-describedby="symbol-helper-text" {...register('symbol')}
+                                        error={errors.supply ? true : false} />
+                                    <FormHelperText id="symbol-helper-text">The trading symbol of the Artwork/Shares.</FormHelperText>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <FormControl fullWidth >
+                                    <InputLabel id="collection-label">Collection</InputLabel>
+                                    <Select
+                                        labelId="collection-label"
+                                        id="collection"
+                                        value={collection}
+                                        label="Collection"
+
+                                        {...register('collection')}
+                                        error={errors.supply ? true : false}
+
+                                        onChange={event => {
+                                            setCollection(event.target.value)
+                                        }}
+
+                                    >
+                                        <MenuItem value="">
+                                            <em>None</em>
+                                        </MenuItem>
+                                        {galleryCollections.map((data: any, index: any) => (
+                                            <MenuItem key={index} value={index}>{data}</MenuItem>
+                                        ))}
+                                    </Select>
+                                    <FormHelperText>Select which Collection this art work belong </FormHelperText>
                                 </FormControl>
                             </Grid>
                         </Paper>
@@ -293,6 +338,10 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
                     <Grid item xs={12} md={6} lg={4}>
 
                         <Paper sx={{ p: 2, mt: 2, }}>
+                            <Alert severity="warning" sx={{ mb: 2 }}>
+                                <AlertTitle>Warning</AlertTitle>
+                                Once Submitted, data in this artwork contract <strong>can not be modified</strong>. Ensure your data is 100% correct.
+                            </Alert>
                             <Button variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>Add ArtWork</Button>
                         </Paper>
                     </Grid>

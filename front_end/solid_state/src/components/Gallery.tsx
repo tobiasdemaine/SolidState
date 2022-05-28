@@ -1,5 +1,5 @@
 import { GalleryOwners, GalleryViewAll, } from "../hooks/GalleryView"
-import { GalleryArtWorkItem } from "./GallerytArtWorkItem"
+import { ArtWork } from "./ArtWork"
 import { useEthers } from "@usedapp/core"
 export interface Props {
     ipfs: any,
@@ -27,7 +27,7 @@ export const Gallery = ({ ipfs, address }: Props) => {
 
     return (<>
         {data.address != null &&
-            <GalleryArtWorkItem ipfs={ipfs} address={data.address} visibility={data.visibility} galleryOwner={owners[owners.length - 1]} />
+            <ArtWork ipfs={ipfs} address={data.address} visibility={data.visibility} galleryOwner={owners[owners.length - 1]} />
         }
     </>)
 

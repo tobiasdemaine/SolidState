@@ -11,7 +11,7 @@ import * as dotenv from 'dotenv'
 
 import { fileFilter, } from './utils'
 
-dotenv.config()
+dotenv.config({ path: "../contracts/.env" })
 
 const myArgs = process.argv.slice(2);
 var CHAIN_ID: any

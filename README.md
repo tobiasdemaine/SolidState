@@ -37,38 +37,38 @@ tools/
 LOCAL CHAIN TESTING
 -------------------
 Start Local BlockChain Ganache
-'''text
+```text
 cd tools
 npm start localchain
-'''
+```
 
 Deploy the gallery Contract
-'''text
+```text
 cd tools
 npm start localchain
-'''
+```
 
 KOVAN CHAIN TESTING
 -------------------
 Start Local BlockChain Ganache
-'''text
+```text
 cd tools
 npm start kovan
-'''
+```
 
 IPFS STARTUP
 -------------------
 Start Local IPFS
-'''text
+```text
 cd tools
 npm start ipfs local
-'''
+```
 
 Start Production IPFS
-'''text
+```text
 cd tools
 npm start ipfs production
-'''
+```
 
 ----------------------
 

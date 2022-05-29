@@ -6,7 +6,7 @@ import {
     Button,
     Input,
     InputLabel,
-    CircularProgress,
+    LinearProgress,
     Snackbar,
     Backdrop,
     Paper,
@@ -33,6 +33,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import API from "../hooks/Api"
 import { GalleryCollections } from "../hooks/GalleryView"
+import useSolidStateContexts from "../hooks/useSolidStateContext"
 export interface ArtWorkAddProps {
     ipfs: any,
 }
@@ -42,7 +43,8 @@ interface Provider {
     name: string
 }
 export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
-    const { getSession, imageFileUpload, metaDataFileUpload } = API()
+    const { state: APPSTATE, setMainSection } = useSolidStateContexts()
+    const { getSession, imageFileUpload, metaDataFileUpload, isReady } = API()
     const owners = GalleryOwners() || []
     const { account } = useEthers() || ""
     var auth = false
@@ -52,24 +54,20 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
     const [ImagesError, setImagesError] = useState(false)
     const [Images, setImages] = useState<Provider[]>([])
     const [Data, setData] = useState<any>(undefined)
+    const [session, setSession] = useState<any>(undefined)
+    const [ArtWorkContractHash, setArtWorkContractHash] = useState<any>(undefined)
+    const [collection, setCollection] = useState<any>('')
+    const [Ready, setReady] = useState<any>(undefined)
+    const [MetaUpload, setMetaUpload] = useState<any>(undefined)
+    const [CleanUp, setCleanUp] = useState<any>(undefined)
+
     const onDrop = useCallback((acceptedFiles: any) => {
         acceptedFiles.forEach((file: any) => {
             setImages(Images => [...Images, { file: file, src: URL.createObjectURL(file), name: file.name, comment: "", ipfsHash: undefined, progress: 0 }]);
-            /*
-            const reader = new FileReader()
-            reader.onabort = () => console.log('file reading was aborted')
-            reader.onerror = () => console.log('file reading has failed')
-            reader.onload = () => {
-                //const binaryStr = reader.result
-                //const dataURL = reader.result
-                //setImages(Images => [...Images, { src: dataURL, name: file.name, comment: "" }]);
-            }
-            //reader.readAsArrayBuffer(file)
-            //reader.readAsDataURL(file)
-            */
         })
 
     }, [])
+
     const { getRootProps, getInputProps } = useDropzone({ onDrop })
     const removeImage = (index: any) => {
         setImages([
@@ -99,14 +97,14 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
         resolver: yupResolver(validationSchema)
     })
 
-    const [session, setSession] = useState<any>(undefined)
-    const [artWorkContractHash, setArtWorkContractHash] = useState<any>(undefined)
+
 
     const onSubmit = (data: any) => {
         if (Images.length == 0) {
             setImagesError(true)
         } else {
             setImagesError(false)
+            console.log(data)
             setData(data)
             getSession(setSession)
         }
@@ -115,7 +113,7 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
         if (session !== undefined) {
             // 1 upload images
             Images.map((item, index) => {
-                imageFileUpload(item["file"], setImages, Images, session)
+                imageFileUpload(item["file"], setImages, Images, index, session)
             })
 
 
@@ -135,7 +133,7 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
                         }
                     )
                 }
-                console.log(Images[i]["progress"])
+
             }
 
             if (count == Images.length) {
@@ -161,188 +159,257 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
                 // 5 add to gallery
                 var blob = new Blob([JSON.stringify(DATA, null, 2)], { type: "application/json" });
                 const file = new File([blob], session + ".json", { 'type': "application/json" })
-                metaDataFileUpload(file, setArtWorkContractHash, session)
-
+                setMetaUpload(true)
+                metaDataFileUpload(file, setReady, session)
             }
         }
     }, [Images])
 
     useEffect(() => {
-        if (artWorkContractHash !== undefined) {
+        if (ArtWorkContractHash !== undefined) {
             // success an warp to contract
             // 
-            console.log("Success", artWorkContractHash)
-        }
-    }, [artWorkContractHash])
+            if (ArtWorkContractHash !== "ERROR") {
+                console.log("Success", ArtWorkContractHash)
+                setReady(undefined)
+                setCleanUp(true)
 
-    const [collection, setCollection] = useState<any>('')
+            } else {
+                console.log("ERROR")
+            }
+        }
+    }, [ArtWorkContractHash])
+    var timer: any = false
+    useEffect(() => {
+        if (Ready !== undefined) {
+            if (Ready == false) {
+                timer = window.setInterval(() => {
+                    if (Ready == "error") {
+                        clearInterval(timer)
+                    } else {
+                        isReady(setReady, session)
+                    }
+                }, 5000)
+            } else {
+                // we are finshed 
+                if (Ready == "working") {
+                    // still working update ui??
+                } else {
+                    setArtWorkContractHash(Ready)
+                }
+
+            }
+        }
+        return () => {
+            window.clearInterval(timer);
+        };
+    }, [Ready])
+
+    useEffect(() => {
+        if (CleanUp == true) {
+            clearInterval(timer)
+            setMainSection({ section: "artwork", value: ArtWorkContractHash, title: ArtWorkContractHash })
+        }
+    }, [CleanUp])
+
     const galleryCollections = GalleryCollections() || []
     return (
         auth ? (
+
             <>
                 <Grid container spacing={1} alignItems="stretch">
-                    <Grid item xs={12} md={6} lg={4}>
-                        <Paper sx={{ p: 2, mt: 2, }}>
-                            <Grid item xs={12} sx={{ mb: 1 }}>
-                                <Typography variant="h3" color="text.primary">Add Artwork Details</Typography>
-                            </Grid>
-                            <Grid item xs={12} sx={{ mb: 1 }} >
-                                <FormControl fullWidth>
-                                    <InputLabel htmlFor="title">Artwork Title</InputLabel>
-                                    <Input id="title" aria-describedby="title-helper-text" {...register('title')}
-                                        error={errors.title ? true : false} />
-                                    <FormHelperText id="title-helper-text">Artwork Title and Share Title.</FormHelperText>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12} sx={{ mb: 1 }}>
-                                <FormControl fullWidth>
-                                    <InputLabel htmlFor="artist">Artist</InputLabel>
-                                    <Input id="artist" aria-describedby="artist-helper-text" {...register('artist')}
-                                        error={errors.artist ? true : false} />
-                                    <FormHelperText id="artist-helper-text">Artists Name.</FormHelperText>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12} sx={{ mb: 1 }}>
-                                <FormControl fullWidth>
-                                    <InputLabel htmlFor="medium">Medium</InputLabel>
-                                    <Input id="medium" aria-describedby="medium-helper-text" {...register('medium')}
-                                        error={errors.medium ? true : false} />
-                                    <FormHelperText id="medium-helper-text">What the Artwork is made of.</FormHelperText>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12} sx={{ mb: 1 }}>
-                                <FormControl fullWidth>
-                                    <InputLabel htmlFor="dimensions">Dimensions</InputLabel>
-                                    <Input id="dimensions" aria-describedby="dimensions-helper-text" {...register('dimensions')}
-                                        error={errors.dimensions ? true : false} />
-                                    <FormHelperText id="dimensions-helper-text">Eg. 800 x 900 x 50mm.</FormHelperText>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12} sx={{ mb: 1 }}>
-                                <FormControl fullWidth>
-                                    <InputLabel htmlFor="year">Year</InputLabel>
-                                    <Input id="year" aria-describedby="year-helper-text" {...register('year')}
-                                        error={errors.year ? true : false} />
-                                    <FormHelperText id="year-helper-text">Year the Artwork was made.</FormHelperText>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12} sx={{ mb: 1 }}>
-                                <FormControl fullWidth>
-                                    <InputLabel htmlFor="price">Price</InputLabel>
-                                    <Input id="price" aria-describedby="price-helper-text" {...register('price')}
-                                        error={errors.price ? true : false} />
-                                    <FormHelperText id="price-helper-text">Artwork price in ETH.</FormHelperText>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12} sx={{ mb: 1 }}>
-                                <FormControl fullWidth>
-                                    <InputLabel htmlFor="supply">Share Quantity</InputLabel>
-                                    <Input id="supply" aria-describedby="supply-helper-text" {...register('supply')}
-                                        error={errors.supply ? true : false} />
-                                    <FormHelperText id="supply-helper-text">The total amount of Shares.</FormHelperText>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12} sx={{ mb: 1 }}>
-                                <FormControl fullWidth >
-                                    <InputLabel htmlFor="symbol">Symbol</InputLabel>
-                                    <Input id="symbol" aria-describedby="symbol-helper-text" {...register('symbol')}
-                                        error={errors.supply ? true : false} />
-                                    <FormHelperText id="symbol-helper-text">The trading symbol of the Artwork/Shares.</FormHelperText>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <FormControl fullWidth >
-                                    <InputLabel id="collection-label">Collection</InputLabel>
-                                    <Select
-                                        labelId="collection-label"
-                                        id="collection"
-                                        value={collection}
-                                        label="Collection"
-
-                                        {...register('collection')}
-                                        error={errors.supply ? true : false}
-
-                                        onChange={event => {
-                                            setCollection(event.target.value)
-                                        }}
-
-                                    >
-                                        <MenuItem value="">
-                                            <em>None</em>
-                                        </MenuItem>
-                                        {galleryCollections.map((data: any, index: any) => (
-                                            <MenuItem key={index} value={index}>{data}</MenuItem>
-                                        ))}
-                                    </Select>
-                                    <FormHelperText>Select which Collection this art work belong </FormHelperText>
-                                </FormControl>
-                            </Grid>
-                        </Paper>
-
-                    </Grid>
-                    <Grid item xs={12} md={6} lg={4}>
-                        <Paper sx={{ p: 2, mt: 2, }}>
-                            <Grid item xs={12} sx={{ mb: 1 }}>
-                                <Typography variant="h3" color="text.primary">Add Artwork Images</Typography>
-                            </Grid>
-                            {
-                                ImagesError == true &&
-                                <>
+                    {Data == undefined && (
+                        <>
+                            <Grid item xs={12} md={6} lg={4}>
+                                <Paper sx={{ p: 2, mt: 2, }}>
                                     <Grid item xs={12} sx={{ mb: 1 }}>
-                                        <Alert variant="filled" severity="error">
-                                            An image is  required
-                                        </Alert>
+                                        <Typography variant="h3" color="text.primary">Add Artwork Details</Typography>
                                     </Grid>
-                                </>
-                            }
-                            <Grid item xs={12} >
-                                <div {...getRootProps()}>
-                                    <input {...getInputProps()} />
-                                    <p>Drag 'n' drop some files here, or click to select files</p>
-                                </div>
-                                <ImageList sx={{ width: 1 / 1, }}>
-                                    {Images.map((item, index) => (
-                                        <ImageListItem key={`_${item.name}`}>
-                                            <img
-                                                src={`${item.src}`}
-                                                width="50%"
-                                                //srcSet={`${item.src}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                                                alt={item.name}
-                                                loading="lazy"
-                                            />
-                                            <ImageListItemBar
-                                                title={<Input onChange={(event: any) => {
-                                                    const updatedImages = [...Images];
-                                                    updatedImages[0]["comment"] = event.target.value;
-                                                    setImages(updatedImages);
-                                                }} id={`Image_${index}`} />}
-                                                actionIcon={
-                                                    <IconButton
-                                                        sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                                                        aria-label={`info about ${item.name}`}
-                                                        name={item.name}
-                                                        data-input={item.name}
-                                                        onClick={(e: any) => {
-                                                            removeImage(index)
-                                                        }}>
-                                                        <DeleteIcon />
-                                                    </IconButton>
-                                                }
-                                            />
-                                        </ImageListItem>
-                                    ))}
-                                </ImageList>
+                                    <Grid item xs={12} sx={{ mb: 1 }} >
+                                        <FormControl fullWidth>
+                                            <InputLabel htmlFor="title">Artwork Title</InputLabel>
+                                            <Input id="title" aria-describedby="title-helper-text" {...register('title')}
+                                                error={errors.title ? true : false} />
+                                            <FormHelperText id="title-helper-text">Artwork Title and Share Title.</FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} sx={{ mb: 1 }}>
+                                        <FormControl fullWidth>
+                                            <InputLabel htmlFor="artist">Artist</InputLabel>
+                                            <Input id="artist" aria-describedby="artist-helper-text" {...register('artist')}
+                                                error={errors.artist ? true : false} />
+                                            <FormHelperText id="artist-helper-text">Artists Name.</FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} sx={{ mb: 1 }}>
+                                        <FormControl fullWidth>
+                                            <InputLabel htmlFor="medium">Medium</InputLabel>
+                                            <Input id="medium" aria-describedby="medium-helper-text" {...register('medium')}
+                                                error={errors.medium ? true : false} />
+                                            <FormHelperText id="medium-helper-text">What the Artwork is made of.</FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} sx={{ mb: 1 }}>
+                                        <FormControl fullWidth>
+                                            <InputLabel htmlFor="dimensions">Dimensions</InputLabel>
+                                            <Input id="dimensions" aria-describedby="dimensions-helper-text" {...register('dimensions')}
+                                                error={errors.dimensions ? true : false} />
+                                            <FormHelperText id="dimensions-helper-text">Eg. 800 x 900 x 50mm.</FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} sx={{ mb: 1 }}>
+                                        <FormControl fullWidth>
+                                            <InputLabel htmlFor="year">Year</InputLabel>
+                                            <Input id="year" aria-describedby="year-helper-text" {...register('year')}
+                                                error={errors.year ? true : false} />
+                                            <FormHelperText id="year-helper-text">Year the Artwork was made.</FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} sx={{ mb: 1 }}>
+                                        <FormControl fullWidth>
+                                            <InputLabel htmlFor="price">Price</InputLabel>
+                                            <Input id="price" aria-describedby="price-helper-text" {...register('price')}
+                                                error={errors.price ? true : false} />
+                                            <FormHelperText id="price-helper-text">Artwork price in ETH.</FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} sx={{ mb: 1 }}>
+                                        <FormControl fullWidth>
+                                            <InputLabel htmlFor="supply">Share Quantity</InputLabel>
+                                            <Input id="supply" aria-describedby="supply-helper-text" {...register('supply')}
+                                                error={errors.supply ? true : false} />
+                                            <FormHelperText id="supply-helper-text">The total amount of Shares.</FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} sx={{ mb: 1 }}>
+                                        <FormControl fullWidth >
+                                            <InputLabel htmlFor="symbol">Symbol</InputLabel>
+                                            <Input id="symbol" aria-describedby="symbol-helper-text" {...register('symbol')}
+                                                error={errors.supply ? true : false} />
+                                            <FormHelperText id="symbol-helper-text">The trading symbol of the Artwork/Shares.</FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <FormControl fullWidth >
+                                            <InputLabel id="collection-label">Collection</InputLabel>
+                                            <Select
+                                                labelId="collection-label"
+                                                id="collection"
+                                                value={collection}
+                                                label="Collection"
+
+                                                {...register('collection')}
+                                                error={errors.supply ? true : false}
+
+                                                onChange={event => {
+                                                    setCollection(event.target.value)
+                                                }}
+
+                                            >
+                                                <MenuItem value="">
+                                                    <em>None</em>
+                                                </MenuItem>
+                                                {galleryCollections.map((data: any, index: any) => (
+                                                    <MenuItem key={index} value={index}>{data}</MenuItem>
+                                                ))}
+                                            </Select>
+                                            <FormHelperText>Select which Collection this art work belong </FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                </Paper>
+
                             </Grid>
-                        </Paper>
-                    </Grid>
+                            <Grid item xs={12} md={6} lg={4}>
+                                <Paper sx={{ p: 2, mt: 2, }}>
+                                    <Grid item xs={12} sx={{ mb: 1 }}>
+                                        <Typography variant="h3" color="text.primary">Add Artwork Images</Typography>
+                                    </Grid>
+                                    {
+                                        ImagesError == true &&
+                                        <>
+                                            <Grid item xs={12} sx={{ mb: 1 }}>
+                                                <Alert variant="filled" severity="error">
+                                                    An image is  required
+                                                </Alert>
+                                            </Grid>
+                                        </>
+                                    }
+                                    <Grid item xs={12} >
+                                        <div {...getRootProps()}>
+                                            <input {...getInputProps()} />
+                                            <p>Drag 'n' drop some files here, or click to select files</p>
+                                        </div>
+                                        <ImageList sx={{ width: 1 / 1, }}>
+                                            {Images.map((item, index) => (
+                                                <ImageListItem key={`_${item.name}`}>
+                                                    <img
+                                                        src={`${item.src}`}
+                                                        width="50%"
+                                                        alt={item.name}
+                                                        loading="lazy"
+                                                    />
+                                                    <ImageListItemBar
+                                                        title={<Input onChange={(event: any) => {
+                                                            const updatedImages = [...Images];
+                                                            updatedImages[0]["comment"] = event.target.value;
+                                                            setImages(updatedImages);
+                                                        }} id={`Image_${index}`} />}
+                                                        actionIcon={
+                                                            <IconButton
+                                                                sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                                                                aria-label={`info about ${item.name}`}
+                                                                name={item.name}
+                                                                data-input={item.name}
+                                                                onClick={(e: any) => {
+                                                                    removeImage(index)
+                                                                }}>
+                                                                <DeleteIcon />
+                                                            </IconButton>
+                                                        }
+                                                    />
+                                                </ImageListItem>
+                                            ))}
+                                        </ImageList>
+                                    </Grid>
+                                </Paper>
+                            </Grid>
+                        </>
+                    )}
                     <Grid item xs={12} md={6} lg={4}>
 
                         <Paper sx={{ p: 2, mt: 2, }}>
-                            <Alert severity="warning" sx={{ mb: 2 }}>
-                                <AlertTitle>Warning</AlertTitle>
-                                Once Submitted, data in this artwork contract <strong>can not be modified</strong>. Ensure your data is 100% correct.
-                            </Alert>
-                            <Button variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>Add ArtWork</Button>
+                            {Data == undefined ? (<>
+                                <Alert severity="warning" sx={{ mb: 2 }}>
+
+                                    <AlertTitle>Warning</AlertTitle>
+                                    Once Submitted, data in this artwork contract <strong>can not be modified</strong>. Ensure your data is 100% correct.
+                                </Alert>
+                                <Button variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>Add ArtWork</Button>
+                            </>) : (<>
+                                <LinearProgress />
+                                <Grid item xs={12} sx={{ mb: 1 }}>
+                                    <Typography variant="h5" color="text.primary">Uploading data</Typography>
+                                </Grid>
+                                {Images.map((item: any, index: any) => (
+                                    <>
+                                        <Grid itemType="">{item["name"]} -  {item["progress"]}</Grid>
+                                    </>
+                                ))}
+                                {
+                                    MetaUpload == true &&
+                                    <>
+                                        <Grid item>MetaData...</Grid>
+                                    </>
+                                }
+                                {
+                                    Ready == false &&
+                                    <>
+                                        <Grid item><strong>Deploying Contract...</strong></Grid>
+                                    </>
+                                }
+                            </>)}
+
+
                         </Paper>
                     </Grid>
                 </Grid>
@@ -352,37 +419,3 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
 
 }
 
-
-
-/*
-
-    "title": "Solid State 2",
-    "artist": "tdm",
-    "medium": "obsidian glass",
-    "dimensions": "100 x 20 x 50mm",
-    "year": 2022,
-    "price": 20,
-    "name": "Solid State 2",
-    "symbol": "SS2",
-    "supply": 100000,
-    "images": [
-        {
-            "filePath": "/home/studio/Development/SolidState/artwork/solid_state_2/images/image_0.png",
-            "description": "A peice of atacamite.",
-            "mime": "image/png"
-        },
-        {
-            "filePath": "/home/studio/Development/SolidState/artwork/solid_state_2/images/image_1.png",
-            "description": "With a hand for size comparisn.",
-            "mime": "image/png"
-        }
-    ],
-    "videos": [
-        {
-            "filePath": "/home/studio/Development/SolidState/artwork/solid_state_2/video/video_0_1.mp4",
-            "description": "This is not coal it is atacamite.",
-            "mime": "video/ogv"
-        }
-    ]
-
-*/

@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deploy = exports.localAccounts = exports.localChain = exports.setupLocalChain = exports.startIpfs = exports.setupNodeProjects = exports.dotEnv = void 0;
+exports.react = exports.deploy = exports.localAccounts = exports.localChain = exports.setupLocalChain = exports.startIpfs = exports.setupNodeProjects = exports.dotEnv = void 0;
 const fs = __importStar(require("fs"));
 const shell = __importStar(require("shelljs"));
 const dotenv = __importStar(require("dotenv"));
@@ -54,6 +54,7 @@ const startIpfs = (network) => {
         shell.exec("ssh ", { silent: false });
     }
     shell.exec("docker stop ipfs_host", { silent: false });
+    shell.exec("docker rm ipfs_host", { silent: false });
     shell.exec("docker pull ipfs/go-ipfs", { silent: false });
     shell.exec("docker run -d --restart always --expose=8080 -e VIRTUAL_PORT=8080 -e VIRTUAL_HOST=" + process.env.IPFS_URL + " --name ipfs_host -v " + stagingPath + ":/export -v " + dataPath + ":/data/ipfs -p 4001:4001 -p 4001:4001/udp -p 127.0.0.1:8080:8080 -p 127.0.0.1:5001:5001 ipfs/go-ipfs:latest", { silent: false });
 };
@@ -111,6 +112,11 @@ const deploy = (network) => {
     }
 };
 exports.deploy = deploy;
+const react = () => {
+    process.chdir("../front_end/solid_state");
+    shell.exec("npm start", { silent: false });
+};
+exports.react = react;
 const myArgs = process.argv.slice(2);
 switch (myArgs[0]) {
     case 'dotEnv':
@@ -124,8 +130,14 @@ switch (myArgs[0]) {
     case 'localaccounts':
         (0, exports.localAccounts)();
         break;
+    case 'startipfs':
+        (0, exports.startIpfs)(myArgs[1]);
+        break;
     case 'deploy':
         (0, exports.deploy)(myArgs[1]);
+        break;
+    case 'react':
+        (0, exports.react)();
         break;
     default:
         console.log("please supply command");

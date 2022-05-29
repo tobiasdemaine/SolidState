@@ -35,6 +35,7 @@ export const startIpfs = (network: any) => {
         shell.exec("ssh ", { silent: false })
     }
     shell.exec("docker stop ipfs_host", { silent: false })
+    shell.exec("docker rm ipfs_host", { silent: false })
     shell.exec("docker pull ipfs/go-ipfs", { silent: false })
     shell.exec("docker run -d --restart always --expose=8080 -e VIRTUAL_PORT=8080 -e VIRTUAL_HOST=" + process.env.IPFS_URL + " --name ipfs_host -v " + stagingPath + ":/export -v " + dataPath + ":/data/ipfs -p 4001:4001 -p 4001:4001/udp -p 127.0.0.1:8080:8080 -p 127.0.0.1:5001:5001 ipfs/go-ipfs:latest", { silent: false })
 }
@@ -94,6 +95,11 @@ export const deploy = (network: any) => {
     }
 }
 
+export const react = () => {
+    process.chdir("../front_end/solid_state")
+    shell.exec("npm start", { silent: false })
+}
+
 
 const myArgs = process.argv.slice(2);
 switch (myArgs[0]) {
@@ -112,8 +118,10 @@ switch (myArgs[0]) {
         startIpfs(myArgs[1])
         break
     case 'deploy':
-
         deploy(myArgs[1])
+        break
+    case 'react':
+        react()
         break
     default:
         console.log("please supply command")

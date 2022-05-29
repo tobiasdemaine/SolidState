@@ -1,22 +1,27 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { suppressDeprecationWarnings } from 'moment'
+
 const API_ENPOINT = process.env.REACT_APP_API_ENDPOINT
 const API = () => {
 
 
 
 
-    const imageFileUpload = (file: any, setImages: Function, Images: any, session: any) => {
-        uploadImageFile(file, setImages, Images, session)
+    const imageFileUpload = (file: any, setImages: Function, Images: any, index: any, session: any) => {
+        uploadImageFile(file, setImages, Images, index, session)
     }
 
-    const metaDataFileUpload = (file: any, setMetaData: Function, session: any) => {
-        uploadMetaDataFile(file, setMetaData, session)
+    const metaDataFileUpload = (file: any, setReady: Function, session: any) => {
+        uploadMetaDataFile(file, setReady, session)
     }
 
     const getSession = (setSession: Function) => {
         getSessionFromAPI(setSession)
+    }
+
+    const isReady = (setReady: Function, session: any) => {
+        getReadyState(setReady, session)
     }
 
     async function getSessionFromAPI(setSession: Function) {
@@ -31,11 +36,11 @@ const API = () => {
         }
     }
 
-    async function uploadImageFile(file: any, setImages: Function, Images: any, session: any) {
+    async function uploadImageFile(file: any, setImages: Function, Images: any, index: any, session: any) {
         const onUploadProgress = (event: any) => {
             const percentage = Math.round((100 * event.loaded) / event.total);
             const updatedImages = [...Images];
-            updatedImages[0]["progress"] = percentage
+            updatedImages[index]["progress"] = percentage
             setImages(updatedImages);
         };
         try {
@@ -50,7 +55,7 @@ const API = () => {
                 onUploadProgress,
             });
             const updatedImages = [...Images];
-            updatedImages[0]["ipfsHash"] = response.data["ipfsHash"]
+            updatedImages[index]["ipfsHash"] = response.data["ipfsHash"]
             setImages(updatedImages)
         } catch (error) {
             console.log(error)
@@ -58,7 +63,7 @@ const API = () => {
         }
     }
 
-    async function uploadMetaDataFile(file: any, setMetaData: Function, session: any) {
+    async function uploadMetaDataFile(file: any, setReady: Function, session: any) {
         try {
             let formData = new FormData()
             formData.append('file', file)
@@ -69,7 +74,26 @@ const API = () => {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            setMetaData(response.data["contractHash"]);
+            console.log("setReady")
+            setReady(false)
+
+        } catch (error) {
+            console.log(error)
+            return '';
+        }
+    }
+
+    async function getReadyState(setReady: any, session: any) {
+        try {
+            let formData = new FormData()
+            formData.append('key', session);
+            const response = await axios.post(API_ENPOINT + "/r", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            console.log(response.data)
+            setReady(response.data["ready"]);
 
         } catch (error) {
             console.log(error)
@@ -78,7 +102,7 @@ const API = () => {
     }
 
 
-    return { getSession, imageFileUpload, metaDataFileUpload, }
+    return { getSession, imageFileUpload, metaDataFileUpload, isReady }
 }
 
 

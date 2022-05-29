@@ -6,7 +6,7 @@ export interface CollectionProps {
 }
 export const CollectionsOverviewImage = ({ ipfs, ipfsHash }: CollectionProps) => {
     //let { _data, _blob, isIpfsFileReady } = useIpfsRetrieve(ipfs, ipfsHash)
-    var blobString: string = "//ipfs.tobiasdemaine.com/ipfs/" + ipfsHash //String(_blob)
+    var blobString: string = ipfs + ipfsHash //String(_blob)
     return (
 
         <CardMedia

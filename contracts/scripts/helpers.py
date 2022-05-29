@@ -151,7 +151,7 @@ def listen_for_event(brownie_contract, event, timeout=200, poll_interval=2):
 def update_front_end():
     copy_folders_to_front_end("./build", "../front_end/solid_state/src/chain-info")
     copy_folders_to_front_end("./build", "../rest_api/chain-info")
-    # shutil.copyfile("./.env", "../rest_api/.env")
+    shutil.copyfile("./.env", "../rest_api/.env")
     with open("brownie-config.yaml", "r") as brownie_config:
         config_dict = yaml.load(brownie_config, Loader=yaml.FullLoader)
         with open(

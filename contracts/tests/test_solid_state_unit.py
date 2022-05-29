@@ -214,11 +214,6 @@ def test_make_offer_to_buy_contract():
         )
     tx = solid_state.setForSaleOn({"from": account})
     tx.wait(1)
-    # test offer fail amount
-    # with pytest.raises(exceptions.VirtualMachineError):
-    #    tx = solid_state.makeOfferToBuyContract(
-    #        {"from": send_to_account, "amount": price_fail}
-    #    )
 
     tx = solid_state.makeOfferToBuyContract({"from": send_to_account, "amount": price})
     owners = solid_state.getOwners({"from": account})

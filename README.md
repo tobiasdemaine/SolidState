@@ -1,23 +1,42 @@
 SOLID STATE
 ===========
 
-is a decentralised market for trading shares in Artworks. The premise is the owner of the artwork/s maintains storage and security of the artwork, while allowing for the artwork to realise it investment value by allowing others to invest in it as parts/shares.  These parts/shares are ec20 tokens. [Test Server](http://solidstate.tobiasdemaine.com)
+is a decentralised market for trading shares in Artworks. The premise is the owner of the artwork/s maintains storage and security of the artwork, while allowing for the artwork to realise its investment value by allowing others to invest in it as parts/shares.  These parts/shares are ec20 tokens. [Test Server](http://solidstate.tobiasdemaine.com)
 
 The platform is broken into 2 contracts. The Artwork contract and The Gallery contract.
 
-Each Artwork Contract is it own trading platform, managing its own buy and sell orders.  This creates independence of the contract from exisiting only on a specific a trading platforms.  The price of the Artwork's shares adjusts the artworks price. Ultmately "the market" defines the priceof the artwork.
+Each Artwork Contract is it own trading platform, managing its own buy and sell orders.  This creates independence of the contract from exisiting only on a specific trading platforms.  The price of the Artwork's shares adjusts the artworks price. Ultimately "the market" defines the price of the artwork.
 
 The Gallery contract is a group of lists (collections) of Artworks with a visiblity switch.
 
-- *contracts/* Smart Contracts / Brownie
-- *front_end/solid_state/* React Front End
-- *rest_api/* Node Rest Api and App Server
-- *tools/* Setup Tools
+**The project directory structure:**
+
+- *contracts/* - Smart Contracts / Brownie
+- *front_end/solid_state/* - React Front End
+- *rest_api/* - Node Rest Api and App Server
+- *tools/* - Setup Tools
 
 
 
 ## Local Host Development 
-### Start Order 
+### Install on Ubuntu/Debian
+'''
+sudo apt install python3 pip3 docker.io curl gnupg git
+curl -sL https://deb.nodesource.com/setup_17.x  | bash -
+apt-get -y install nodejs
+pip3 install brownie
+git clone https://github.com/tobiasdemaine/SolidState.git
+cd SolidState/front_end/solid_state/
+npm install
+cd ../../rest_api
+npm install
+cd ../../tools
+npm install
+'''
+
+.env setup???
+
+### Server start up order 
 Open each in a new Terminal
 1. Start local blockchain - Ganache 
 ```

@@ -87,6 +87,7 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
         supply: Yup.number().required('Number is required'),
         symbol: Yup.string().required('is required'),
         collection: Yup.string().required('is required'),
+        secret: Yup.string().required('is required'),
     });
     const {
         register,
@@ -104,9 +105,8 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
             setImagesError(true)
         } else {
             setImagesError(false)
-            console.log(data)
             setData(data)
-            getSession(setSession)
+            getSession(setSession, data["secret"])
         }
     }
     useEffect(() => {
@@ -170,7 +170,6 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
             // success an warp to contract
             // 
             if (ArtWorkContractHash !== "ERROR") {
-                console.log("Success", ArtWorkContractHash)
                 setReady(undefined)
                 setCleanUp(true)
 
@@ -384,16 +383,24 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
                                     <AlertTitle>Warning</AlertTitle>
                                     Once Submitted, data in this artwork contract <strong>can not be modified</strong>. Ensure your data is 100% correct.
                                 </Alert>
+                                <Grid item xs={12} sx={{ mb: 1 }} >
+                                    <FormControl fullWidth>
+                                        <InputLabel htmlFor="secret">API Secret</InputLabel>
+                                        <Input type="password"
+                                            autoComplete="current-password" id="secret" aria-describedby="secret-helper-text" {...register('secret')}
+                                            error={errors.title ? true : false} />
+                                        <FormHelperText id="secret-helper-text">Secret Key</FormHelperText>
+                                    </FormControl>
+                                </Grid>
                                 <Button variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>Add ArtWork</Button>
                             </>) : (<>
                                 <LinearProgress />
-                                <Grid item xs={12} sx={{ mb: 1 }}>
+                                <Grid item xs={12} sx={{ mb: 1, mt: 2 }}>
                                     <Typography variant="h5" color="text.primary">Uploading data</Typography>
                                 </Grid>
                                 {Images.map((item: any, index: any) => (
-                                    <>
-                                        <Grid itemType="">{item["name"]} -  {item["progress"]}</Grid>
-                                    </>
+                                    <Grid item key={index}>{item["name"]} -  {item["progress"]}</Grid>
+
                                 ))}
                                 {
                                     MetaUpload == true &&

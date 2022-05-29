@@ -19,7 +19,7 @@ var WEB3_PROVIDER: any
 var PRIVATE_KEY: any
 switch (myArgs[0]) {
     case 'local':
-        console.log("Local")
+        console.log("Running Local")
         WEB3_PROVIDER = process.env.HTTP_PROVIDER_LOCAL
         PRIVATE_KEY = process.env.PRIVATE_KEY_LOCAL
         CHAIN_ID = 1337
@@ -42,8 +42,7 @@ switch (myArgs[0]) {
         PRIVATE_KEY = process.env.PRIVATE_KEY_KOVAN
         CHAIN_ID = 42
 }
-console.log(WEB3_PROVIDER)
-console.log(PRIVATE_KEY)
+
 // setup
 const IPFS_PATH = 'ipfs_host:/export'
 const UPLOAD_PATH = 'uploads'
@@ -61,35 +60,49 @@ shell.exec("mkdir uploads", { silent: true })
 const app = express()
 app.use(cors())
 
-app.get('/k', async (req, res) => {
-    // this will get confirmation from the gallery contract
-    const uuid = randomUUID()
-    UUIDS[uuid] = { timestamp: Date.now(), files: [], submit: false, address: null, ready: false }
-    res.send({ key: uuid })
+const testSecret = (req: any) => { //quick and dirty authetication
+    if (req.body["secret"] !== undefined) {
+        if (req.body["secret"] == "password") {
+            return true
+        }
+    }
+    return false
+}
+
+const testUUID = (req: any) => { //quick and dirty authetication
+    if (req.body["key"] !== undefined) {
+        if (UUIDS.hasOwnProperty(req.body["key"])) {
+            if (Date.now() - 12000000 < UUIDS[req.body["key"]].timestamp) {
+                return true
+            } else {
+                delete UUIDS[req.body["key"]]
+            }
+        }
+    }
+
+    return false
+}
+
+app.post('/k', upload.none(), async (req, res) => { //set a session key
+    if (testSecret(req)) {
+        const uuid = randomUUID()
+        UUIDS[uuid] = { timestamp: Date.now(), files: [], submit: false, address: null, ready: false }
+        res.send({ key: uuid })
+    } else {
+        res.send({ key: 'error' })
+    }
 })
 
 
-app.post('/r', upload.single('file'), async (req, res) => {
+app.post('/r', upload.none(), async (req, res) => {
     try {
-        if (req.body["key"] !== undefined) {
-            if (UUIDS.hasOwnProperty(req.body["key"])) {
-                if (Date.now() - 12000000 < UUIDS[req.body["key"]].timestamp) {
-                    if (UUIDS[req.body["key"]].ready) {
-                        console.log(req.body["key"], UUIDS[req.body["key"]].ready)
-
-                        res.send({ ready: UUIDS[req.body["key"]].address })
-                        delete UUIDS[req.body["key"]]
-                    } else {
-                        res.send({ ready: "working" })
-                    }
-                } else {
-                    delete UUIDS[req.body["key"]]
-                    throw "error"
-                }
+        if (testUUID(req)) {
+            if (UUIDS[req.body["key"]].ready) {
+                res.send({ ready: UUIDS[req.body["key"]].address })
+                delete UUIDS[req.body["key"]]
             } else {
-                throw "error"
+                res.send({ ready: "working" })
             }
-
         } else {
             throw "error"
         }
@@ -101,51 +114,37 @@ app.post('/r', upload.single('file'), async (req, res) => {
 
 app.post('/f', upload.single('file'), async (req, res) => {
     try {
-        if (req.body["key"] !== undefined) {
-            if (UUIDS.hasOwnProperty(req.body["key"])) {
-                if (Date.now() - 12000000 < UUIDS[req.body["key"]].timestamp) { // 20 minutes to perform the transaction
+        if (testUUID(req)) {
+            // move file to docker
+            const dockerFileCopyCommand = "docker cp '" + req.file.path + "' '" + "ipfs_host:/export/" + req.file.originalname + "'";
+            shell.exec(dockerFileCopyCommand, { silent: true })
 
-                    // move file to docker
-                    const dockerFileCopyCommand = "docker cp '" + req.file.path + "' '" + "ipfs_host:/export/" + req.file.originalname + "'";
-                    shell.exec(dockerFileCopyCommand, { silent: true })
+            const dockerIPFSAddFileCommand = "docker exec ipfs_host ipfs add '/export/" + req.file.originalname + "'"
 
-                    const dockerIPFSAddFileCommand = "docker exec ipfs_host ipfs add '/export/" + req.file.originalname + "'"
+            var ipfsOutput = shell.exec(dockerIPFSAddFileCommand, { silent: true }).stdout
 
-                    var ipfsOutput = shell.exec(dockerIPFSAddFileCommand, { silent: true }).stdout
+            const ipfsHash = ipfsOutput.split(" ")[1]
 
-                    const ipfsHash = ipfsOutput.split(" ")[1]
+            UUIDS[req.body["key"]].files.push(ipfsHash)
 
-                    UUIDS[req.body["key"]].files.push(ipfsHash)
-
-
-                    if (req.body["publish"] == "true") {
-                        let metaText = fs.readFileSync(req.file.path)
-                        let metaData = JSON.parse(metaText.toString())
-                        console.log("Publish")
-                        if (UUIDS[req.body["key"]]["submit"] == false) {
-                            UUIDS[req.body["key"]]["submit"] = true
-                            deployTokenContract(ipfsHash, metaData, req.body["key"])
-                        }
-
-
-                        res.send({ contractHash: "Processing this will take sometime" })
-                    } else {
-                        fs.unlinkSync(req.file.path)
-                        res.send({ ipfsHash: ipfsHash })
-                    }
-                } else {
-                    delete UUIDS[req.body["key"]]
-                    fs.unlinkSync(req.file.path)
-                    throw "out of time"
+            if (req.body["publish"] == "true") {
+                let metaText = fs.readFileSync(req.file.path)
+                let metaData = JSON.parse(metaText.toString())
+                if (UUIDS[req.body["key"]]["submit"] == false) {
+                    UUIDS[req.body["key"]]["submit"] = true
+                    deployTokenContract(ipfsHash, metaData, req.body["key"])
                 }
 
+
+                res.send({ contractHash: "Processing" })
             } else {
                 fs.unlinkSync(req.file.path)
-                throw "bad key"
+                res.send({ ipfsHash: ipfsHash })
             }
+
         } else {
-            fs.unlinkSync(UPLOAD_PATH + "/" + req.file.filename)
-            throw "no key"
+            fs.unlinkSync(req.file.path)
+            throw "error"
         }
 
     } catch (err) {
@@ -154,7 +153,7 @@ app.post('/f', upload.single('file'), async (req, res) => {
     }
 })
 
-app.use('/', express.static('public'))
+app.use('/', express.static('public')) // serve the react app
 
 app.listen(3030, function () {
     console.log('listening on port 3030!');
@@ -166,16 +165,9 @@ const deployTokenContract = (ipfsHash: any, metaData: any, UUID: any) => {
     let code = '0x' + contract.bytecode
     let tokenContract = new web3.eth.Contract(contract.abi)
     let account = web3.eth.accounts.privateKeyToAccount(PRIVATE_KEY)
-    var gasPrice: any
     var gas: any
 
-
-
     web3.eth.getGasPrice().then((gasPrice: any) => {
-        console.log(metaData["supply"],
-            Web3.utils.toWei(metaData["price"].toString()),
-            metaData["title"],
-            metaData["symbol"])
         var artWorkPrice = Web3.utils.toWei(metaData["price"].toString())
 
         gas = tokenContract.deploy({
@@ -200,7 +192,6 @@ const deployTokenContract = (ipfsHash: any, metaData: any, UUID: any) => {
                 gas: gas,
                 gasPrice: gasPrice
             }).then(function (newContractInstance) {
-                console.log("newContractInstance.options.address", newContractInstance.options.address) // instance with the new contract address
                 //add the meta data
                 UUIDS[UUID]["address"] = newContractInstance.options.address
                 let tokenContract = new web3.eth.Contract(contract.abi, newContractInstance.options.address)
@@ -223,22 +214,13 @@ const deployTokenContract = (ipfsHash: any, metaData: any, UUID: any) => {
                                     gas: gas,
                                     gasPrice: gasPrice
                                 }).then((result: any) => {
-                                    // call gallery contract
-                                    console.log(result)
-
                                     let source = fs.readFileSync(GALLERY_CONTRACT_SOURCE)
                                     let contract = JSON.parse(source.toString())
-                                    let code = '0x' + contract.bytecode
                                     let netmap = fs.readFileSync("./chain-info/deployments/map.json")
-
                                     let networkMapping = JSON.parse(netmap.toString())
-                                    var gasPrice: any
-                                    var gas: any
 
                                     web3.eth.getGasPrice().then((gasPrice: any) => {
                                         let galleryContract = new web3.eth.Contract(contract.abi, networkMapping[CHAIN_ID.toString()]["SolidStateGallery"][0])
-                                        console.log(newContractInstance.options.address,
-                                            metaData["collection"])
                                         galleryContract.methods.addArtWork(
                                             newContractInstance.options.address,
                                             metaData["collection"]).estimateGas().then((gas: any) => {
@@ -250,13 +232,12 @@ const deployTokenContract = (ipfsHash: any, metaData: any, UUID: any) => {
                                                         gasPrice: gasPrice
                                                     }).then(function (result: any) {
                                                         UUIDS[UUID]["ready"] = true
-                                                        console.log(result)
+                                                        //console.log(result)
                                                     })
                                             })
                                     })
                                 })
                         } catch (err) {
-                            console.log("---")
                             console.log(err)
                         }
 

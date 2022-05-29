@@ -16,20 +16,25 @@ const API = () => {
         uploadMetaDataFile(file, setReady, session)
     }
 
-    const getSession = (setSession: Function) => {
-        getSessionFromAPI(setSession)
+    const getSession = (setSession: Function, secret: any) => {
+        getSessionFromAPI(setSession, secret)
     }
 
     const isReady = (setReady: Function, session: any) => {
         getReadyState(setReady, session)
     }
 
-    async function getSessionFromAPI(setSession: Function) {
-        console.log("getSessionFromAPI")
+    async function getSessionFromAPI(setSession: Function, secret: any) {
         try {
-            const data = await axios(API_ENPOINT + "/k")
-            setSession(data.data.key)
-            console.log(data.data.key)
+            let formData = new FormData()
+            formData.append('secret', secret)
+            const response = await axios.post(API_ENPOINT + "/k", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })
+
+            setSession(response.data.key)
         } catch (error) {
             console.log(error)
             return '';
@@ -74,7 +79,6 @@ const API = () => {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            console.log("setReady")
             setReady(false)
 
         } catch (error) {
@@ -92,7 +96,6 @@ const API = () => {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            console.log(response.data)
             setReady(response.data["ready"]);
 
         } catch (error) {

@@ -10,7 +10,7 @@ docker pull ipfs/go-ipfs
 ```
 then
 ```text
-docker run -d --restart always --expose=8080 -e VIRTUAL_PORT=8080 -e VIRTUAL_HOST=ipfs.tobiasdemaine.com --name ipfs_host -v /home/studio/Development/SolidState/rest_api/ipfs_storage/staging/:/export -v /home/studio/Development/SolidState/rest_api/ipfs_storage/data/:/data/ipfs -p 4001:4001 -p 4001:4001/udp -p 127.0.0.1:8080:8080 -p 127.0.0.1:5001:5001 ipfs/go-ipfs:latest
+docker run -d --restart always --expose=8080 -e VIRTUAL_PORT=8080 -e VIRTUAL_HOST=ipfs.tobiasdemaine.com --name ipfs_host -v /path_to/ipfs_storage/staging/:/export -v /path_to/ipfs_storage/data/:/data/ipfs -p 4001:4001 -p 4001:4001/udp -p 127.0.0.1:8080:8080 -p 127.0.0.1:5001:5001 ipfs/go-ipfs:latest
 ```
 
 Setup Ipfs API
@@ -28,7 +28,7 @@ Setup nGinx reverse proxy
 -------------------------
 make sure your SSL certificates are in the ssl volume directory with the same name as the vitual host. 
 
-eg : ipfsapi.tobiasdemaine.com.crt, ipfsapi.tobiasdemaine.com.key
+eg : api.tobiasdemaine.com.crt, api.tobiasdemaine.com.key
 
 
 ```text
@@ -47,7 +47,12 @@ Supported Types (jpg|jpeg|png|gif|mp4|pdf)
 Step 1. Request a Session key. 
 
 Endpoint /k
-
+Post Params :
+```text
+    {
+        secret: false,
+    }
+```
 returns :
 ```text
     {
@@ -92,6 +97,25 @@ Post Params :
 returns :
 ```text
     {
-        contractHash : hash
+        contractHash : "Processing"
+    }
+```
+
+Step 4. Poll until contract is deployed and added to gallery
+
+Endpoint : /r
+
+Post Params :
+```text
+    {
+        key : uuid,
+       
+    }
+```
+
+returns :
+```text
+    {
+        ready : false || 0xContractHash
     }
 ```

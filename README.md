@@ -9,33 +9,32 @@ Each Artwork Contract is it own trading platform, managing its own buy and sell 
 
 The Gallery contract is a group of lists (collections) of Artworks with a visiblity switch.
 
-Smart Contracts / Brownie
---------------- 
-```text
-contracts/
-```
-
-React Front End
---------------- 
-```text
-front_end/solid_state/
-```
-
-Node Rest Api and App Server
---------------- 
-```text
-rest_api/
-```
-
-Tools
---------------- 
-```text
-tools/
-```
+- *contracts/* Smart Contracts / Brownie
+- *front_end/solid_state/* React Front End
+- *rest_api/* Node Rest Api and App Server
+- *tools/* Setup Tools
 
 
-LOCAL CHAIN TESTING
--------------------
+
+##Local Host Development 
+###Start Order 
+Open each in a new Terminal
+1. Start local blockchain - Ganache 
+ ```cd tools
+    npm start localchain```
+2. Deploy Gallery Spin up Ipfs 
+ ```cd tools 
+    npm start deploy local
+    npm start ipfs local
+    cd ../../rest_api
+    npm start local```
+4. Start React 
+ ```cd front_end
+    npm start```
+
+--------
+
+###LOCAL CHAIN TESTING
 Start Local BlockChain Ganache
 ```text
 cd tools
@@ -45,19 +44,17 @@ npm start localchain
 Deploy the gallery Contract
 ```text
 cd tools
-npm start localchain
+npm start deploy local
 ```
 
-KOVAN CHAIN TESTING
--------------------
+###KOVAN CHAIN TESTING
 Start Local BlockChain Ganache
 ```text
 cd tools
 npm start kovan
 ```
 
-IPFS STARTUP
--------------------
+###IPFS STARTUP
 Start Local IPFS
 ```text
 cd tools
@@ -73,7 +70,6 @@ npm start ipfs production
 ----------------------
 
 * to do
-    * Front end for deploying new artwork contract
     * Front end add new collection
     * Testing
         * python contract integration tests
@@ -84,8 +80,7 @@ npm start ipfs production
     * Complete Deploy and Update scripts
 
 
-VIDEO PREPARATION
------------------
+###VIDEO PREPARATION
 ```text
 prepare videos :
 

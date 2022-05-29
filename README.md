@@ -20,7 +20,7 @@ The Gallery contract is a group of lists (collections) of Artworks with a visibl
 
 ## Local Host Development 
 ### Install on Ubuntu/Debian
-'''
+```
 sudo apt install python3 pip3 docker.io curl gnupg git
 curl -sL https://deb.nodesource.com/setup_17.x  | bash -
 apt-get -y install nodejs
@@ -32,7 +32,7 @@ cd ../../rest_api
 npm install
 cd ../../tools
 npm install
-'''
+```
 
 .env setup???
 

@@ -95,7 +95,6 @@ npm start ipfs production
 ----------------------
 
 * to do
-    * Front end add new collection
     * Testing
         * python contract integration tests
             * bot trading to test large data calls to UI

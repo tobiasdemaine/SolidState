@@ -8,7 +8,7 @@ import { Typography, Grid, Paper } from "@mui/material"
 import { MyArtworks } from './components/MyArtworks';
 import { AddArtWork } from './components/AddArtwork';
 import { MyShares } from './components/MyShares';
-
+import { AddCollection } from './components/AddCollection';
 
 import { Welcome } from "./components/Welcome"
 
@@ -45,6 +45,9 @@ export const Main = ({ ipfs }: MainProps) => {
                 if (section[1] == "add") {
                     setMainSection({ section: "addArtwork", value: 0, title: "Add" })
                 }
+                if (section[1] == "addcollection") {
+                    setMainSection({ section: "addCollection", value: 0, title: "Add Collection" })
+                }
             }
             if (section.length == 4) {
                 if (section[1] == "collection") {
@@ -75,6 +78,9 @@ export const Main = ({ ipfs }: MainProps) => {
         }
         if (APPSTATE.mainsection.section == "addArtwork") {
             window.history.pushState("", "", '/add');
+        }
+        if (APPSTATE.mainsection.section == "addCollection") {
+            window.history.pushState("", "", '/addcollection');
         }
         if (APPSTATE.mainsection.section == "collection") {
             window.history.pushState("", "", '/collection/' + APPSTATE.mainsection.value + '/' + APPSTATE.mainsection.title);
@@ -140,6 +146,13 @@ export const Main = ({ ipfs }: MainProps) => {
                                 <AddArtWork ipfs={ipfs} />
                             </>
                         }
+                        {
+                            APPSTATE.mainsection.section == "addCollection" &&
+                            <>
+                                <AddCollection ipfs={ipfs} />
+                            </>
+                        }
+
 
 
                     </>

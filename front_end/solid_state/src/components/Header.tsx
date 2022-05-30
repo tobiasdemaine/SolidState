@@ -84,10 +84,18 @@ export const Header = ({ ipfs }: HeaderProps) => {
                                     {
                                         owners[owners.length - 1] === account &&
                                         <MenuItem onClick={() => {
+                                            setMainSection({ section: "addCollection", value: 0, title: "Add Collection" })
+                                            dashHandleClose()
+                                        }}>Add Collection</MenuItem>
+
+
+                                    }
+                                    {
+                                        owners[owners.length - 1] === account &&
+                                        <MenuItem onClick={() => {
                                             setMainSection({ section: "addArtwork", value: 0, title: "Add" })
                                             dashHandleClose()
                                         }}>Add Artwork</MenuItem>
-
                                     }
                                     <MenuItem onClick={() => {
                                         setMainSection({ section: "myArtworks", value: 0, title: "My ArtWorks" })

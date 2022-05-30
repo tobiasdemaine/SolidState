@@ -47,6 +47,7 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
     const { getSession, imageFileUpload, metaDataFileUpload, isReady } = API()
     const owners = GalleryOwners() || []
     const { account } = useEthers() || ""
+    const galleryCollections = GalleryCollections() || []
     var auth = false
     if (account !== undefined) {
         var auth = account === owners[owners.length - 1]
@@ -211,7 +212,7 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
         }
     }, [CleanUp])
 
-    const galleryCollections = GalleryCollections() || []
+
     return (
         auth ? (
 

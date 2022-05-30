@@ -35,7 +35,7 @@ def deploy_solid_state_gallery():
 def main():
     # deploy a gallery
     (solid_state_gallery, account) = deploy_solid_state_gallery()
-    tx = solid_state_gallery.addCollection("Collection 1", {"from": account})
-    tx = solid_state_gallery.addCollection("Collection 2", {"from": account})
+    # tx = solid_state_gallery.addCollection("Collection 1", {"from": account})
+    # tx = solid_state_gallery.addCollection("Collection 2", {"from": account})
 
     update_front_end()

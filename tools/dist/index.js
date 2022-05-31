@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.react = exports.deploy = exports.localAccounts = exports.localChain = exports.setupLocalChain = exports.startIpfs = exports.setupNodeProjects = exports.dotEnv = void 0;
+exports.react = exports.test = exports.deploy = exports.localAccounts = exports.localChain = exports.setupLocalChain = exports.startIpfs = exports.setupNodeProjects = exports.dotEnv = void 0;
 const fs = __importStar(require("fs"));
 const shell = __importStar(require("shelljs"));
 const dotenv = __importStar(require("dotenv"));
@@ -112,6 +112,16 @@ const deploy = (network) => {
     }
 };
 exports.deploy = deploy;
+const test = (what) => {
+    process.chdir("../front_end/solid_state");
+    if (what == "user") {
+        shell.exec("PRIVATE_KEY=0xbd152130487a1e74a6e2713637518ab68ab14e4bec4e33f248de3aeb15c20438 npx synpress run --browser chrome --spec 'tests/e2e/specs/user.js'", { silent: false });
+    }
+    if (what == "owner") {
+        shell.exec("PRIVATE_KEY=0xd94c9b5afae922f473403dca098d47019f47fa03c1038a7ee7e049831fe4bb24 npx synpress run --browser firefox --spec 'tests/e2e/specs/owner.js'", { silent: false });
+    }
+};
+exports.test = test;
 const react = () => {
     process.chdir("../front_end/solid_state");
     shell.exec("npm start", { silent: false });
@@ -135,6 +145,9 @@ switch (myArgs[0]) {
         break;
     case 'deploy':
         (0, exports.deploy)(myArgs[1]);
+        break;
+    case 'test':
+        (0, exports.test)(myArgs[1]);
         break;
     case 'react':
         (0, exports.react)();

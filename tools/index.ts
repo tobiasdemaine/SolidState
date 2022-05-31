@@ -95,6 +95,16 @@ export const deploy = (network: any) => {
     }
 }
 
+export const test = (what: any) => {
+    process.chdir("../front_end/solid_state")
+    if (what == "user") {
+        shell.exec("npx jest", { silent: false })
+    }
+    if (what == "owner") {
+        shell.exec("npx jest", { silent: false })
+    }
+}
+
 export const react = () => {
     process.chdir("../front_end/solid_state")
     shell.exec("npm start", { silent: false })
@@ -119,6 +129,9 @@ switch (myArgs[0]) {
         break
     case 'deploy':
         deploy(myArgs[1])
+        break
+    case 'test':
+        test(myArgs[1])
         break
     case 'react':
         react()

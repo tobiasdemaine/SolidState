@@ -64,9 +64,13 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.18.2",
+    "@babel/preset-env": "^7.18.2",
     "@types/jest": "^27.5.1",
     "@types/react-swipeable-views": "^0.13.1",
+    "babel-loader": "^8.2.5",
     "jest": "^27.5.1",
-    "react-test-renderer": "^18.1.0"
+    "react-test-renderer": "^18.1.0",
+    "webpack": "^5.72.1"
   }
 }

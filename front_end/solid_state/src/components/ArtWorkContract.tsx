@@ -184,7 +184,7 @@ export const ArtWorkContract = ({ address }: ArtWorkContractProps) => {
                     <Grid sx={{ p: 2, }} >
                         <Grid item xs={12} >
                             <Typography variant="body1" color="text.secondary">Set For Sale
-                                <Switch
+                                <Switch id="artWorkForSale"
                                     checked={artWorkForSale}
                                     onChange={event => {
                                         setBackDropOpen(true);
@@ -206,6 +206,7 @@ export const ArtWorkContract = ({ address }: ArtWorkContractProps) => {
                                 <TextField
                                     sx={{ mt: .5 }}
                                     label="Qty"
+                                    id="artWorkReleaseTokensQty"
                                     type="number"
                                     fullWidth={true}
                                     variant="filled" value={artWorkReleaseTokensQty} onChange={event => {
@@ -219,13 +220,14 @@ export const ArtWorkContract = ({ address }: ArtWorkContractProps) => {
                                     variant="filled" value={artWorkReleaseTokensAddress} onChange={event => {
                                         setArtWorkReleaseTokenAddress(event?.target.value)
                                     }}></TextField></div>
-                            <Button sx={{ mt: 1 }} variant="contained" onClick={() => {
+                            <Button sx={{ mt: 1 }} id="releaseTokens" variant="contained" onClick={() => {
                                 setBackDropOpen(true);
                                 artworkReleaseTokens(artWorkReleaseTokensAddress, artWorkReleaseTokensQty)
                             }}>Release Tokens</Button>
                         </Grid>
                     </Grid>
                     <Snackbar
+                        id="#transactionSuccess"
                         open={showTransactionSuccess}
                         autoHideDuration={5000}
                         onClose={handleCloseSnack}>

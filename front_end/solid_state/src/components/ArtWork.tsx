@@ -139,7 +139,7 @@ export const ArtWork = ({ ipfs, address, visibility, galleryOwner }: ArtWorkAddr
                                 {artWorkMeta.title != "" ? (
                                     <>
                                         <Grid item xs={12} sx={{ mb: 2 }}>
-                                            <Typography variant="h1" color="text.primary">{artWorkMeta.title}</Typography>
+                                            <Typography id="artworkTitle" variant="h1" color="text.primary">{artWorkMeta.title}</Typography>
                                         </Grid>
 
                                         <Grid item xs={12} sx={{ mb: 1 }}><Typography variant="body1" color="text.secondary">{artWorkMeta.artist}</Typography></Grid>

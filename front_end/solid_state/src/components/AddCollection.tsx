@@ -129,11 +129,11 @@ export const AddCollection = ({ ipfs }: AddCollectionProps) => {
                                     error={errors.title ? true : false} />
                                 <FormHelperText id="collectionName-helper-text"></FormHelperText>
                             </FormControl>
-                            <Button variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>Add Collection</Button>
+                            <Button variant="contained" id="collectionNameSubmit" color="primary" onClick={handleSubmit(onSubmit)}>Add Collection</Button>
                         </Paper>
                     </Grid>
                 </Grid>
-                <Snackbar
+                <Snackbar id="transactionSuccess"
                     open={showTransactionSuccess}
                     autoHideDuration={5000}
                     onClose={handleCloseSnack}>

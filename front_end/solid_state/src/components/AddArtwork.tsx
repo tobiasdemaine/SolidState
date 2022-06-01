@@ -335,7 +335,7 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
                                         </>
                                     }
                                     <Grid item xs={12} >
-                                        <div {...getRootProps()}>
+                                        <div id="uploadFiles" {...getRootProps()}>
                                             <input {...getInputProps()} />
                                             <p>Drag 'n' drop some files here, or click to select files</p>
                                         </div>
@@ -343,6 +343,7 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
                                             {Images.map((item, index) => (
                                                 <ImageListItem key={`_${item.name}`}>
                                                     <img
+                                                        id={`img_${index}`}
                                                         src={`${item.src}`}
                                                         width="50%"
                                                         alt={item.name}
@@ -393,7 +394,7 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
                                         <FormHelperText id="secret-helper-text">Secret Key</FormHelperText>
                                     </FormControl>
                                 </Grid>
-                                <Button variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>Add ArtWork</Button>
+                                <Button id="addSubmit" variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>Add ArtWork</Button>
                             </>) : (<>
                                 <LinearProgress />
                                 <Grid item xs={12} sx={{ mb: 1, mt: 2 }}>

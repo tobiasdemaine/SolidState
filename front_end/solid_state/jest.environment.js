@@ -22,6 +22,7 @@ class DappeteerEnvironment extends NodeEnvironment {
         this.global.page = page;
         this.global.browser = browser;
         this.global.metamask = await getMetamaskWindow(browser);
+        this.global.testVars = {}
     }
 }
 

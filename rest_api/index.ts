@@ -62,7 +62,7 @@ app.use(cors())
 
 const testSecret = (req: any) => { //quick and dirty authetication
     if (req.body["secret"] !== undefined) {
-        if (req.body["secret"] == "password") {
+        if (req.body["secret"] == process.env.API_SECRET) {
             return true
         }
     }

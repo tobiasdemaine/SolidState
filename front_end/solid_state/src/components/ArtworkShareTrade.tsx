@@ -251,7 +251,7 @@ export const ArtworkShareTradeSell = ({ artworkAddress }: Props) => {
                                 Share Sell Order
                             </Typography>
                             <div>
-                                <strong>{Number(artworkShareOwn)}</strong> available Shares
+                                <strong id="availableShares">{Number(artworkShareOwn)}</strong> available Shares
                             </div>
                         </Grid>
 

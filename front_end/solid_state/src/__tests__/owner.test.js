@@ -274,6 +274,7 @@ describe('Solid State User', () => {
         await page.bringToFront();
         await clickElement(page, '#connectButton')
         await metamask.approve();
+        await metamask.approve();
         await page.bringToFront();
         await page.waitForSelector('#dash-positioned-button');
     })

@@ -5,7 +5,7 @@
 /.pnp
 .pnp.js
 
-/chain-info
+/src/chain-info
 
 # testing
 /coverage

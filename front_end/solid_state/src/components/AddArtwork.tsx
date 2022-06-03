@@ -328,8 +328,8 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
                                         ImagesError == true &&
                                         <>
                                             <Grid item xs={12} sx={{ mb: 1 }}>
-                                                <Alert variant="filled" severity="error">
-                                                    An image is  required
+                                                <Alert id="errorNoImage" variant="filled" severity="error">
+                                                    An image is required
                                                 </Alert>
                                             </Grid>
                                         </>

@@ -115,10 +115,10 @@ exports.deploy = deploy;
 const test = (what) => {
     process.chdir("../front_end/solid_state");
     if (what == "user") {
-        shell.exec("PRIVATE_KEY=0xbd152130487a1e74a6e2713637518ab68ab14e4bec4e33f248de3aeb15c20438 npx synpress run --browser chrome --spec 'tests/e2e/specs/user.js'", { silent: false });
+        shell.exec("npx jest", { silent: false });
     }
     if (what == "owner") {
-        shell.exec("PRIVATE_KEY=0xd94c9b5afae922f473403dca098d47019f47fa03c1038a7ee7e049831fe4bb24 npx synpress run --browser firefox --spec 'tests/e2e/specs/owner.js'", { silent: false });
+        shell.exec("npx jest", { silent: false });
     }
 };
 exports.test = test;

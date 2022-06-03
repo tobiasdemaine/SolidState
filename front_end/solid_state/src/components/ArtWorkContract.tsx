@@ -227,7 +227,7 @@ export const ArtWorkContract = ({ address }: ArtWorkContractProps) => {
                         </Grid>
                     </Grid>
                     <Snackbar
-                        id="#transactionSuccess"
+                        id="transactionSuccess"
                         open={showTransactionSuccess}
                         autoHideDuration={5000}
                         onClose={handleCloseSnack}>

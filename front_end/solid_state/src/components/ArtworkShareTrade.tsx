@@ -295,14 +295,14 @@ export const ArtworkShareTradeSell = ({ artworkAddress }: Props) => {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <Button variant="contained" color="primary" onClick={() => {
+                            <Button variant="contained" id="approveSharesSellOrder" color="primary" onClick={() => {
                                 setBackDropOpen(true)
                                 approveShares(sellShareQty)
                                 setCanUpdate(false)
                             }}>Approve &amp; Make Share Sell Order</Button>
                         </Grid>
                     </Grid>
-                    <Snackbar
+                    <Snackbar id="transactionSuccess"
                         open={showTransactionSuccess}
                         autoHideDuration={5000}
                         onClose={handleCloseSnack}>
@@ -439,6 +439,22 @@ export const ArtworkShareBuyOrders = ({ artworkAddress }: Props) => {
                         )
                     }
                 </Grid>
+                    <Snackbar id="transactionSuccess"
+                        open={showTransactionSuccess}
+                        autoHideDuration={5000}
+                        onClose={handleCloseSnack}>
+                        <Alert onClose={handleCloseSnack} severity="success" >
+                            TRANSACTION APPROVED.
+                        </Alert>
+                    </Snackbar>
+                    <Snackbar
+                        open={showForTransactionFail}
+                        autoHideDuration={5000}
+                        onClose={handleCloseSnack}>
+                        <Alert onClose={handleCloseSnack} severity="error" >
+                            {snackbarErrorText}
+                        </Alert>
+                    </Snackbar>
                     <Backdrop
                         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                         open={backDropOpen}
@@ -554,7 +570,7 @@ export const ArtworkShareSellOrders = ({ artworkAddress }: Props) => {
                                 </Grid>
                                 <Grid item xs={3}>
                                     <Item>
-                                        <Button style={{ fontSize: '10px', padding: 0.5 }} variant="contained" size="small" onClick={() => {
+                                        <Button id={'cancelSellOrder_' + index} style={{ fontSize: '10px', padding: 0.5 }} variant="contained" size="small" onClick={() => {
                                             setBackDropOpen(true)
                                             cancelSellOrder(Number(sellOrders[5][index]))
 
@@ -567,6 +583,22 @@ export const ArtworkShareSellOrders = ({ artworkAddress }: Props) => {
                         )
                     }
                 </Grid>
+                    <Snackbar id="transactionSuccess"
+                        open={showTransactionSuccess}
+                        autoHideDuration={5000}
+                        onClose={handleCloseSnack}>
+                        <Alert onClose={handleCloseSnack} severity="success" >
+                            TRANSACTION APPROVED.
+                        </Alert>
+                    </Snackbar>
+                    <Snackbar
+                        open={showForTransactionFail}
+                        autoHideDuration={5000}
+                        onClose={handleCloseSnack}>
+                        <Alert onClose={handleCloseSnack} severity="error" >
+                            {snackbarErrorText}
+                        </Alert>
+                    </Snackbar>
                     <Backdrop
                         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                         open={backDropOpen}
@@ -926,7 +958,7 @@ export const ArtworkShareTradeHistory = ({ artworkAddress }: Props) => {
                 <Grid container spacing={.3} alignItems="stretch">
                     <Grid item xs={12} sx={{ mb: 1 }}>
                         <Typography component="div">
-                            Your Transactions
+                            My Transactions
                         </Typography>
                     </Grid>
                     <Grid item xs={3}>

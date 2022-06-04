@@ -1,4 +1,5 @@
 var crypto = require("crypto");
+const { exit } = require("process");
 
 async function clickElement(page, selector) {
     await page.bringToFront();
@@ -13,6 +14,13 @@ function enableSlowMo(page, delay) {
         await new Promise(x => setTimeout(x, delay));
         return origin.call(page._client, ...args);
     }
+}
+
+async function delay(time) {
+    await new Promise(function (resolve) {
+        setTimeout(resolve, time)
+    });
+    return true
 }
 
 const waitForTextChange = async (
@@ -51,8 +59,7 @@ describe('Solid State Owner', () => {
         expect(selectedNetwork).toEqual('localhost8545');
     })
     it('should be titled "Solid State"', async () => {
-        enableSlowMo(page, 40)
-        enableSlowMo(metamask.page, 250)
+
         await page.setViewport({ width: 1280, height: 900 })
 
         await page.bringToFront();
@@ -62,7 +69,19 @@ describe('Solid State Owner', () => {
     })
     it('should be connected', async () => {
         await clickElement(page, '#connectButton')
-        await metamask.approve();
+
+        await metamask.page.bringToFront();
+        await metamask.page.reload();
+
+        const checkbox = await metamask.page.waitForSelector("#app-content > div > div.main-container-wrapper > div > div.permissions-connect-choose-account > div.permissions-connect-choose-account__accounts-list > div:nth-child(3) > div > input");
+        await checkbox.click()
+
+        const button = await metamask.page.waitForSelector('button.button.btn-primary');
+        await button.click();
+
+        const connectButton = await metamask.page.waitForSelector('button.button.btn-primary');
+        await connectButton.click();
+
         await page.bringToFront();
         await page.waitForSelector('#dash-positioned-button');
     })
@@ -79,9 +98,16 @@ describe('Solid State Owner', () => {
         await page.type('#collectionName', testVars["collectionName"], { delay: 20 })
     })
     it('should submit form', async () => {
+
         await clickElement(page, '#collectionNameSubmit')
-        await metamask.confirmTransaction();
-        await metamask.page.click(".btn-primary");
+
+        await metamask.page.bringToFront();
+        await metamask.page.waitForTimeout(500);
+        await metamask.page.reload();
+        await metamask.page.bringToFront();
+        const confirmButton = await metamask.page.waitForSelector('.btn-primary:not([disabled])');
+        await confirmButton.click();
+
         await page.bringToFront();
         await page.waitForSelector('#transactionSuccess');
     })
@@ -95,8 +121,14 @@ describe('Solid State Owner', () => {
     })
     it('should navigate to add artWork', async () => {
         await page.bringToFront();
-        await page.click('#dash-positioned-button');
+        //
+        //enableSlowMo(metamask.page, 500)
+        //enableSlowMo(page, 40)
+        await delay(500)
+        await clickElement(page, '#dash-positioned-button');
+        await delay(500)
         await clickElement(page, '#dash-positioned-menu > div > ul > li:nth-child(2)')
+        //enableSlowMo(page, 0)
         const element = await page.waitForSelector('header > div > div');
         const value = await element.evaluate(el => el.textContent);
         expect(value).toEqual(' Add');
@@ -152,8 +184,10 @@ describe('Solid State Owner', () => {
         value = await element.evaluate(el => el.textContent);
         expect(value).toEqual(testVars["collectionName"]);
     })
-    it('it should sumbit form to error no image ', async () => {
+    it('it should submit form to error no image ', async () => {
+        await delay(1000)
         await clickElement(page, '#addSubmit');
+        await delay(1000)
         await page.waitForSelector('#errorNoImage');
 
     })
@@ -174,7 +208,7 @@ describe('Solid State Owner', () => {
 
     it('it should submit', async () => {
         await clickElement(page, '#addSubmit');
-        await page.waitForTimeout(3000);
+        await delay(1000)
         await page.waitForSelector('#artworkTitle');
         var element = await page.waitForSelector('#artworkTitle');
         var value = await element.evaluate(el => el.textContent);
@@ -182,8 +216,16 @@ describe('Solid State Owner', () => {
     })
     it('should set artwork For Sale', async () => {
         await clickElement(page, '#artWorkForSale');
-        await metamask.confirmTransaction();
-        await metamask.page.click(".btn-primary");
+        //await metamask.confirmTransaction();
+        //await metamask.page.click(".btn-primary");
+
+        await metamask.page.bringToFront();
+        await metamask.page.waitForTimeout(500);
+        await metamask.page.reload();
+        await metamask.page.bringToFront();
+        const confirmButton = await metamask.page.waitForSelector('.btn-primary:not([disabled])');
+        await confirmButton.click();
+
         await page.bringToFront();
         await page.waitForSelector('#transactionSuccess');
     })
@@ -192,9 +234,18 @@ describe('Solid State Owner', () => {
         testVars["artWorkReleaseTokensQty"] = '10000';
         await page.type('#artWorkReleaseTokensQty', testVars["artWorkReleaseTokensQty"], { delay: 20 })
         await clickElement(page, '#releaseTokens');
-        await metamask.confirmTransaction();
+        //await metamask.confirmTransaction();
 
-        await metamask.page.click(".btn-primary");
+        //await metamask.page.click(".btn-primary");
+
+        await metamask.page.bringToFront();
+        await metamask.page.waitForTimeout(500);
+        await metamask.page.reload();
+        await metamask.page.bringToFront();
+        const confirmButton = await metamask.page.waitForSelector('.btn-primary:not([disabled])');
+        await confirmButton.click();
+
+
         await page.bringToFront();
         await page.waitForSelector('#availableShares');
         var element = await page.waitForSelector('#availableShares');
@@ -204,16 +255,24 @@ describe('Solid State Owner', () => {
     })
 
     it('should place sell order for 10 shares', async () => {
+
         await page.bringToFront();
         await page.waitForSelector('#artWorkSellShareOfferQTY');
         await page.type('#artWorkSellShareOfferQTY', "0", { delay: 20 })
+        await delay(50)
         await clickElement(page, '#approveSharesSellOrder');
-        await metamask.confirmTransaction();
-        await page.waitForTimeout(1000);
-        await page.waitForTimeout(1000);
-        await page.bringToFront();
-        await metamask.confirmTransaction();
-        await metamask.page.click(".btn-primary");
+        await metamask.page.bringToFront();
+        await metamask.page.waitForTimeout(500);
+        await metamask.page.reload();
+        await metamask.page.bringToFront();
+        const confirmButton = await metamask.page.waitForSelector('.btn-primary:not([disabled])');
+        await confirmButton.click();
+        await delay(3000)
+        await metamask.page.reload();
+        await metamask.page.bringToFront();
+        const confirmButton1 = await metamask.page.waitForSelector('.btn-primary:not([disabled])');
+        await confirmButton1.click();
+
         await page.bringToFront();
         await page.waitForSelector('#transactionSuccess');
 
@@ -227,10 +286,13 @@ describe('Solid State Owner', () => {
 
     it('should cancel sell order', async () => {
         await clickElement(page, '#cancelSellOrder_0');
-        await metamask.confirmTransaction();
-        try {
-            await metamask.page.click(".btn-primary");
-        } catch { }
+        await metamask.page.bringToFront();
+        await metamask.page.waitForTimeout(500);
+        await metamask.page.reload();
+        await metamask.page.bringToFront();
+        const confirmButton = await metamask.page.waitForSelector('.btn-primary:not([disabled])');
+        await confirmButton.click();
+
         await page.bringToFront();
         await page.waitForSelector('#transactionSuccess');
         await waitForTextChange(page, '#availableShares');
@@ -241,13 +303,20 @@ describe('Solid State Owner', () => {
     })
 
     it('should place sell order for 10 shares', async () => {
+        await delay(50)
         await clickElement(page, '#approveSharesSellOrder');
-        await metamask.confirmTransaction();
-        await page.bringToFront();
-        await metamask.confirmTransaction();
-        try {
-            await metamask.page.click(".btn-primary");
-        } catch { }
+        await metamask.page.bringToFront();
+        await metamask.page.waitForTimeout(500);
+        await metamask.page.reload();
+        await metamask.page.bringToFront();
+        const confirmButton = await metamask.page.waitForSelector('.btn-primary:not([disabled])');
+        await confirmButton.click();
+        await delay(3000)
+        await metamask.page.reload();
+        await metamask.page.bringToFront();
+        const confirmButton1 = await metamask.page.waitForSelector('.btn-primary:not([disabled])');
+        await confirmButton1.click();
+
         await page.bringToFront();
         await page.waitForSelector('#transactionSuccess');
         await waitForTextChange(page, '#availableShares');
@@ -258,12 +327,8 @@ describe('Solid State Owner', () => {
 
     })
 
-    it('should disconnect', async () => {
-        await page.bringToFront();
-        await page.click('#dash-positioned-button');
-        await clickElement(page, '#dash-positioned-menu > div > ul > li:nth-child(5)')
-        await page.waitForSelector('#connectButton');
-    })
+
+
 })
 describe('Solid State User', () => {
     it('should switch network, localhost', async () => {
@@ -272,10 +337,12 @@ describe('Solid State User', () => {
     })
     it('should be connected', async () => {
         await page.bringToFront();
-        await clickElement(page, '#connectButton')
-        await metamask.approve();
-        await metamask.approve();
-        await page.bringToFront();
         await page.waitForSelector('#dash-positioned-button');
+    })
+    it('should disconnect', async () => {
+        await page.bringToFront();
+        await page.click('#dash-positioned-button');
+        await clickElement(page, '#dash-positioned-menu > div > ul > li:nth-child(3)')
+        await page.waitForSelector('#connectButton');
     })
 })

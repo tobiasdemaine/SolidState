@@ -129,7 +129,7 @@ export const ArtworkShareTradeBuy = ({ artworkAddress }: Props) => {
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <Button variant="contained" color="primary" onClick={() => {
+                    <Button id="placeBuyOrder" variant="contained" color="primary" onClick={() => {
                         setBackDropOpen(true)
                         var shareETH = buyShareETH * 1e18
                         //var ETHToSend = (buyShareQty * parseFloat(formatUnits(buyShareETH, 18)))
@@ -663,110 +663,111 @@ export const ArtworkShareAllSellOrders = ({ artworkAddress }: Props) => {
     // _shareValues, _ethValues, _balances, _ids
     return (
         <>
-            {sellOrders[0][0] !== undefined ? (
-                <><Grid container spacing={.3} alignItems="stretch">
-                    <Grid item xs={12} sx={{ mb: 1 }}>
+            {
+                sellOrders[0][0] !== undefined ? (
+                    <><Grid container spacing={.3} alignItems="stretch">
+                        <Grid item xs={12} sx={{ mb: 1 }}>
+                            <Typography component="div">
+                                Open Sell Orders
+                            </Typography>
+                        </Grid>
+
+                        <Grid item xs={3}>
+                            <Item>
+                                <small>ETH</small>
+                            </Item>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Item>
+                                <small>SHARES</small>
+                            </Item>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Item>
+                                <small>TOTAL</small>
+                            </Item>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Item>
+                                <small>Fill Order</small>
+                            </Item>
+                        </Grid>
+
+                        {
+                            sellOrders[0].map((data: any, index: any) => (
+                                <React.Fragment key={index}>
+                                    <Grid item xs={3}>
+                                        <Item>
+                                            {Number(sellOrders[1][index]) / 10 ** 18}
+                                        </Item>
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <Item>
+                                            {Number(sellOrders[2][index])}
+                                        </Item>
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <Item>
+                                            {(Number(sellOrders[1][index]) * Number(sellOrders[0][index]) / 10 ** 18)}
+                                        </Item>
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <Item>
+                                            <Button id={'fillSellOrder_' + index} style={{ fontSize: '10px', padding: 0.5 }} variant="contained" size="small" onClick={() => {
+                                                setBuyShareQty(Number(sellOrders[2][index]))
+                                                setBuyShareETH(Number(sellOrders[1][index] / 10 ** 18))
+                                                setBackDropOpen(true)
+                                                console.log(artworkAddress,
+                                                    Number(sellOrders[2][index]),
+                                                    Number(sellOrders[1][index]))
+                                                placeBuyOrder(
+                                                    Number(sellOrders[2][index]),
+                                                    Number(sellOrders[1][index])
+                                                )
+                                            }}>
+                                                Fill Order
+                                            </Button>
+                                        </Item>
+
+
+                                    </Grid>
+                                    <Snackbar id="transactionSuccess"
+                                        open={showTransactionSuccess}
+                                        autoHideDuration={5000}
+                                        onClose={handleCloseSnack}>
+                                        <Alert onClose={handleCloseSnack} severity="success" >
+                                            TRANSACTION APPROVED.
+                                        </Alert>
+                                    </Snackbar>
+                                    <Snackbar
+                                        open={showForTransactionFail}
+                                        autoHideDuration={5000}
+                                        onClose={handleCloseSnack}>
+                                        <Alert onClose={handleCloseSnack} severity="error" >
+                                            {snackbarErrorText}
+                                        </Alert>
+                                    </Snackbar>
+                                    <Backdrop
+                                        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                                        open={backDropOpen}
+
+                                    >
+                                        <CircularProgress color="inherit" />
+                                    </Backdrop>
+
+                                </React.Fragment>
+                            ))
+                        }
+                    </Grid>
+
+                    </>
+                ) : (
+                    <>
                         <Typography component="div">
-                            Open Sell Orders
+                            No Sell Orders
                         </Typography>
-                    </Grid>
-
-                    <Grid item xs={3}>
-                        <Item>
-                            <small>ETH</small>
-                        </Item>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Item>
-                            <small>SHARES</small>
-                        </Item>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Item>
-                            <small>TOTAL</small>
-                        </Item>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Item>
-                            <small>Fill Order</small>
-                        </Item>
-                    </Grid>
-
-                    {
-                        sellOrders[0].map((data: any, index: any) => (
-                            <React.Fragment key={index}>
-                                <Grid item xs={3}>
-                                    <Item>
-                                        {Number(sellOrders[1][index]) / 10 ** 18}
-                                    </Item>
-                                </Grid>
-                                <Grid item xs={3}>
-                                    <Item>
-                                        {Number(sellOrders[2][index])}
-                                    </Item>
-                                </Grid>
-                                <Grid item xs={3}>
-                                    <Item>
-                                        {(Number(sellOrders[1][index]) * Number(sellOrders[0][index]) / 10 ** 18)}
-                                    </Item>
-                                </Grid>
-                                <Grid item xs={3}>
-                                    <Item>
-                                        <Button style={{ fontSize: '10px', padding: 0.5 }} variant="contained" size="small" onClick={() => {
-                                            setBuyShareQty(Number(sellOrders[2][index]))
-                                            setBuyShareETH(Number(sellOrders[1][index] / 10 ** 18))
-                                            setBackDropOpen(true)
-                                            console.log(artworkAddress,
-                                                Number(sellOrders[2][index]),
-                                                Number(sellOrders[1][index]))
-                                            placeBuyOrder(
-                                                Number(sellOrders[2][index]),
-                                                Number(sellOrders[1][index])
-                                            )
-                                        }}>
-                                            Fill Order
-                                        </Button>
-                                    </Item>
-
-
-                                </Grid>
-                                <Snackbar
-                                    open={showTransactionSuccess}
-                                    autoHideDuration={5000}
-                                    onClose={handleCloseSnack}>
-                                    <Alert onClose={handleCloseSnack} severity="success" >
-                                        TRANSACTION APPROVED.
-                                    </Alert>
-                                </Snackbar>
-                                <Snackbar
-                                    open={showForTransactionFail}
-                                    autoHideDuration={5000}
-                                    onClose={handleCloseSnack}>
-                                    <Alert onClose={handleCloseSnack} severity="error" >
-                                        {snackbarErrorText}
-                                    </Alert>
-                                </Snackbar>
-                                <Backdrop
-                                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                                    open={backDropOpen}
-
-                                >
-                                    <CircularProgress color="inherit" />
-                                </Backdrop>
-
-                            </React.Fragment>
-                        ))
-                    }
-                </Grid>
-
-                </>
-            ) : (
-                <>
-                    <Typography component="div">
-                        No Sell Orders
-                    </Typography>
-                </>
-            )
+                    </>
+                )
             }
         </>
     )

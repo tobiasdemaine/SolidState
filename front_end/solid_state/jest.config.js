@@ -4,7 +4,7 @@ module.exports = {
   //testEnvironment: 'node',
 
   //preset: "@chainsafe/dappeteer",
-  testTimeout: 25000,
+  testTimeout: 40000,
   globalSetup: './jest.setup.js',
   globalTeardown: './jest.teardown.js',
   testEnvironment: './jest.environment.js',

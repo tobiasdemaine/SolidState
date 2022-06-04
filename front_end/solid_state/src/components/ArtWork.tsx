@@ -152,7 +152,7 @@ export const ArtWork = ({ ipfs, address, visibility, galleryOwner }: ArtWorkAddr
                                         <Grid item xs={12} sx={{ mb: 1 }}><Typography variant="body1" color="text.secondary">{artWorkForSale ? (<> FOR SALE</>) : (<>NOT FOR SALE</>)}</Typography></Grid>
                                         {artWorkOwner[artWorkOwner.length - 1] === account &&
 
-                                            <Grid item xs={12} sx={{ mb: 1 }}><Typography variant="body1" color="text.secondary">You own This Artwork</Typography></Grid>
+                                            <Grid item xs={12} sx={{ mb: 1 }}><Typography id="youOwnThisArtWork" variant="body1" color="text.secondary">You own this Artwork</Typography></Grid>
                                         }
                                     </>) : (<>Loading</>)}
                             </Grid>

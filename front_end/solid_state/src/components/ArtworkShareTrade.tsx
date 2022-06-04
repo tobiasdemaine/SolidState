@@ -142,7 +142,7 @@ export const ArtworkShareTradeBuy = ({ artworkAddress }: Props) => {
                     >Make Share Buy Order</Button>
                 </Grid>
             </Grid>
-            <Snackbar
+            <Snackbar id="transactionSuccess"
                 open={showTransactionSuccess}
                 autoHideDuration={5000}
                 onClose={handleCloseSnack}>
@@ -150,7 +150,7 @@ export const ArtworkShareTradeBuy = ({ artworkAddress }: Props) => {
                     TRANSACTION APPROVED.
                 </Alert>
             </Snackbar>
-            <Snackbar
+            <Snackbar id="transactionFail"
                 open={showForTransactionFail}
                 autoHideDuration={5000}
                 onClose={handleCloseSnack}>
@@ -310,7 +310,7 @@ export const ArtworkShareTradeSell = ({ artworkAddress }: Props) => {
                             TRANSACTION APPROVED.
                         </Alert>
                     </Snackbar>
-                    <Snackbar
+                    <Snackbar id="transactionFail"
                         open={showForTransactionFail}
                         autoHideDuration={5000}
                         onClose={handleCloseSnack}>
@@ -371,7 +371,7 @@ export const ArtworkShareBuyOrders = ({ artworkAddress }: Props) => {
     var total = 0
     for (var x in buyOrders[0]) {
         if (buyOrders[4][x] == 0) {
-            total += Number(buyOrders[2][x]) / (10 ** 18)
+            total += Number(buyOrders[3][x]) / (10 ** 18)
         }
     }
     return (
@@ -382,7 +382,7 @@ export const ArtworkShareBuyOrders = ({ artworkAddress }: Props) => {
                         <Typography component="div">
                             My Buy Orders
                         </Typography>
-                        <small> You have {total} held ETH</small>
+                        <small> You have <strong id="heldEth">{total}</strong> held ETH</small>
                     </Grid>
                     <Grid item xs={1}>
                         <Item>
@@ -424,7 +424,7 @@ export const ArtworkShareBuyOrders = ({ artworkAddress }: Props) => {
                                 </Grid>
                                 <Grid item xs={3}>
                                     <Item>
-                                        <Button style={{ fontSize: '10px', padding: 0.5 }} variant="contained" size="small" onClick={() => {
+                                        <Button id={'cancelBuyOrder_' + index} style={{ fontSize: '10px', padding: 0.5 }} variant="contained" size="small" onClick={() => {
                                             setBackDropOpen(true)
                                             cancelBuyOrder(Number(buyOrders[5][index]))
 
@@ -447,7 +447,7 @@ export const ArtworkShareBuyOrders = ({ artworkAddress }: Props) => {
                             TRANSACTION APPROVED.
                         </Alert>
                     </Snackbar>
-                    <Snackbar
+                    <Snackbar id="transactionFail"
                         open={showForTransactionFail}
                         autoHideDuration={5000}
                         onClose={handleCloseSnack}>
@@ -591,7 +591,7 @@ export const ArtworkShareSellOrders = ({ artworkAddress }: Props) => {
                             TRANSACTION APPROVED.
                         </Alert>
                     </Snackbar>
-                    <Snackbar
+                    <Snackbar id="transactionFail"
                         open={showForTransactionFail}
                         autoHideDuration={5000}
                         onClose={handleCloseSnack}>
@@ -739,7 +739,7 @@ export const ArtworkShareAllSellOrders = ({ artworkAddress }: Props) => {
                                             TRANSACTION APPROVED.
                                         </Alert>
                                     </Snackbar>
-                                    <Snackbar
+                                    <Snackbar id="transactionFail"
                                         open={showForTransactionFail}
                                         autoHideDuration={5000}
                                         onClose={handleCloseSnack}>
@@ -871,7 +871,7 @@ export const ArtworkShareAllBuyOrders = ({ artworkAddress }: Props) => {
                                 </Grid>
                                 <Grid item xs={3}>
                                     <Item>
-                                        <Button style={{ fontSize: '10px', padding: 0.5 }} variant="contained" size="small" onClick={() => {
+                                        <Button id={'fillBuyOrder_' + index} style={{ fontSize: '10px', padding: 0.5 }} variant="contained" size="small" onClick={() => {
                                             setSellShareQty(Number(buyOrders[0][index]))
                                             setSellShareETH(Number(buyOrders[1][index] / 10 ** 18))
                                             setBackDropOpen(true)
@@ -883,7 +883,7 @@ export const ArtworkShareAllBuyOrders = ({ artworkAddress }: Props) => {
 
 
                                 </Grid>
-                                <Snackbar
+                                <Snackbar id="transactionSuccess"
                                     open={showTransactionSuccess}
                                     autoHideDuration={5000}
                                     onClose={handleCloseSnack}>
@@ -891,7 +891,7 @@ export const ArtworkShareAllBuyOrders = ({ artworkAddress }: Props) => {
                                         TRANSACTION APPROVED.
                                     </Alert>
                                 </Snackbar>
-                                <Snackbar
+                                <Snackbar id="transactionFail"
                                     open={showForTransactionFail}
                                     autoHideDuration={5000}
                                     onClose={handleCloseSnack}>

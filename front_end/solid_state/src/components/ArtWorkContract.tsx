@@ -168,7 +168,7 @@ export const ArtWorkContract = ({ address }: ArtWorkContractProps) => {
                 <Grid item sx={{ p: 2 }} >
                     <div>
 
-                        <Button variant="contained" color="primary"
+                        <Button id="purchaseArtwork" variant="contained" color="primary"
                             onClick={() => {
                                 setBackDropOpen(true);
                                 artworkMakeOffer({ value: artWorkPrice })
@@ -236,6 +236,7 @@ export const ArtWorkContract = ({ address }: ArtWorkContractProps) => {
                         </Alert>
                     </Snackbar>
                     <Snackbar
+                        id="transactionFail"
                         open={showForTransactionFail}
                         autoHideDuration={5000}
                         onClose={handleCloseSnack}>
@@ -247,7 +248,24 @@ export const ArtWorkContract = ({ address }: ArtWorkContractProps) => {
                 </>) : (<></>)
             }
             <div>
-
+                <Snackbar
+                    id="transactionSuccess"
+                    open={showTransactionSuccess}
+                    autoHideDuration={5000}
+                    onClose={handleCloseSnack}>
+                    <Alert onClose={handleCloseSnack} severity="success" >
+                        TRANSACTION APPROVED.
+                    </Alert>
+                </Snackbar>
+                <Snackbar
+                    id="transactionFail"
+                    open={showForTransactionFail}
+                    autoHideDuration={5000}
+                    onClose={handleCloseSnack}>
+                    <Alert onClose={handleCloseSnack} severity="error" >
+                        {snackbarErrorText}
+                    </Alert>
+                </Snackbar>
                 <Backdrop
                     sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                     open={backDropOpen}

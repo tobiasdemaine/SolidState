@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from scripts.helpers import get_account, get_contract, update_front_end
-from brownie import SolidStateToken, SolidStateGallery, network, config
+from brownie import SolidStateToken, SolidStateGallery, Multicall, network, config
 from scripts.artwork_meta_data_compiler import construct_meta_data
 
 
@@ -20,8 +20,20 @@ def deploy_solid_state_gallery():
 
 
 def main():
-    # deploy a gallery
     (solid_state_gallery, account) = deploy_solid_state_gallery()
+    # deploy a gallery
+    multicall = Multicall.deploy(
+        {"from": account},
+        publish_source=config["networks"][network.show_active()]["verify"],
+    )
+
+    multicallenv = "REACT_APP_MULTICALL_LOCAL=" + multicall.address
+    with open("../front_end/solid_state/.env", "w") as f:
+        f.write(multicallenv)
+
+    print(multicallenv)
+    print("------")
+
     tx = solid_state_gallery.addCollection("Gothic", {"from": account})
     tx = solid_state_gallery.addCollection("Renaissance", {"from": account})
     tx = solid_state_gallery.addCollection("Naive", {"from": account})

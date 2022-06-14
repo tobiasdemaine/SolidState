@@ -96,10 +96,9 @@ npm start ipfs production
 
 * to do
     * Testing
-        * javascript UI E2E tests
-        * python contract integration tests - bot trading to test large data calls to UI
+    * python contract integration tests - bot trading to test large data calls to UI
        
-        * make componetent folder cleaner
+    * make componetent folder cleaner
     * Video stream from IPFS
     * move off infura to self hosted node
     * Complete Deploy and Update scripts

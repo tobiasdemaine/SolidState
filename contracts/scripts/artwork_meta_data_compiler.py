@@ -11,56 +11,43 @@ load_dotenv()
 
 
 # upload to an ipfs provider
-IFPS_API_URL_PRODUCTION = "https://solidstate.tobiasdemaine.com/"
-IFPS_API_URL_LOCAL = "http://127.0.0.1:3030/"
-IFPS_API_URL = IFPS_API_URL_PRODUCTION
-
-PINATA_BASE_URL = "https://api.pinata.cloud/"
-
-endpoint = "pinning/pinFileToIPFS"
-headers = {
-    "pinata_api_key": os.getenv("PINATA_API_KEY"),
-    "pinata_secret_api_key": os.getenv("PINATA_API_SECRET"),
-}
+IPFS_API_URL_PRODUCTION = "https://solidstate.tobiasdemaine.com/"
+IPFS_API_URL_LOCAL = "http://127.0.0.1:3030/"
+IPFS_API_URL = "http://127.0.0.1:3030/"
 
 
-def upload_to_ipfs_pinata(file_path):
-    file_name = file_path.split("/")[-1:][0]
-    with Path(file_path).open("rb") as fp:
-        image_binary = fp.read()
-        response = requests.post(
-            PINATA_BASE_URL + endpoint,
-            files={"file": (file_name, image_binary)},
-            data={headers},
-        )
-        data = response.json()
-        return data["IpfsHash"]
-
-
-def upload_to_ipfs(file_path):
+def get_ipfs_key():
+    global IPFS_API_URL, IPFS_API_URL_LOCAL, IPFS_API_URL_PRODUCTION
     if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
-        IFPS_API_URL = IFPS_API_URL_LOCAL
+        IPFS_API_URL = IPFS_API_URL_LOCAL
 
+    response = requests.post(IPFS_API_URL + "k", data=dict(secret="password"))
+    data = response.json()
+    return data["key"]
+
+
+def upload_to_ipfs(file_path, key, publish=False):
+    global IPFS_API_URL, IPFS_API_URL_LOCAL, IPFS_API_URL_PRODUCTION
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        IPFS_API_URL = IPFS_API_URL_LOCAL
+    print(IPFS_API_URL, IPFS_API_URL_LOCAL, IPFS_API_URL_PRODUCTION)
     file_name = file_path.split("/")[-1:][0]
     with Path(file_path).open("rb") as fp:
         image_binary = fp.read()
-        response = requests.get(
-            IFPS_API_URL + "f",
-        )
-        data = response.json()
+
         response = requests.post(
-            IFPS_API_URL + "f",
+            IPFS_API_URL + "f",
             files={"file": (file_name, image_binary)},
-            data={"key": data["key"]},
+            data={"key": key, "publish": publish},
         )
         data = response.json()
         return data["ipfsHash"]
 
 
-def upload_json_to_ipfs(json_data):
+def upload_json_to_ipfs(json_data, key):
     with open("meta_data.json", "w") as fp:
         json.dump(json_data, fp, indent=4)
-    ipfs_hash = upload_to_ipfs("meta_data.json")
+    ipfs_hash = upload_to_ipfs("meta_data.json", key)
     os.remove("meta_data.json")
 
     return ipfs_hash
@@ -119,7 +106,7 @@ def add_dummy_provinance(solid_state, account):
 # constructs and deploys an artwork contract returns artwork
 def construct_meta_data(file_path):
     print(file_path)
-
+    key = get_ipfs_key()
     meta_data = load_meta_data(file_path)
     print("..........Parsed, Loaded and Compiled Meta Data")
     META_DATA = {
@@ -140,7 +127,7 @@ def construct_meta_data(file_path):
     # images
     if "images" in meta_data:
         for _meta in meta_data["images"]:
-            address = upload_to_ipfs(_meta["filePath"])
+            address = upload_to_ipfs(_meta["filePath"], key)
             print(address)
             META_DATA["images"].append(
                 {
@@ -152,7 +139,7 @@ def construct_meta_data(file_path):
     # video
     if "videos" in meta_data:
         for _meta in meta_data["videos"]:
-            address = upload_to_ipfs(_meta["filePath"])
+            address = upload_to_ipfs(_meta["filePath"], key)
             print(address)
             META_DATA["videos"].append(
                 {
@@ -163,7 +150,7 @@ def construct_meta_data(file_path):
     # files
     if "files" in meta_data:
         for _meta in meta_data["files"]:
-            address = upload_to_ipfs(_meta["filePath"])
+            address = upload_to_ipfs(_meta["filePath"], key)
             print(address)
             META_DATA["files"].append(
                 {
@@ -172,7 +159,7 @@ def construct_meta_data(file_path):
                 }
             )
 
-    data_pack_address = upload_json_to_ipfs(META_DATA)
+    data_pack_address = upload_json_to_ipfs(META_DATA, key)
 
     (solid_state, account) = deploy_artwork_contract(meta_data)
     print(".........deploy_artwork_contract")

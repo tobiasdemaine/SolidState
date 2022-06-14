@@ -59,37 +59,48 @@ shell.exec("mkdir uploads", { silent: true })
 // app
 const app = express()
 app.use(cors())
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const testSecret = (req: any) => { //quick and dirty authetication
-    if (req.body["secret"] !== undefined) {
-        if (req.body["secret"] == process.env.API_SECRET) {
-            return true
+    //console.log(req)
+    if (typeof (req.body) !== undefined) {
+        if (req.body["secret"] !== undefined) {
+            if (req.body["secret"] == process.env.API_SECRET) {
+                return true
+            }
         }
     }
     return false
 }
 
 const testUUID = (req: any) => { //quick and dirty authetication
-    if (req.body["key"] !== undefined) {
-        if (UUIDS.hasOwnProperty(req.body["key"])) {
-            if (Date.now() - 12000000 < UUIDS[req.body["key"]].timestamp) {
-                return true
-            } else {
-                delete UUIDS[req.body["key"]]
+    if (typeof (req.body["key"]) !== undefined) {
+        if (req.body["key"] !== undefined) {
+            if (UUIDS.hasOwnProperty(req.body["key"])) {
+                if (Date.now() - 12000000 < UUIDS[req.body["key"]].timestamp) {
+                    return true
+                } else {
+                    delete UUIDS[req.body["key"]]
+                }
             }
         }
     }
-
     return false
 }
 
 app.post('/k', upload.none(), async (req, res) => { //set a session key
-    if (testSecret(req)) {
-        const uuid = randomUUID()
-        UUIDS[uuid] = { timestamp: Date.now(), files: [], submit: false, address: null, ready: false }
-        res.send({ key: uuid })
-    } else {
-        res.send({ key: 'error' })
+    try {
+        if (testSecret(req)) {
+            const uuid = randomUUID()
+            UUIDS[uuid] = { timestamp: Date.now(), files: [], submit: false, address: null, ready: false }
+            res.send({ key: uuid })
+        } else {
+            res.send({ key: 'error' })
+        }
+    } catch (err) {
+        console.log(err)
+        res.send({ ready: err });
     }
 })
 

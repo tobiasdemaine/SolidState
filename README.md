@@ -95,9 +95,6 @@ npm start ipfs production
 ----------------------
 
 * to do
-    * Testing
-    * bot trading to test large data calls to UI
-       
     * make componetent folder cleaner
     * Video stream from IPFS
     * move off infura to self hosted node 

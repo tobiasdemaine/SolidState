@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useEthers } from "@usedapp/core";
-import { GalleryOwners, } from "../hooks/GalleryView"
+import { GalleryOwners, } from "../../hooks/GalleryView"
 import Button from "@mui/material/Button"
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -10,7 +10,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { LinearProgress } from "@mui/material"
 import { HeaderCollections } from "./HeaderCollections";
-import useSolidStateContexts from "../hooks/useSolidStateContext"
+import useSolidStateContexts from "../../hooks/useSolidStateContext"
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';

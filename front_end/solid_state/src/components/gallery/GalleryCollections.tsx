@@ -1,6 +1,6 @@
 import {
     GalleryOwners, CollectionView, CollectionViewAll
-} from "../hooks/GalleryView"
+} from "../../hooks/GalleryView"
 import { GalleryArtworkList } from "./GalleryArtworkList"
 import Grid from '@mui/material/Grid';
 

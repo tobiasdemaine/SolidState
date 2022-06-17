@@ -1,5 +1,5 @@
 import { Card, CardActionArea, Grid } from "@mui/material"
-import useSolidStateContexts from "../hooks/useSolidStateContext"
+import useSolidStateContexts from "../../hooks/useSolidStateContext"
 import { CollectionsOverviewArtwork } from './CollectionOverviewArtwork';
 export interface CollectionProps {
     ipfs: any,

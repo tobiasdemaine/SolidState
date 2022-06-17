@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
     GalleryViewAll
-} from "../hooks/GalleryView"
+} from "../../hooks/GalleryView"
 import { MySharesList } from "./MySharesList";
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';

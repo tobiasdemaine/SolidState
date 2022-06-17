@@ -1,5 +1,5 @@
-import { GalleryOwners, GalleryViewAll, } from "../hooks/GalleryView"
-import { ArtWork } from "./ArtWork"
+import { GalleryOwners, GalleryViewAll, } from "../../hooks/GalleryView"
+import { ArtWork } from "../artwork/ArtWork"
 import { useEthers } from "@usedapp/core"
 export interface Props {
     ipfs: any,

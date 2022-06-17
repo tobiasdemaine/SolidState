@@ -1,6 +1,6 @@
-import useSolidStateContexts from "../hooks/useSolidStateContext"
+import useSolidStateContexts from "../../hooks/useSolidStateContext"
 import Grid from '@mui/material/Grid';
-import { GalleryCollections } from "../hooks/GalleryView"
+import { GalleryCollections } from "../../hooks/GalleryView"
 import { CollectionsOverview } from "./CollectionOverview";
 
 export interface HeaderCollectionProps {

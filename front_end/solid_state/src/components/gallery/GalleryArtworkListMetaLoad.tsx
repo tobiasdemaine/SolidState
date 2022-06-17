@@ -1,6 +1,6 @@
-import { useIpfsRetrieve, useIpfsWebRetrieve } from "../hooks/ipfs"
-import useSolidStateContexts from "../hooks/useSolidStateContext"
-import { CollectionsOverviewImage } from "./CollectionOverviewImage"
+import { useIpfsRetrieve, useIpfsWebRetrieve } from "../../hooks/ipfs"
+import useSolidStateContexts from "../../hooks/useSolidStateContext"
+import { GalleryArtworkListImage } from "./GalleryArtworkListImage"
 
 export interface ArtWorkMetaDataProps {
     ipfs: any,
@@ -8,10 +8,11 @@ export interface ArtWorkMetaDataProps {
 
 }
 
-export const CollectionOverviewArtworkMetaLoad = ({ ipfs, ipfsHash }: ArtWorkMetaDataProps) => {
+export const GalleryArtworkListMetaLoad = ({ ipfs, ipfsHash }: ArtWorkMetaDataProps) => {
     const { state: APPSTATE, setMainSection, setArtWorkAddress } = useSolidStateContexts()
     //let { _data, _blob, isIpfsFileReady } = useIpfsRetrieve(ipfs, ipfsHash)
     let { _data, isIpfsFileReady } = useIpfsWebRetrieve(ipfs, ipfsHash)
+
     var metaDataPack = { "images": [{ IpfsHash: null }] }
     if (isIpfsFileReady && _data != '') {
         if (typeof _data === 'string') {
@@ -25,7 +26,7 @@ export const CollectionOverviewArtworkMetaLoad = ({ ipfs, ipfsHash }: ArtWorkMet
     return (
         <>
             {hash !== null &&
-                <CollectionsOverviewImage ipfs={ipfs} ipfsHash={hash} />
+                <GalleryArtworkListImage ipfs={ipfs} ipfsHash={hash} />
             }
 
         </>

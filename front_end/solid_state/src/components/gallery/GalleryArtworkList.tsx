@@ -13,13 +13,13 @@ import {
     ArtworkTokenTotalSupply,
     ArtWorkGetSharePrice,
     ArtWorkGetContractPrice
-} from "../hooks/ArtworkViewByAddress"
+} from "../../hooks/ArtworkViewByAddress"
 
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import Typography from '@mui/material/Typography'
-import useSolidStateContexts from "../hooks/useSolidStateContext"
-import { CollectionsOverviewArtwork } from './CollectionOverviewArtwork'
+import useSolidStateContexts from "../../hooks/useSolidStateContext"
+import { CollectionsOverviewArtwork } from '../collection/CollectionOverviewArtwork'
 import { useEthers, useNotifications } from "@usedapp/core"
 import { GalleryArtworkListMetaLoad } from './GalleryArtworkListMetaLoad';
 export interface Props {

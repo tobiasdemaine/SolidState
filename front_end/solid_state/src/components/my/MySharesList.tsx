@@ -7,14 +7,14 @@ import {
     ArtworkTokenSymbol,
     ArtworkTokenName,
     ArtworkTokenTotalSupply
-} from "../hooks/ArtworkViewByAddress"
+} from "../../hooks/ArtworkViewByAddress"
 
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
-import useSolidStateContexts from "../hooks/useSolidStateContext"
+import useSolidStateContexts from "../../hooks/useSolidStateContext"
 import { useEthers } from "@usedapp/core"
-import ArtworkTokenOwnerBalance from "../hooks/ArtWorkToken";
+import ArtworkTokenOwnerBalance from "../../hooks/ArtWorkToken";
 
 export interface Props {
     ipfs: any,

@@ -11,15 +11,15 @@ import {
     ArtworkTokenSymbol,
     ArtworkTokenName,
     ArtworkTokenTotalSupply
-} from "../hooks/ArtworkViewByAddress"
+} from "../../hooks/ArtworkViewByAddress"
 
 import CardContent from '@mui/material/CardContent'
 
 import Typography from '@mui/material/Typography'
-import useSolidStateContexts from "../hooks/useSolidStateContext"
+import useSolidStateContexts from "../../hooks/useSolidStateContext"
 
 import { useEthers, useNotifications } from "@usedapp/core"
-import { GalleryArtworkListMetaLoad } from './GalleryArtworkListMetaLoad';
+import { GalleryArtworkListMetaLoad } from '../gallery/GalleryArtworkListMetaLoad';
 
 export interface Props {
     ipfs: any,

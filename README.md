@@ -11,6 +11,7 @@ The Gallery contract is a group of lists (collections) of Artworks with a visibl
 
 **The project directory structure:**
 
+- *bots/* - Scripts for preparing trade data for tests etc
 - *contracts/* - Smart Contracts / Brownie
 - *front_end/solid_state/* - React Front End
 - *rest_api/* - Node Rest Api and App Server
@@ -95,7 +96,6 @@ npm start ipfs production
 ----------------------
 
 * to do
-    * make componetent folder cleaner
     * Video stream from IPFS
     * move off infura to self hosted node 
     * Complete Deploy and Update scripts

@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
-import { Collections } from './components/Collections';
+import { Collections } from './components/collection/Collections';
 import useSolidStateContexts from "./hooks/useSolidStateContext"
-import { Gallery } from "./components/Gallery"
-import { GalleryCollections } from "./components/GalleryCollections"
+import { Gallery } from "./components/gallery/Gallery"
+import { GalleryCollections } from "./components/gallery/GalleryCollections"
 import { useEthers } from "@usedapp/core";
 import { Typography, Grid, Paper } from "@mui/material"
-import { MyArtworks } from './components/MyArtworks';
-import { AddArtWork } from './components/AddArtwork';
-import { MyShares } from './components/MyShares';
-import { AddCollection } from './components/AddCollection';
+import { MyArtworks } from './components/my/MyArtworks';
+import { AddArtWork } from './components/admin/AddArtwork';
+import { MyShares } from './components/my/MyShares';
+import { AddCollection } from './components/admin/AddCollection';
 
 import { Welcome } from "./components/Welcome"
 

@@ -26,14 +26,14 @@ import AddIcon from "@mui/icons-material/Add"
 import DeleteIcon from "@mui/icons-material/Delete"
 import InfoIcon from "@mui/icons-material/Info"
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import { GalleryOwners, } from "../hooks/GalleryView"
+import { GalleryOwners, } from "../../hooks/GalleryView"
 import { useDropzone } from 'react-dropzone'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
-import API from "../hooks/Api"
-import { GalleryCollections } from "../hooks/GalleryView"
-import useSolidStateContexts from "../hooks/useSolidStateContext"
+import API from "../../hooks/Api"
+import { GalleryCollections } from "../../hooks/GalleryView"
+import useSolidStateContexts from "../../hooks/useSolidStateContext"
 export interface ArtWorkAddProps {
     ipfs: any,
 }

@@ -1,7 +1,7 @@
 import { ImageList } from "@mui/material"
-import { useIpfsRetrieve, useIpfsWebRetrieve } from "../hooks/ipfs"
-import useSolidStateContexts from "../hooks/useSolidStateContext"
-import { ArtWorkIpfsMetaData } from "./ArtworkIpfsMetaData"
+import { useIpfsRetrieve, useIpfsWebRetrieve } from "../../hooks/ipfs"
+import useSolidStateContexts from "../../hooks/useSolidStateContext"
+import { ArtWorkIpfsMetaData } from "../artwork/ArtworkIpfsMetaData"
 
 export interface ArtWorkMetaDataProps {
     IpfsHash: any,

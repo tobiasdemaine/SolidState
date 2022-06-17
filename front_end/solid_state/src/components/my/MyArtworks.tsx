@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
     GalleryViewAll
-} from "../hooks/GalleryView"
+} from "../../hooks/GalleryView"
 import { useEthers } from "@usedapp/core"
 import { MyArtworksList } from "./MyArtworksList"
 import Grid from '@mui/material/Grid';

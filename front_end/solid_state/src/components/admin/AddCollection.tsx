@@ -21,8 +21,8 @@ import {
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
-import { GalleryOwners, GalleryCollections } from "../hooks/GalleryView"
-import { AddNewCollection } from '../hooks/Collections'
+import { GalleryOwners, GalleryCollections } from "../../hooks/GalleryView"
+import { AddNewCollection } from '../../hooks/Collections'
 export interface AddCollectionProps {
     ipfs: any,
 }

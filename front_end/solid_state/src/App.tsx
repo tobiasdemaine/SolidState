@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { DAppProvider, Kovan, Localhost, Mainnet } from '@usedapp/core';
-import { Header } from "./components/Header"
+import { Header } from "./components/header/Header"
 import Container from "@mui/material/Container"
 import { Main } from "./Main"
 import { AppStateProvider } from "./contexts/SolidStateContext"

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import CardMedia from '@mui/material/CardMedia';
 
-import { useIpfsRetrieve, useIpfsRetrieveAsChunks, useIpfsRetrieveBinary } from "../hooks/ipfs"
+import { useIpfsRetrieve, useIpfsRetrieveAsChunks, useIpfsRetrieveBinary } from "../../hooks/ipfs"
 import { LinearProgress, ImageListItem, ImageListItemBar } from "@mui/material"
 export interface CollectionProps {
     ipfs: any,

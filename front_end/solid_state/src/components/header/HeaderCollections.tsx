@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import Button from "@mui/material/Button"
-import useSolidStateContexts from "../hooks/useSolidStateContext"
+import useSolidStateContexts from "../../hooks/useSolidStateContext"
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { GalleryCollections } from "../hooks/GalleryView"
+import { GalleryCollections } from "../../hooks/GalleryView"
 
 
 export interface HeaderCollectionProps {

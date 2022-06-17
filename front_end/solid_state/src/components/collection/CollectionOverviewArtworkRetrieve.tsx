@@ -1,6 +1,6 @@
-import useSolidStateContexts from "../hooks/useSolidStateContext"
+import useSolidStateContexts from "../../hooks/useSolidStateContext"
 
-import { ArtWorkViewById } from "../hooks/ArtworkViewByAddress"
+import { ArtWorkViewById } from "../../hooks/ArtworkViewByAddress"
 import { CollectionOverviewArtworkMetaLoad } from "./CollectionOverviewArtworkMetaLoad"
 export interface CollectionProps {
     ipfs: any,

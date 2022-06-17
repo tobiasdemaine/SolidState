@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import { CollectionsOverviewArtworkRetrieve } from './CollectionOverviewArtworkRetrieve';
 import {
     CollectionViewAll
-} from "../hooks/GalleryView"
+} from "../../hooks/GalleryView"
 
 export interface CollectionProps {
     ipfs: any,

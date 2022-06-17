@@ -22,7 +22,7 @@ The Gallery contract is a group of lists (collections) of Artworks with a visibl
 ## Local Host Development 
 ### Install on Ubuntu/Debian
 ```
-sudo apt install python3 pip3 docker.io curl gnupg git
+sudo apt install python3 pip3 docker.io curl gnupg git sshpass
 curl -sL https://deb.nodesource.com/setup_17.x  | bash -
 apt-get -y install nodejs
 pip3 install brownie
@@ -133,21 +133,17 @@ npm start ipfs production
 
 
 ### VIDEO PREPARATION
-```text
 prepare videos :
-
+```
 ffmpeg -i video_0.mp4 -vcodec libx264 -acodec aac -pix_fmt yuv420p -movflags empty_moov+default_base_moof+frag_keyframe -profile:v baseline video_0_1.mp4
-
+```
 
 transcode video:
-
-MP4Box -inter 500 video_0_1.mp4
-
-
-video mimeCodec:
-
-avc1.42C01F,mp4a.40.2
 ```
+MP4Box -inter 500 video_0_1.mp4
+```
+
+video mimeCodec: avc1.42C01F,mp4a.40.2
 
 
 

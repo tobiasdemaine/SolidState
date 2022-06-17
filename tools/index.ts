@@ -21,8 +21,9 @@ export const setupNodeProjects = () => {
     // build the dot env file
     process.chdir("../front_end/solidstate")
     shell.exec("npm install", { silent: false })
-    process.chdir("../../../rest_api")
+    process.chdir("../../rest_api")
     shell.exec("npm install", { silent: false })
+
 }
 
 export const startIpfs = (network: any) => {
@@ -32,13 +33,47 @@ export const startIpfs = (network: any) => {
         dataPath = process.env.IPFS_DATA_PATH_PRODUCTION
         stagingPath = process.env.IPFS_DATA_PATH_PRODUCTION
         // login into server
-        shell.exec("ssh ", { silent: false })
+        //shell.exec("ssh ", { silent: false })
+    } else {
+        shell.exec("docker stop ipfs_host", { silent: false })
+        shell.exec("docker rm ipfs_host", { silent: false })
+        shell.exec("docker pull ipfs/go-ipfs", { silent: false })
+        shell.exec("docker run -d --restart always --expose=8080 -e VIRTUAL_PORT=8080 -e VIRTUAL_HOST=" + process.env.IPFS_URL + " --name ipfs_host -v " + stagingPath + ":/export -v " + dataPath + ":/data/ipfs -p 4001:4001 -p 4001:4001/udp -p 127.0.0.1:8080:8080 -p 127.0.0.1:5001:5001 ipfs/go-ipfs:latest", { silent: false })
     }
-    shell.exec("docker stop ipfs_host", { silent: false })
-    shell.exec("docker rm ipfs_host", { silent: false })
-    shell.exec("docker pull ipfs/go-ipfs", { silent: false })
-    shell.exec("docker run -d --restart always --expose=8080 -e VIRTUAL_PORT=8080 -e VIRTUAL_HOST=" + process.env.IPFS_URL + " --name ipfs_host -v " + stagingPath + ":/export -v " + dataPath + ":/data/ipfs -p 4001:4001 -p 4001:4001/udp -p 127.0.0.1:8080:8080 -p 127.0.0.1:5001:5001 ipfs/go-ipfs:latest", { silent: false })
 }
+
+export const updateProductionReactApp = () => {
+
+    process.chdir("../front_end/solid_state")
+    shell.exec("npx build")
+    shell.exec("sshpass -p '" + process.env.WEBSERVER_SSH_PWD + "' scp -r build/static " + process.env.WEBSERVER_SSH_LOGIN + ":/root/solidstate/build/static")
+
+}
+
+export const productionTest = () => {
+    const dataPath = process.env.IPFS_DATA_PATH_PRODUCTION
+    const stagingPath = process.env.IPFS_DATA_PATH_PRODUCTION
+    const ssh = "sshpass -p '" + process.env.WEBSERVER_SSH_PWD + "' ssh " + process.env.WEBSERVER_SSH_LOGIN
+
+    process.chdir("../rest_api")
+    shell.exec("docker build -t solidstateapi .")
+
+    shell.exec("docker save solidstateapi:latest | bzip2 | pv | " + ssh + " 'docker load'")
+    //shell.exec("docker save solidstateapi:latest | bzip2 | pv |  ssh " + process.env.WEBSERVER_SSH_LOGIN + " docker load")
+    shell.exec(ssh + " 'docker run -d --restart always --expose=3030 -e VIRTUAL_PORT=3030 -e VIRTUAL_HOST=solidstate.tobiasdemaine.com --name solidstate -v /var/run/docker.sock:/var/run/docker.sock -v /root/solidstate/build/static:/app/public -p 127.0.0.1:3030:3030 solidstateapi:latest'")
+
+    shell.exec(ssh + " 'docker stop ipfs_host'", { silent: false })
+    shell.exec(ssh + " 'docker rm ipfs_host'", { silent: false })
+    shell.exec(ssh + " 'docker pull ipfs/go-ipfs'", { silent: false })
+    shell.exec(ssh + " 'docker run -d --restart always --expose=8080 -e VIRTUAL_PORT=8080 -e VIRTUAL_HOST=" + process.env.IPFS_URL + " --name ipfs_host -v " + stagingPath + ":/export -v " + dataPath + ":/data/ipfs -p 4001:4001 -p 4001:4001/udp -p 127.0.0.1:8080:8080 -p 127.0.0.1:5001:5001 ipfs/go-ipfs:latest", { silent: false })
+
+
+    process.chdir("../contracts")
+    shell.exec("brownie run scripts/deploy_testing.py --network kovan")
+
+    updateProductionReactApp()
+}
+
 
 export const setupLocalChain = () => {
 
@@ -147,6 +182,12 @@ switch (myArgs[0]) {
         break
     case 'bots':
         bots()
+        break
+    case 'updateProductionReact':
+        updateProductionReactApp()
+        break
+    case 'productionTest':
+        productionTest()
         break
 
     default:

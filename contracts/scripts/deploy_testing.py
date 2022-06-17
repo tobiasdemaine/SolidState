@@ -1,4 +1,3 @@
-# to do provinance fix
 import json
 import requests
 import os
@@ -9,6 +8,8 @@ from brownie import SolidStateToken, SolidStateGallery, Multicall, network, conf
 from scripts.artwork_meta_data_compiler import construct_meta_data
 from web3 import Web3
 from time import sleep
+
+load_dotenv()
 
 
 def deploy_solid_state_gallery():
@@ -29,7 +30,12 @@ def main():
         publish_source=config["networks"][network.show_active()]["verify"],
     )
 
-    multicallenv = "REACT_APP_MULTICALL_LOCAL=" + multicall.address
+    multicallenv = (
+        "REACT_APP_MULTICALL_LOCAL="
+        + multicall.address
+        + "\n REACT_APP_WEB3_INFURA_PROJECT_ID="
+        + os.getenv("WEB3_INFURA_PROJECT_ID")
+    )
     with open("../front_end/solid_state/.env", "w") as f:
         f.write(multicallenv)
 

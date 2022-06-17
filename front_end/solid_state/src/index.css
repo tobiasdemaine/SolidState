@@ -32,3 +32,7 @@ code {
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(67, 67, 67);
 }
+
+.MuiCardMedia-img {
+  object-position: top;
+}

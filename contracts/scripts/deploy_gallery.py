@@ -8,6 +8,8 @@ from scripts.helpers import get_account, get_contract, update_front_end
 from brownie import SolidStateToken, SolidStateGallery, Multicall, network, config
 from scripts.artwork_meta_data_compiler import construct_meta_data
 
+load_dotenv()
+
 
 def deploy_solid_state_gallery():
 
@@ -18,7 +20,12 @@ def deploy_solid_state_gallery():
         publish_source=config["networks"][network.show_active()]["verify"],
     )
 
-    multicallenv = "REACT_APP_MULTICALL_LOCAL=" + multicall.address
+    multicallenv = (
+        "REACT_APP_MULTICALL_LOCAL="
+        + multicall.address
+        + "\n REACT_APP_WEB3_INFURA_PROJECT_ID="
+        + os.getenv("WEB3_INFURA_PROJECT_ID")
+    )
     with open("../front_end/solid_state/.env", "w") as f:
         f.write(multicallenv)
 

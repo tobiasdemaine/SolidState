@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { DAppProvider, Kovan, Localhost, Mainnet } from '@usedapp/core';
+import { DAppProvider, Kovan, Localhost, Mainnet, } from '@usedapp/core';
 import { Header } from "./components/header/Header"
 import Container from "@mui/material/Container"
 import { Main } from "./Main"
@@ -80,12 +80,13 @@ function App() {
       networks: [Kovan, Localhost, Mainnet],
       readOnlyChainId: 1337,
       readOnlyUrls: {
-        // [Mainnet.chainId]: 'https://mainnet.infura.io/v3/ede495de652e448c9706cf5b05ebd1d1',
-        // [Kovan.chainId]: 'https://kovan.infura.io/v3/ede495de652e448c9706cf5b05ebd1d1',
+        // [Mainnet.chainId]: 'https://mainnet.infura.io/v3/' + process.env.REACT_APP_WEB3_INFURA_PROJECT_ID,
+        [Kovan.chainId]: 'https://kovan.infura.io/v3/' + process.env.REACT_APP_WEB3_INFURA_PROJECT_ID,
         [1337]: 'http://127.0.0.1:8545',
       }, multicallAddresses: {
         1337: multicallAddress,
-
+        [Mainnet.chainId]: '0x5ba1e12693dc8f9c48aad8770482f4739beed696',
+        [Kovan.chainId]: '0x5ba1e12693dc8f9c48aad8770482f4739beed696',
       },
       notifications: {
         expirationPeriod: 1000,

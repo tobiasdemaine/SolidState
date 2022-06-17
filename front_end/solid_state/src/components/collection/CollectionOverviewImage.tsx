@@ -10,8 +10,9 @@ export const CollectionsOverviewImage = ({ ipfs, ipfsHash }: CollectionProps) =>
     return (
 
         <CardMedia
+
             component="img"
-            height="240"
+            height="340"
             image={blobString}
             alt="Image Loading"
         />

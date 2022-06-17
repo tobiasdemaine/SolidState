@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.react = exports.test = exports.deploy = exports.localAccounts = exports.localChain = exports.setupLocalChain = exports.startIpfs = exports.setupNodeProjects = exports.dotEnv = void 0;
+exports.bots = exports.react = exports.test = exports.deploy = exports.localAccounts = exports.localChain = exports.setupLocalChain = exports.startIpfs = exports.setupNodeProjects = exports.dotEnv = void 0;
 const fs = __importStar(require("fs"));
 const shell = __importStar(require("shelljs"));
 const dotenv = __importStar(require("dotenv"));
@@ -113,12 +113,13 @@ const deploy = (network) => {
 };
 exports.deploy = deploy;
 const test = (what) => {
-    process.chdir("../front_end/solid_state");
-    if (what == "user") {
+    if (what == "e2e") {
+        process.chdir("../front_end/solid_state");
         shell.exec("npx jest", { silent: false });
     }
-    if (what == "owner") {
-        shell.exec("npx jest", { silent: false });
+    if (what == "contracts") {
+        process.chdir("../contracts");
+        shell.exec("brownie test", { silent: false });
     }
 };
 exports.test = test;
@@ -127,6 +128,12 @@ const react = () => {
     shell.exec("npm start", { silent: false });
 };
 exports.react = react;
+const bots = () => {
+    (0, exports.deploy)('local');
+    process.chdir("../bots");
+    shell.exec("npm start local", { silent: false });
+};
+exports.bots = bots;
 const myArgs = process.argv.slice(2);
 switch (myArgs[0]) {
     case 'dotEnv':
@@ -151,6 +158,9 @@ switch (myArgs[0]) {
         break;
     case 'react':
         (0, exports.react)();
+        break;
+    case 'bots':
+        (0, exports.bots)();
         break;
     default:
         console.log("please supply command");

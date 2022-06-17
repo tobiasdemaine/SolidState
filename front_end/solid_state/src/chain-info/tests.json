@@ -6,10 +6,11 @@
     "MockOracle": "7f09d8b642ed1af8d9a3e094ab619f25db4db23c",
     "MockV3Aggregator": "9e734e161b5cafcca52a917f10266f5a8bc05b28",
     "MockWETH": "21c4935a4e5b858efd5c83f628f8bb78bafdabce",
+    "Multicall": "4ad9683217b495dd6881493c26fc4ecd02a73c55",
+    "Multicall2": "418921b91876b89c9174a016f43d692c0a15843f",
     "OpenZeppelin/openzeppelin-contracts@4.2.0/ERC20": "5c27d7156fdbfe889902cc167df697405a50ad20",
     "SolidStateGallery": "bf64a7436cc469055beff4aa62a48f4a2818676b",
-    "SolidStateToken": "bd41dc04fd8999b65456851c8230515e2c3a5829",
-    "SolidStateTokenFat": "51a4b620d13539848059d373dcd26a3dc7ac24f3",
+    "SolidStateToken": "bd908ec584cc57cb9a9303c907e927f97038a71b",
     "VRFCoordinatorMock": "a234e721cab3c47e532d8404949512e63f344855",
     "smartcontractkit/chainlink-brownie-contracts@0.2.1/BasicToken": "92084ac5279a2a3db988d9e01d7e6d3e3a4dab8d",
     "smartcontractkit/chainlink-brownie-contracts@0.2.1/SafeMathChainlink": "3b4158955f564edb18bd7a8ffdb49859c904f0b7",
@@ -17,11 +18,11 @@
     "smartcontractkit/chainlink-brownie-contracts@0.2.1/VRFRequestIDBase": "73df0a6f5d0123eb2b2db0faf62b602aa77c123a"
   },
   "tests": {
-    "tests/test_solid_state_unit.py": {
+    "tests/test_solid_state_integration.py": {
       "coverage": false,
       "isolated": false,
-      "results": ".",
-      "sha1": "c3168e5be0301ace136d3f9637be6911d7fb8a2b",
+      "results": "s",
+      "sha1": "8b03c2d780af1c2ef9d0e3bac0cc341a394be3f7",
       "txhash": []
     }
   },

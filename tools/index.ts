@@ -96,18 +96,27 @@ export const deploy = (network: any) => {
 }
 
 export const test = (what: any) => {
-    process.chdir("../front_end/solid_state")
-    if (what == "user") {
+
+    if (what == "e2e") {
+        process.chdir("../front_end/solid_state")
         shell.exec("npx jest", { silent: false })
     }
-    if (what == "owner") {
-        shell.exec("npx jest", { silent: false })
+    if (what == "contracts") {
+        process.chdir("../contracts")
+        shell.exec("brownie test", { silent: false })
     }
+
 }
 
 export const react = () => {
     process.chdir("../front_end/solid_state")
     shell.exec("npm start", { silent: false })
+}
+
+export const bots = () => {
+    deploy('local')
+    process.chdir("../bots")
+    shell.exec("npm start local", { silent: false })
 }
 
 
@@ -136,6 +145,10 @@ switch (myArgs[0]) {
     case 'react':
         react()
         break
+    case 'bots':
+        bots()
+        break
+
     default:
         console.log("please supply command")
 

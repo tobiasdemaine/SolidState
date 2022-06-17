@@ -1,7 +1,7 @@
 import Web3 from 'web3'
 import * as dotenv from 'dotenv'
 import * as fs from 'fs'
-dotenv.config()
+dotenv.config({ path: "../contracts/.env" })
 
 const myArgs = process.argv.slice(2);
 var CHAIN_ID: any
@@ -35,8 +35,8 @@ switch (myArgs[0]) {
 
 // setup
 
-const CONTRACT_SOURCE = '../contracts/contracts/SolidStateToken.json'
-const GALLERY_CONTRACT_SOURCE = '../cotracts/contracts/SolidStateGallery.json'
+const CONTRACT_SOURCE = '../contracts/build/contracts/SolidStateToken.json'
+const GALLERY_CONTRACT_SOURCE = '../contracts/build/contracts/SolidStateGallery.json'
 const MAP = '../contracts/build/deployments/map.json'
 
 var web3 = new Web3(WEB3_PROVIDER)
@@ -58,12 +58,13 @@ const Gallery = async (account: any) => {
     let gallery = {}
     let source = fs.readFileSync(GALLERY_CONTRACT_SOURCE)
     let contract = JSON.parse(source.toString())
-    let galleryContract = new web3.eth.Contract(contract.abi, MAP[CHAIN_ID.toString()]["SolidStateGallery"][0])
-    const collections = await galleryContract.methods.getCollections().call({ from: account })
-    for (var i in collections) {
-        gallery[collections[i]] = await galleryContract.methods.getArtWorksByCollectionId(collections[i]).call({ from: account })
-    }
+    let map = JSON.parse(fs.readFileSync(MAP).toString())
+    let galleryContract = new web3.eth.Contract(contract.abi, map[CHAIN_ID.toString()]["SolidStateGallery"][0])
+    const collections = await galleryContract.methods.getCollections().call({ from: account.address })
 
+    for (var i in collections) {
+        gallery[collections[i]] = await galleryContract.methods.getArtWorksByCollectionId(i).call({ from: account.address })
+    }
 
     return gallery
 }
@@ -78,27 +79,67 @@ const Trader = async (artwork: any, account: any) => {
     while (liquidity == true) {
         // get trader stats
         let ETH = await web3.eth.getBalance(account.address)
-        let TOKEN = await artworkContract.methods.balance(account.address).call({ from: account })
-        let SELLORDERS = await artworkContract.methods.getAllSellOrders().call({ from: account })
-        let BUYORDERS = await artworkContract.methods.getAllBuyOrders().call({ from: account })
-        let SHAREPRICE = await artworkContract.methods.getSharePrice().call({ from: account })
-        // if own no tokens fill some buy order at cheapest price 
+        let TOKEN = await artworkContract.methods.balanceOf(account.address).call({ from: account.address })
+        let SELLORDERS = await artworkContract.methods.getAllSellOrders().call({ from: account.address })
+        let BUYORDERS = await artworkContract.methods.getAllBuyOrders().call({ from: account.address })
+        let SHAREPRICE = await artworkContract.methods.getSharePrice().call({ from: account.address })
+        // if own no tokens buy some
+        console.log(ETH, SHAREPRICE, TOKEN)
+        console.log(SELLORDERS)
+        if (ETH < SHAREPRICE) {
+            //liquidity = false
+            // break
+        }
         if (TOKEN == 0) {
-            await artworkContract.methods.placeBuyOrder(11000, SHAREPRICE).send({
-                from: account, value: (11000 * SHAREPRICE)
+            console.log("-placeBuyOrder")
+            await artworkContract.methods.placeBuyOrder(1000, SHAREPRICE).send({
+                from: account.address, value: (1000 * SHAREPRICE), gas: 400000
             })
         } else {
             // IF NO ETH SELL SOME LOWER THAN LAST SHARE PRICE
+
             if (ETH < SHAREPRICE) {
-
+                console.log("--approve")
+                await artworkContract.methods.approve(artwork, 100,).send({ "from": account.address, gas: 400000 })
+                console.log("--placeSellOrder")
+                await artworkContract.methods.placeSellOrder(
+                    100, (SHAREPRICE - 10000000000000)).send({ "from": account.address, gas: 400000 }
+                    )
+            } else {
+                // LOW TOKEN 
+                if (TOKEN < 1000) {
+                    try {
+                        console.log("--placeBuyOrder")
+                        await artworkContract.methods.placeBuyOrder(1000, SHAREPRICE).send({
+                            from: account.address, value: (1000 * SHAREPRICE), gas: 400000
+                        })
+                    } catch (e) {
+                        console.log(e)
+                    }
+                } else {
+                    // do the simple trades
+                    try {
+                        console.log("---approve")
+                        await artworkContract.methods.approve(artwork, 100).send({ "from": account.address, gas: 400000 })
+                        console.log("---placeSellOrder")
+                        await artworkContract.methods.placeSellOrder(
+                            100, (SHAREPRICE - 10000000000000)).send({ "from": account.address, gas: 400000 }
+                            )
+                        const shareP = SHAREPRICE - 10000000000000
+                        console.log("---placeBuyOrder")
+                        await artworkContract.methods.placeBuyOrder(10, shareP).send({
+                            from: account.address, value: (10 * shareP), gas: 400000
+                        })
+                    } catch (e) {
+                        console.log(e)
+                    }
+                }
             }
-
-
-
         }
     }
 
 }
+
 
 
 
@@ -109,31 +150,13 @@ const SpawnTraders = (artwork: any, accounts: any) => {
     }
 }
 
-//sets up the trades
-// releases all tokens to owner
-// owner places orders 0.0002 to 0.0003
-const SetupTrading = async (artwork: any, account: any) => {
-    //release tokens to owner
-    let source = fs.readFileSync(CONTRACT_SOURCE)
-    let contract = JSON.parse(source.toString())
-    let artworkContract = new web3.eth.Contract(contract.abi, artwork)
-    await artworkContract.methods.contractReleaseTokens(account.address, 100000).send({ from: account })
-
-    await artworkContract.methods.approve(MAP[CHAIN_ID.toString()]["SolidStateGallery"][0], 100000, { "from": account })
-    await artworkContract.methods.placeSellOrder(
-        100000, Web3.utils.toWei("0.0002", "ether"), { "from": account }
-    )
-
-}
-
-const start = () => {
+const start = async () => {
     let account = web3.eth.accounts.privateKeyToAccount(PRIVATE_KEY)
-    const gallery = Gallery(account)
-    const accounts = Accounts()
+    const gallery = await Gallery(account)
+    const accounts = await Accounts()
+
     for (var i in gallery) {
         for (var j in gallery[i]) {
-            //setup the intial trades
-            SetupTrading(gallery[i][j], accounts)
             SpawnTraders(gallery[i][j], accounts)
         }
     }

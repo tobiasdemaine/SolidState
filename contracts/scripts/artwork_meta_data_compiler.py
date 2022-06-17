@@ -154,7 +154,7 @@ def construct_meta_data(file_path):
             print(address)
             META_DATA["files"].append(
                 {
-                    "ipfsHash": address,
+                    "IpfsHash": address,
                     "description": _meta["description"],
                 }
             )

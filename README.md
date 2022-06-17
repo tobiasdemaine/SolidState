@@ -5,7 +5,7 @@ is a decentralised market for trading shares in Artworks. The premise is the own
 
 The platform is broken into 2 contracts. The Artwork contract and The Gallery contract.
 
-Each Artwork Contract is it own trading platform, managing its own buy and sell orders.  This creates independence of the contract from exisiting only on a specific trading platforms.  The price of the Artwork's shares adjusts the artworks price. Ultimately "the market" defines the price of the artwork.
+Each Artwork Contract manages its own buy and sell orders.  This creates independence of the contract from exisiting only on a specific trading platform.  The price of the Artwork's shares adjusts the artworks price. Ultimately "the market" defines the price of the artwork.
 
 The Gallery contract is a group of lists (collections) of Artworks with a visiblity switch.
 
@@ -35,7 +35,40 @@ cd ../../tools
 npm install
 ```
 
-.env setup???
+### Create a dotENV @ ./contracts/.env
+```
+# accounts
+export PRIVATE_KEY_LOCAL=0x000
+export PRIVATE_KEY_KOVAN=0x000
+export PRIVATE_KEY_MAINNET=0x000
+
+# chain providers
+export HTTP_PROVIDER_LOCAL=http://localhost:8545
+export HTTP_PROVIDER_KOVAN=https://
+export HTTP_PROVIDER_MAINNET=https://
+
+# api providers
+export WEB3_INFURA_PROJECT_ID=
+export ETHERSCAN_TOKEN=
+
+# app urls
+export APP_URL=solidstate.website.com
+export API_URL=solidstate.website.com
+export IPFS_URL=ipfs.website.com
+
+# ipfs options
+export IPFS_DATA_PATH_LOCAL=/path_to/SolidState/rest_api/ipfs_storage/data/
+export IPFS_STAGING_PATH_LOCAL=/path_to/SolidState/rest_api/ipfs_storage/staging/
+export IPFS_DATA_PATH_PRODUCTION=/path_to/ipfs_storage/data/
+export IPFS_STAGING_PATH_PRODUCTION=/path_to/ipfs_storage/staging/
+
+# production details
+export WEBSERVER_SSH_LOGIN=user@server
+export WEBSERVER_PWD=
+
+# rest_api secret
+export API_SECRET=
+```
 
 ### Server start up order 
 Open each in a new Terminal
@@ -96,8 +129,6 @@ npm start ipfs production
 ----------------------
 
 * to do
-    * Video stream from IPFS
-    * move off infura to self hosted node 
     * Complete Deploy and Update scripts
 
 

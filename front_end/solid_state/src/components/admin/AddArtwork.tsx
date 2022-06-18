@@ -34,6 +34,8 @@ import * as Yup from 'yup'
 import API from "../../hooks/Api"
 import { GalleryCollections } from "../../hooks/GalleryView"
 import useSolidStateContexts from "../../hooks/useSolidStateContext"
+import pdfImage from "../../media/pdf.png";
+import mp4Image from "../../media/mp4.png";
 export interface ArtWorkAddProps {
     ipfs: any,
 }
@@ -64,7 +66,17 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
 
     const onDrop = useCallback((acceptedFiles: any) => {
         acceptedFiles.forEach((file: any) => {
-            setImages(Images => [...Images, { file: file, src: URL.createObjectURL(file), name: file.name, comment: "", ipfsHash: undefined, progress: 0 }]);
+            // test for image type 
+            const type = file.name.split(".").pop()
+            var fileSrc: any
+            if (type === "pdf") {
+                fileSrc = pdfImage
+            } else if (type === "mp4") {
+                fileSrc = mp4Image
+            } else {
+                fileSrc = URL.createObjectURL(file)
+            }
+            setImages(Images => [...Images, { file: file, src: fileSrc, name: file.name, comment: "", ipfsHash: undefined, progress: 0 }]);
         })
 
     }, [])
@@ -124,15 +136,38 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
         if (Images.length > 0) {
             var count = 0
             var images = []
+            var imgs = []
+            var videos = []
+            var files = []
             for (var i in Images) {
                 if (Images[i]["ipfsHash"] !== undefined) {
                     count++
-                    images.push(
-                        {
-                            "IpfsHash": Images[i]["ipfsHash"],
-                            "description": Images[i]["comment"],
-                        }
-                    )
+                    //if(images)
+                    const type = Images[i]["file"]["name"].split(".").pop()
+                    if (type === "pdf") {
+                        files.push(
+                            {
+                                "IpfsHash": Images[i]["ipfsHash"],
+                                "description": Images[i]["comment"],
+                            }
+                        )
+                    } else if (type === "mp4") {
+                        videos.push(
+                            {
+                                "IpfsHash": Images[i]["ipfsHash"],
+                                "description": Images[i]["comment"],
+                            }
+                        )
+                    } else {
+                        imgs.push(
+                            {
+                                "IpfsHash": Images[i]["ipfsHash"],
+                                "description": Images[i]["comment"],
+                            }
+                        )
+                    }
+
+
                 }
 
             }
@@ -150,9 +185,9 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
                     "symbol": Data["symbol"],
                     "supply": Data["supply"],
                     "collection": Data["collection"],
-                    "images": images,
-                    "videos": [],
-                    "files": [],
+                    "images": imgs,
+                    "videos": videos,
+                    "files": files,
                 }
 
                 // 3 upload json file
@@ -329,7 +364,7 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
                                         <>
                                             <Grid item xs={12} sx={{ mb: 1 }}>
                                                 <Alert id="errorNoImage" variant="filled" severity="error">
-                                                    An image is required
+                                                    A file is required
                                                 </Alert>
                                             </Grid>
                                         </>
@@ -352,7 +387,7 @@ export const AddArtWork = ({ ipfs }: ArtWorkAddProps) => {
                                                     <ImageListItemBar
                                                         title={<Input onChange={(event: any) => {
                                                             const updatedImages = [...Images];
-                                                            updatedImages[0]["comment"] = event.target.value;
+                                                            updatedImages[index]["comment"] = event.target.value;
                                                             setImages(updatedImages);
                                                         }} id={`Image_${index}`} />}
                                                         actionIcon={

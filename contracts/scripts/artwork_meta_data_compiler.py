@@ -19,9 +19,11 @@ IPFS_API_URL = "http://127.0.0.1:3030/"
 def get_ipfs_key():
     global IPFS_API_URL, IPFS_API_URL_LOCAL, IPFS_API_URL_PRODUCTION
     if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
-        IPFS_API_URL = IPFS_API_URL_LOCAL
+        IPFS_API_URL = IPFS_API_URL_PRODUCTION
 
-    response = requests.post(IPFS_API_URL + "k", data=dict(secret="password"))
+    response = requests.post(
+        IPFS_API_URL + "k", data=dict(secret="password"), verify=False
+    )
     data = response.json()
     return data["key"]
 
@@ -29,7 +31,7 @@ def get_ipfs_key():
 def upload_to_ipfs(file_path, key, publish=False):
     global IPFS_API_URL, IPFS_API_URL_LOCAL, IPFS_API_URL_PRODUCTION
     if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
-        IPFS_API_URL = IPFS_API_URL_LOCAL
+        IPFS_API_URL = IPFS_API_URL_PRODUCTION
     print(IPFS_API_URL, IPFS_API_URL_LOCAL, IPFS_API_URL_PRODUCTION)
     file_name = file_path.split("/")[-1:][0]
     with Path(file_path).open("rb") as fp:
@@ -39,9 +41,14 @@ def upload_to_ipfs(file_path, key, publish=False):
             IPFS_API_URL + "f",
             files={"file": (file_name, image_binary)},
             data={"key": key, "publish": publish},
+            verify=False,
         )
         data = response.json()
-        return data["ipfsHash"]
+        print(data)
+        try:
+            return data["ipfsHash"]
+        except:
+            upload_to_ipfs(file_path, key)
 
 
 def upload_json_to_ipfs(json_data, key):

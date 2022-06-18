@@ -1,11 +1,11 @@
 SOLID STATE
 ===========
 
-is a decentralised market for trading shares in Artworks. The premise is the owner of the artwork/s maintains storage and security of the artwork, while allowing for the artwork to realise its investment value by allowing others to invest in it as parts/shares.  These parts/shares are ec20 tokens. [Test Server](http://solidstate.tobiasdemaine.com)
+is a decentralised market for trading shares in Artworks. The owner of a collection artwork/s maintains storage and security of the artwork, while allowing for the artwork to realise its investment value by allowing others to invest in it as parts/shares.  These parts/shares are ec20 tokens. [Test Server](http://solidstate.tobiasdemaine.com)
 
 The platform is broken into 2 contracts. The Artwork contract and The Gallery contract.
 
-Each Artwork Contract manages its own buy and sell orders.  This creates independence of the contract from exisiting only on a specific trading platform.  The price of the Artwork's shares adjusts the artworks price. Ultimately "the market" defines the price of the artwork.
+Each Artwork Contract manages its own buy and sell orders / trades.   The price of the Artwork's shares adjusts the artworks price. Ultimately "the market" defines the price of the artwork.
 
 The Gallery contract is a group of lists (collections) of Artworks with a visiblity switch.
 
@@ -127,9 +127,6 @@ npm start ipfs production
 ```
 
 ----------------------
-
-* to do
-    * Complete Deploy and Update scripts
 
 
 ### VIDEO PREPARATION

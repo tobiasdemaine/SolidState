@@ -13,7 +13,7 @@ import json
 import os
 import shutil
 
-NON_FORKED_LOCAL_BLOCKCHAIN_ENVIRONMENTS = ["hardhat", "development"]
+NON_FORKED_LOCAL_BLOCKCHAIN_ENVIRONMENTS = ["solidstatetest", "development"]
 LOCAL_BLOCKCHAIN_ENVIRONMENTS = NON_FORKED_LOCAL_BLOCKCHAIN_ENVIRONMENTS + [
     "mainnet-fork",
     "binance-fork",

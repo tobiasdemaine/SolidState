@@ -61,6 +61,7 @@ const app = express()
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
 const testSecret = (req: any) => { //quick and dirty authetication
     //console.log(req)
@@ -164,8 +165,12 @@ app.post('/f', upload.single('file'), async (req, res) => {
     }
 })
 
-app.use('/', express.static('public')) // serve the react app
+//app.use('/', express.static('public')) // serve the react app
+//app.all('*', express.static('public'))
 
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/../public/index.html'));
+});
 app.listen(3030, function () {
     console.log('listening on port 3030!');
 })

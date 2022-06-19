@@ -78,11 +78,11 @@ function App() {
   return (
     <DAppProvider config={{
       networks: [Kovan, Localhost, Mainnet],
-      readOnlyChainId: 1337,
+      readOnlyChainId: Kovan.chainId,
       readOnlyUrls: {
         // [Mainnet.chainId]: 'https://mainnet.infura.io/v3/' + process.env.REACT_APP_WEB3_INFURA_PROJECT_ID,
         [Kovan.chainId]: 'https://kovan.infura.io/v3/' + process.env.REACT_APP_WEB3_INFURA_PROJECT_ID,
-        [1337]: 'http://127.0.0.1:8545',
+        // [1337]: 'http://127.0.0.1:8545',
       }, multicallAddresses: {
         1337: multicallAddress,
         [Mainnet.chainId]: '0x5ba1e12693dc8f9c48aad8770482f4739beed696',
